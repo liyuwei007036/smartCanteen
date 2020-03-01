@@ -1,0 +1,43 @@
+server:
+  port: 5001
+
+spring:
+  application:
+    name: SmartCanteen
+  profiles:
+    active: dev
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql:/192.168.3.11:3306/smartcanteen?useUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT%2B8&useSSL=false&allowMultiQueries=true
+    username: root
+    password: 123456
+    type: com.zaxxer.hikari.HikariDataSource
+    hikari:
+      minimum-idle: 5
+      maximum-pool-size: 15
+      auto-commit: true
+      idle-timeout: 30000
+      pool-name: DatebookHikariCP-Smart-Canteen
+      max-lifetime: 1800000
+      connection-timeout: 30000
+      connection-test-query: SELECT 1
+  resources:
+    add-mappings: false
+
+  servlet:
+    multipart:
+      max-file-size: 1000
+
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    map-underscore-to-camel-case: false
+    defaultEnumTypeHandler: com.baomidou.mybatisplus.extension.handlers.MybatisEnumTypeHandler
+  check-config-location: true
+  global-config:
+    db-config:
+      logicDeleteValue: 1
+      logic-not-delete-value: 0
+    banner: false
+  mapper-locations: classpath:/mapper/*.xml
