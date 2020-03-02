@@ -42,6 +42,14 @@ public class Employee extends Model<Employee> {
     @TableField(value = "name")
     private String name;
 
+    @ApiModelProperty(value = "密码")
+    @TableField(value = "password")
+    private String password;
+
+    @ApiModelProperty(value = "盐")
+    @TableField(value = "salt")
+    private String salt;
+
     @ApiModelProperty(value = "手机号")
     @TableField(value = "mobile")
     private String mobile;
