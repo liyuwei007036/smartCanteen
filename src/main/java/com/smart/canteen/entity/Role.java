@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 
 /**
  * <p>
- * 员工
+ * 岗位
  * </p>
  *
  * @author lc
@@ -22,50 +22,30 @@ import java.time.LocalDateTime;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-@TableName("employee")
-@ApiModel(value = "Employee对象", description = "员工")
-public class Employee extends Model<Employee> {
+@TableName("role")
+@ApiModel(value = "Role对象", description = "岗位")
+public class Role extends Model<Role> {
 
     private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty(value = "主键id")
+    @ApiModelProperty(value = "主键Id")
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
-    @ApiModelProperty(value = "工号")
-    @TableField(value = "no")
-    private String no;
-
-    @ApiModelProperty(value = "姓名")
+    @ApiModelProperty(value = "名称")
     @TableField(value = "name")
     private String name;
 
-    @ApiModelProperty(value = "手机号")
-    @TableField(value = "mobile")
-    private String mobile;
-
-    @ApiModelProperty(value = "身份证号")
-    @TableField(value = "id_card")
-    private String idCard;
-
-    @ApiModelProperty(value = "盐")
-    @TableField(value = "salt")
-    private String salt;
-
-    @ApiModelProperty(value = "密码")
-    @TableField(value = "password")
-    private String password;
-
     @ApiModelProperty(value = "创建时间")
-    @TableField(value = "create_time", insertStrategy = FieldStrategy.NOT_EMPTY, updateStrategy = FieldStrategy.NEVER)
+    @TableField(value = "create_time")
     private LocalDateTime createTime;
 
     @ApiModelProperty(value = "创建人id")
-    @TableField(value = "creator_id", insertStrategy = FieldStrategy.NOT_EMPTY, updateStrategy = FieldStrategy.NEVER)
+    @TableField(value = "creator_id")
     private Long creatorId;
 
     @ApiModelProperty(value = "创建人工号")
-    @TableField(value = "creator_no", insertStrategy = FieldStrategy.NOT_EMPTY, updateStrategy = FieldStrategy.NEVER)
+    @TableField(value = "creator_no")
     private String creatorNo;
 
     @ApiModelProperty(value = "创建人姓名")
@@ -89,12 +69,12 @@ public class Employee extends Model<Employee> {
     private String lastUpdateName;
 
     @ApiModelProperty(value = "逻辑锁")
-    @TableField(value = "version", fill = FieldFill.INSERT_UPDATE)
+    @TableField(value = "version")
     @Version
     private Long version;
 
     @ApiModelProperty(value = "是否删除 0 1")
-    @TableField(value = "deleted", fill = FieldFill.INSERT)
+    @TableField(value = "deleted")
     @TableLogic
     private Boolean deleted;
 

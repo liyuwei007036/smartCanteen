@@ -2,18 +2,20 @@ package com.smart.canteen.entity;
 
 import com.baomidou.mybatisplus.annotation.*;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
+
+import java.time.LocalDateTime;
+
+import java.io.Serializable;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
-import java.io.Serializable;
-import java.time.LocalDateTime;
-
 /**
  * <p>
- * 员工
+ * 组织
  * </p>
  *
  * @author lc
@@ -22,79 +24,71 @@ import java.time.LocalDateTime;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-@TableName("employee")
-@ApiModel(value = "Employee对象", description = "员工")
-public class Employee extends Model<Employee> {
+@TableName("origination")
+@ApiModel(value = "Origination对象", description = "组织")
+public class Origination extends Model<Origination> {
 
     private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty(value = "主键id")
+    @ApiModelProperty(value = "主键Id")
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
-    @ApiModelProperty(value = "工号")
-    @TableField(value = "no")
-    private String no;
-
-    @ApiModelProperty(value = "姓名")
-    @TableField(value = "name")
+    @ApiModelProperty(value = "名称")
+    @TableField(value="name")
     private String name;
 
-    @ApiModelProperty(value = "手机号")
-    @TableField(value = "mobile")
-    private String mobile;
+    @ApiModelProperty(value = "上级部门id")
+    @TableField(value="parent_id")
+    private Long parentId;
 
-    @ApiModelProperty(value = "身份证号")
-    @TableField(value = "id_card")
-    private String idCard;
+    @ApiModelProperty(value = "上级部门名称")
+    @TableField(value="parent_name")
+    private String parentName;
 
-    @ApiModelProperty(value = "盐")
-    @TableField(value = "salt")
-    private String salt;
-
-    @ApiModelProperty(value = "密码")
-    @TableField(value = "password")
-    private String password;
+    @ApiModelProperty(value = "路径")
+    @TableField(value="path")
+    private String path;
 
     @ApiModelProperty(value = "创建时间")
-    @TableField(value = "create_time", insertStrategy = FieldStrategy.NOT_EMPTY, updateStrategy = FieldStrategy.NEVER)
+    @TableField(value="create_time")
     private LocalDateTime createTime;
 
     @ApiModelProperty(value = "创建人id")
-    @TableField(value = "creator_id", insertStrategy = FieldStrategy.NOT_EMPTY, updateStrategy = FieldStrategy.NEVER)
+    @TableField(value="creator_id")
     private Long creatorId;
 
     @ApiModelProperty(value = "创建人工号")
-    @TableField(value = "creator_no", insertStrategy = FieldStrategy.NOT_EMPTY, updateStrategy = FieldStrategy.NEVER)
+    @TableField(value="creator_no")
     private String creatorNo;
 
     @ApiModelProperty(value = "创建人姓名")
-    @TableField(value = "creator_name")
+    @TableField(value="creator_name")
     private String creatorName;
 
     @ApiModelProperty(value = "最近更新时间")
-    @TableField(value = "last_update_time")
+    @TableField(value="last_update_time")
     private LocalDateTime lastUpdateTime;
 
     @ApiModelProperty(value = "最近更新人id")
-    @TableField(value = "last_update_id")
+    @TableField(value="last_update_id")
     private Long lastUpdateId;
 
     @ApiModelProperty(value = "最近更新人工号")
-    @TableField(value = "last_update_no")
+    @TableField(value="last_update_no")
     private String lastUpdateNo;
 
     @ApiModelProperty(value = "最近更新人姓名")
-    @TableField(value = "last_update_name")
+    @TableField(value="last_update_name")
     private String lastUpdateName;
 
     @ApiModelProperty(value = "逻辑锁")
-    @TableField(value = "version", fill = FieldFill.INSERT_UPDATE)
+    @TableField(value="version")
     @Version
     private Long version;
 
     @ApiModelProperty(value = "是否删除 0 1")
-    @TableField(value = "deleted", fill = FieldFill.INSERT)
+    @TableField(value="deleted")
     @TableLogic
     private Boolean deleted;
 

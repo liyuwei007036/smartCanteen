@@ -27,14 +27,14 @@ public class MysqlGenerator {
         GlobalConfig gc = new GlobalConfig();
         gc.setOutputDir("d:\\code\\java\\smartCanteen\\src\\main\\java");
         gc.setSwagger2(true);
-        gc.setFileOverride(false);
+        gc.setFileOverride(true);
         gc.setOpen(false);
         gc.setAuthor("lc");
         gc.setActiveRecord(true);
         gc.setEnableCache(false);// XML 二级缓存
 
-        String entry_name = "Employee";
-        String table_name = "employee";
+        String entry_name = "EmployeeRole";
+        String table_name = "employee_role";
 
 
         gc.setServiceImplName(entry_name + "ServiceImpl");

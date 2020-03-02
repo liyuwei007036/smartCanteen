@@ -13,8 +13,11 @@ public enum CanteenExceptionEnum implements IErrorInterface {
     /**
      *
      */
-    CREATE_MEMBER_FAIL(2001, "create  fail"),
-    UPDATE_MEMBER_FAIL(2002, "update  fail");
+    CREATE_FAIL(2001, "保存失败"),
+    UPDATE_FAIL(2002, "更新失败"),
+    USER_NOT_EXIST(2003, "用户不存在"),
+    ACCOUNT_REPEAT(2004, "工号重复"),
+    UPDATE_FA2IL(99999, "update  fail");
 
     private Integer code;
 

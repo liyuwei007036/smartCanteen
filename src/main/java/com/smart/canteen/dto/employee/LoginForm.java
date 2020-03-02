@@ -1,4 +1,4 @@
-package com.smart.canteen.dto;
+package com.smart.canteen.dto.employee;
 
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
@@ -12,13 +12,13 @@ import java.io.Serializable;
  */
 @ApiModel
 @Data
-public class LoginFormDTO implements Serializable {
+public class LoginForm implements Serializable {
 
     @NotEmpty
     private String account;
 
     @NotEmpty
-    private String passWord;
+    private String password;
 
     @NotEmpty
     private String code;
