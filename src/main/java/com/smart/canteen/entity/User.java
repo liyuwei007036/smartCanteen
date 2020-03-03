@@ -2,31 +2,27 @@ package com.smart.canteen.entity;
 
 import com.baomidou.mybatisplus.annotation.*;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
-
-import java.time.LocalDateTime;
-
-import java.io.Serializable;
-
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
+import java.io.Serializable;
+import java.time.LocalDateTime;
+
 /**
  * <p>
- * 员工角色关系
+ *
  * </p>
  *
  * @author lc
- * @since 2020-03-02
+ * @since 2020-03-03
  */
 @Data
-@EqualsAndHashCode(callSuper = false)
-@Accessors(chain = true)
-@TableName("employee_role")
-@ApiModel(value = "EmployeeRole对象", description = "员工角色关系")
-public class EmployeeRole extends Model<EmployeeRole> {
+@TableName("user")
+@ApiModel(value = "User对象", description = "用户")
+public class User extends Model<User> implements BaseEntity {
 
     private static final long serialVersionUID = 1L;
 
@@ -34,40 +30,44 @@ public class EmployeeRole extends Model<EmployeeRole> {
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
-    @ApiModelProperty(value = "员工id")
-    @TableField(value = "employee_id")
-    private Long employeeId;
+    @ApiModelProperty(value = "姓名")
+    @TableField(value = "name")
+    private String name;
 
-    @ApiModelProperty(value = "员工工号")
-    @TableField(value = "employee_no")
-    private String employeeNo;
+    @ApiModelProperty(value = "账号")
+    @TableField(value = "account")
+    private String account;
 
-    @ApiModelProperty(value = "员工姓名")
-    @TableField(value = "employee_name")
-    private String employeeName;
+    @ApiModelProperty(value = "密码")
+    @TableField(value = "password")
+    private String password;
+
+    @ApiModelProperty(value = "盐")
+    @TableField(value = "salt")
+    private String salt;
 
     @ApiModelProperty(value = "角色id")
     @TableField(value = "role_id")
     private Long roleId;
 
-    @ApiModelProperty(value = "角色名称")
+    @ApiModelProperty(value = "角色名")
     @TableField(value = "role_name")
     private String roleName;
 
     @ApiModelProperty(value = "创建时间")
-    @TableField(value = "create_time")
+    @TableField(value = "create_time", insertStrategy = FieldStrategy.NOT_EMPTY, updateStrategy = FieldStrategy.NEVER)
     private LocalDateTime createTime;
 
     @ApiModelProperty(value = "创建人id")
-    @TableField(value = "creator_id")
+    @TableField(value = "creator_id", insertStrategy = FieldStrategy.NOT_EMPTY, updateStrategy = FieldStrategy.NEVER)
     private Long creatorId;
 
     @ApiModelProperty(value = "创建人工号")
-    @TableField(value = "creator_no")
-    private String creatorNo;
+    @TableField(value = "creator_account", insertStrategy = FieldStrategy.NOT_EMPTY, updateStrategy = FieldStrategy.NEVER)
+    private String creatorAccount;
 
     @ApiModelProperty(value = "创建人姓名")
-    @TableField(value = "creator_name")
+    @TableField(value = "creator_name", insertStrategy = FieldStrategy.NOT_EMPTY, updateStrategy = FieldStrategy.NEVER)
     private String creatorName;
 
     @ApiModelProperty(value = "最近更新时间")
@@ -79,20 +79,20 @@ public class EmployeeRole extends Model<EmployeeRole> {
     private Long lastUpdateId;
 
     @ApiModelProperty(value = "最近更新人工号")
-    @TableField(value = "last_update_no")
-    private String lastUpdateNo;
+    @TableField(value = "last_update_account")
+    private String lastUpdateAccount;
 
     @ApiModelProperty(value = "最近更新人姓名")
     @TableField(value = "last_update_name")
     private String lastUpdateName;
 
     @ApiModelProperty(value = "逻辑锁")
-    @TableField(value = "version")
+    @TableField(value = "version", fill = FieldFill.INSERT_UPDATE)
     @Version
     private Long version;
 
     @ApiModelProperty(value = "是否删除 0 1")
-    @TableField(value = "deleted")
+    @TableField(value = "deleted", fill = FieldFill.INSERT)
     @TableLogic
     private Boolean deleted;
 

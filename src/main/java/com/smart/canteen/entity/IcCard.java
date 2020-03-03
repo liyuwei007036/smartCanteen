@@ -13,53 +13,73 @@ import java.time.LocalDateTime;
 
 /**
  * <p>
- *
+ * iC卡
  * </p>
  *
  * @author lc
  * @since 2020-03-03
  */
 @Data
-@TableName("employee")
-@ApiModel(value = "Employee对象", description = "员工")
-public class Employee  extends Model<Employee> implements BaseEntity {
+@TableName("ic_card")
+@ApiModel(value = "IcCard对象", description = "iC卡")
+public class IcCard extends Model<IcCard> implements BaseEntity {
 
     private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty(value = "主键id")
+    @ApiModelProperty(value = "主键Id")
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
-    @ApiModelProperty(value = "ic卡Id")
-    @TableField(value = "card_id")
-    private Long cardId;
-
     @ApiModelProperty(value = "卡号")
-    @TableField(value = "card_no")
-    private String cardNo;
-
-    @ApiModelProperty(value = "工号")
-    @TableField(value = "no")
+    @TableField("no")
     private String no;
 
-    @ApiModelProperty(value = "姓名")
-    @TableField(value = "name")
-    private String name;
+    @ApiModelProperty(value = "员工工号")
+    @TableField("employee_no")
+    private String employeeNo;
 
-    @ApiModelProperty(value = "手机号")
-    @TableField(value = "mobile")
-    private String mobile;
+    @ApiModelProperty(value = "员工姓名")
+    @TableField("employee_name")
+    private String employeeName;
 
-    @ApiModelProperty(value = "身份证号")
-    @TableField(value = "id_card")
-    private String idCard;
+    @ApiModelProperty(value = "状态")
+    @TableField("status")
+    private Integer status;
 
-    @ApiModelProperty(value = "盐")
-    @TableField(value = "salt")
-    private String salt;
+    @ApiModelProperty(value = "类型")
+    @TableField("type")
+    private Integer type;
+
+    @ApiModelProperty(value = "员工id")
+    @TableField("employee_id")
+    private Long employeeId;
+
+    @ApiModelProperty(value = "工本费")
+    @TableField("expense")
+    private Double expense;
+
+    @ApiModelProperty(value = "押金")
+    @TableField("deposit")
+    private Double deposit;
+
+    @ApiModelProperty(value = "开卡金额")
+    @TableField("open_card_amount")
+    private Double openCardAmount;
+
+    @ApiModelProperty(value = "当前余额")
+    @TableField("current_balance")
+    private Double currentBalance;
+
+    @ApiModelProperty(value = "最低余额")
+    @TableField("minimum_balance")
+    private Double minimumBalance;
+
+    @ApiModelProperty(value = "有效期")
+    @TableField("validity_time")
+    private LocalDateTime validityTime;
 
     @ApiModelProperty(value = "密码")
-    @TableField(value = "password")
+    @TableField("password")
     private String password;
 
     @ApiModelProperty(value = "创建时间")
@@ -104,14 +124,10 @@ public class Employee  extends Model<Employee> implements BaseEntity {
     @TableLogic
     private Boolean deleted;
 
+
     @Override
     protected Serializable pkVal() {
         return this.id;
     }
-
-
-
-
-
 
 }

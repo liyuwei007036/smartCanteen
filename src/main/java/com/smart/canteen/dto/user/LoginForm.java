@@ -1,4 +1,4 @@
-package com.smart.canteen.dto.employee;
+package com.smart.canteen.dto.user;
 
 import io.swagger.annotations.ApiModel;
 import lombok.Data;

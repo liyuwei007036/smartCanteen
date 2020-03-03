@@ -3,11 +3,13 @@ package com.smart.canteen.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.lc.core.controller.BaseController;
 import com.lc.core.dto.Account;
-import com.smart.canteen.dto.employee.EmployeeForm;
-import com.smart.canteen.dto.employee.EmployeeSearch;
 import com.smart.canteen.dto.employee.ListEmployee;
+import com.smart.canteen.dto.user.ListUser;
 import com.smart.canteen.dto.user.LoginForm;
+import com.smart.canteen.dto.user.UserForm;
+import com.smart.canteen.dto.user.UserSearch;
 import com.smart.canteen.entity.Employee;
+import com.smart.canteen.entity.User;
 
 /**
  * <p>
@@ -15,10 +17,18 @@ import com.smart.canteen.entity.Employee;
  * </p>
  *
  * @author lc
- * @since 2020-03-01
+ * @since 2020-03-03
  */
-public interface IEmployeeService extends IService<Employee> {
+public interface IUserService extends IService<User> {
 
+
+    /**
+     * 登录
+     *
+     * @param dto
+     * @param controller
+     */
+    void login(LoginForm dto, BaseController controller);
 
     /**
      * 获取用户信息
@@ -26,7 +36,7 @@ public interface IEmployeeService extends IService<Employee> {
      * @param account
      * @return
      */
-    Employee getByAccount(String account);
+    User getByAccount(String account);
 
     /**
      * 新增
@@ -34,15 +44,16 @@ public interface IEmployeeService extends IService<Employee> {
      * @param dto
      * @param creator
      */
-    void add(EmployeeForm dto, Account creator);
+    void add(UserForm dto, Account creator);
+
 
     /**
      * 修改
      *
-     * @param employee
+     * @param user
      * @param updater
      */
-    void update(EmployeeForm employee, Account updater);
+    void update(UserForm user, Account updater);
 
     /**
      * 删除
@@ -55,27 +66,18 @@ public interface IEmployeeService extends IService<Employee> {
     /**
      * 条件查询
      *
-     * @param form
+     * @param search
      * @return
      */
-    ListEmployee listByConditional(EmployeeSearch form);
+    ListUser listByConditional(UserSearch search);
 
     /**
-     * 通过idCard mobile no 查询
-     *
-     * @param idCard
-     * @param mobile
-     * @param no
-     * @return
-     */
-    Employee matchAny(String idCard, String mobile, String no);
-
-    /**
-     * 通过Id查询
+     * 通过id查询
      *
      * @param id
      * @return
      */
-    Employee getById(Long id);
+    User getById(Long id);
+
 
 }
