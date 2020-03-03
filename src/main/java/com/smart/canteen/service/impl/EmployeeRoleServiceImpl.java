@@ -1,4 +1,4 @@
-package com.smart.canteen.service;
+package com.smart.canteen.service.impl;
 
 import com.smart.canteen.entity.EmployeeRole;
 import com.smart.canteen.mapper.EmployeeRoleMapper;

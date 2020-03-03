@@ -1,6 +1,8 @@
 package com.smart.canteen.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lc.core.controller.BaseController;
@@ -58,13 +60,13 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
             user.setPowers(new ArrayList<>());
             LoginUtils.doUserLogin(user, controller);
         } else {
-            throw new BaseException(BaseErrorEnums.ERROR_AUTH);
+            throw new BaseException(CanteenExceptionEnum.USER_NOT_EXIST);
         }
     }
 
     @Override
     public void add(EmployeeForm dto, User creator) {
-        Employee employee = getByAccount(dto.getNo());
+        Employee employee = matchAny(dto.getIdCard(), dto.getMobile(), dto.getNo());
         if (employee != null) {
             throw new BaseException(CanteenExceptionEnum.ACCOUNT_REPEAT);
         }
@@ -131,13 +133,23 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
 
     @Override
     public Employee getByAccount(String account) {
-        return getOne(new LambdaQueryWrapper<Employee>().eq(Employee::getNo, account), false);
+        return getOne(Wrappers.<Employee>lambdaQuery().eq(Employee::getNo, account), false);
+    }
+
+
+    @Override
+    public Employee matchAny(String idCard, String mobile, String no) {
+        return getOne(Wrappers.<Employee>lambdaQuery()
+                        .or().eq(!StringUtils.isEmpty(no), Employee::getNo, no)
+                        .or().eq(!StringUtils.isEmpty(mobile), Employee::getMobile, mobile)
+                        .or().eq(!StringUtils.isEmpty(idCard), Employee::getIdCard, idCard),
+                false);
     }
 
     @Override
     public ListEmployee listByConditional(EmployeeSearch form) {
         Page<Employee> page = new Page<>(form.getPage(), form.getSize());
-        super.page(page, new LambdaQueryWrapper<Employee>()
+        super.page(page, Wrappers.<Employee>lambdaQuery()
                 .likeLeft(!StringUtils.isEmpty(form.getMobile()), Employee::getMobile, form.getMobile())
                 .likeLeft(!StringUtils.isEmpty(form.getName()), Employee::getName, form.getName())
                 .likeLeft(!StringUtils.isEmpty(form.getNo()), Employee::getNo, form.getNo())

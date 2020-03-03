@@ -23,7 +23,7 @@ public interface IEmployeeService extends IService<Employee> {
      * 登录
      *
      * @param dto
-     * @return
+     * @param controller
      */
     void login(LoginForm dto, BaseController controller);
 
@@ -74,5 +74,15 @@ public interface IEmployeeService extends IService<Employee> {
      * @return
      */
     ListEmployee listByConditional(EmployeeSearch form);
+
+    /**
+     * 通过idCard mobile no 查询
+     *
+     * @param idCard
+     * @param mobile
+     * @param no
+     * @return
+     */
+    Employee matchAny(String idCard, String mobile, String no);
 
 }
