@@ -31,4 +31,8 @@ public class Role extends BaseEntity {
     @TableField(value = "name")
     private String name;
 
+    @ApiModelProperty(value = "能否删除")
+    @TableField(value = "can_edit")
+    private Boolean canEdit = false;
+
 }
