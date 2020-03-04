@@ -6,21 +6,15 @@ import com.lc.core.controller.BaseController;
 import com.lc.core.dto.Account;
 import com.lc.core.dto.ResponseInfo;
 import com.lc.core.utils.ObjectUtil;
-import com.lc.core.utils.ValidatorUtil;
-import com.smart.canteen.dto.employee.EmployeeForm;
-import com.smart.canteen.dto.employee.EmployeeSearch;
-import com.smart.canteen.dto.employee.ListEmployee;
 import com.smart.canteen.dto.user.ListUser;
 import com.smart.canteen.dto.user.LoginForm;
 import com.smart.canteen.dto.user.UserForm;
 import com.smart.canteen.dto.user.UserSearch;
-import com.smart.canteen.entity.Employee;
 import com.smart.canteen.entity.User;
 import com.smart.canteen.service.IUserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -32,7 +26,7 @@ import org.springframework.web.bind.annotation.*;
  * @since 2020-03-03
  */
 @Api(value = "user-module", tags = "用户中心")
-@Valid
+@Valid(needLogin = true)
 @RestController
 @RequestMapping("/user")
 public class UserController extends BaseController {
@@ -89,5 +83,7 @@ public class UserController extends BaseController {
     public ResponseInfo<User> addEmployee(@PathVariable String id) {
         return new ResponseInfo<>(iUserService.getById(ObjectUtil.getLong(id)));
     }
+
+
 }
 
