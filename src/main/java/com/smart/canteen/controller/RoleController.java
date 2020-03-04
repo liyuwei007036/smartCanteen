@@ -15,6 +15,8 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.Serializable;
+
 /**
  * <p>
  * 岗位 前端控制器
@@ -63,6 +65,12 @@ public class RoleController extends BaseController {
     @RequestMapping(value = "get/{id}", method = RequestMethod.GET)
     public ResponseInfo<Role> addEmployee(@PathVariable String id) {
         return new ResponseInfo<>(iRoleService.getById(ObjectUtil.getLong(id)));
+    }
+
+    @ApiOperation(value = "获取所有角色", notes = "获取角色")
+    @RequestMapping(value = "listAll", method = RequestMethod.GET)
+    public ResponseInfo listAll() {
+        return new ResponseInfo((Serializable) iRoleService.listAll());
     }
 
 

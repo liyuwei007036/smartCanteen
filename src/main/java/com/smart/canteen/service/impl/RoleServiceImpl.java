@@ -19,6 +19,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import java.util.List;
+
 /**
  * <p>
  * 岗位 服务实现类
@@ -93,5 +95,10 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements IR
     @Override
     public Role getByName(String name) {
         return getOne(Wrappers.<Role>lambdaQuery().eq(Role::getName, name), false);
+    }
+
+    @Override
+    public List<Role> listAll() {
+        return list();
     }
 }

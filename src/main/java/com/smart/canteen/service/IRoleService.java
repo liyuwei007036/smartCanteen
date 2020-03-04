@@ -7,6 +7,8 @@ import com.smart.canteen.dto.role.RoleForm;
 import com.smart.canteen.dto.role.RoleSearch;
 import com.smart.canteen.entity.Role;
 
+import java.util.List;
+
 /**
  * <p>
  * 岗位 服务类
@@ -66,5 +68,11 @@ public interface IRoleService extends IService<Role> {
      */
     Role getByName(String name);
 
+    /**
+     * 查询所有角色
+     *
+     * @return
+     */
+    List<Role> listAll();
 
 }

@@ -52,6 +52,20 @@ public class EmployeeForm implements Serializable {
     private String idCard;
 
     @NotEmpty(groups = {Insert.class, Update.class})
+    @ApiModelProperty(value = "角色Id")
+    private Long roleId;
+
+    @ApiModelProperty(value = "角色")
+    private String roleName;
+
+    @NotEmpty(groups = {Insert.class, Update.class})
+    @ApiModelProperty(value = "组织ID")
+    private Long originationId;
+
+    @ApiModelProperty(value = "组织")
+    private String originationName;
+
+    @NotEmpty(groups = {Insert.class, Update.class})
     @Length(min = 6, max = 20, groups = {Insert.class, Update.class})
     @ApiModelProperty(value = "密码")
     private String password;
