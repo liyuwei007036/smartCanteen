@@ -14,8 +14,6 @@ import lombok.Getter;
 @AllArgsConstructor
 public class CardStatusEnum implements IEnum<Integer> {
 
-
-
     private Integer value;
 
     @JsonValue

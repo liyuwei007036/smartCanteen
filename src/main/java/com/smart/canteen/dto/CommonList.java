@@ -1,6 +1,5 @@
-package com.smart.canteen.dto.user;
+package com.smart.canteen.dto;
 
-import com.smart.canteen.entity.User;
 import io.swagger.annotations.ApiModel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,12 +9,12 @@ import java.util.List;
 
 /**
  * @author lc
- * @date 2020/3/2下午 9:10
+ * @date 2020/3/4下午 8:48
  */
-@Data
 @AllArgsConstructor
 @ApiModel
-public class ListUser implements Serializable {
+@Data
+public class CommonList<T extends Serializable> implements Serializable {
 
     private Boolean hasNext;
 
@@ -23,5 +22,5 @@ public class ListUser implements Serializable {
 
     private Long currentPage;
 
-    private List<User> userList;
+    private List<T> data;
 }

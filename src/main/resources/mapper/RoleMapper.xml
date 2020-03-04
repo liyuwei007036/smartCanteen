@@ -2,4 +2,14 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.smart.canteen.mapper.RoleMapper">
 
+    <update id="logicDeleted" parameterType="com.lc.core.dto.Account">
+        update role
+        set deleted            = 1,
+            version            = version + 1,
+            last_update_time   = now(),
+            last_update_id=#{account.id},
+            last_update_account=#{account.account},
+            last_update_name=#{account.name}
+        WHERE id = #{eid}
+    </update>
 </mapper>

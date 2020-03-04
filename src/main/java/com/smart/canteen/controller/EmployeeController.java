@@ -6,17 +6,15 @@ import com.lc.core.controller.BaseController;
 import com.lc.core.dto.Account;
 import com.lc.core.dto.ResponseInfo;
 import com.lc.core.utils.ObjectUtil;
-import com.lc.core.utils.ValidatorUtil;
+import com.smart.canteen.dto.CommonList;
 import com.smart.canteen.dto.employee.EmployeeForm;
 import com.smart.canteen.dto.employee.EmployeeSearch;
-import com.smart.canteen.dto.employee.ListEmployee;
 import com.smart.canteen.dto.user.LoginForm;
 import com.smart.canteen.entity.Employee;
 import com.smart.canteen.service.IEmployeeService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -36,6 +34,21 @@ public class EmployeeController extends BaseController {
 
     @Autowired
     private IEmployeeService iEmployeeService;
+
+    @Valid
+    @ApiOperation(value = "登录", notes = "登录")
+    @RequestMapping(value = "login", method = RequestMethod.POST)
+    public ResponseInfo<Account> login(@RequestBody LoginForm params) {
+        iEmployeeService.login(params, this);
+        return new ResponseInfo<>(getCurrentUser());
+    }
+
+    @ApiOperation(value = "登出", notes = "登出")
+    @RequestMapping(value = "loginout", method = RequestMethod.DELETE)
+    public ResponseInfo<Account> loginOut() {
+        removeSession();
+        return new ResponseInfo<>();
+    }
 
 
     @ApiOperation(value = "添加员工", notes = "添加员工")
@@ -63,7 +76,7 @@ public class EmployeeController extends BaseController {
 
     @ApiOperation(value = "列表查询", notes = "列表查询")
     @RequestMapping(value = "list", method = RequestMethod.POST)
-    public ResponseInfo<ListEmployee> addEmployee(@RequestBody EmployeeSearch params) {
+    public ResponseInfo<CommonList<Employee>> addEmployee(@RequestBody EmployeeSearch params) {
         return new ResponseInfo<>(iEmployeeService.listByConditional(params));
     }
 

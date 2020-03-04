@@ -3,9 +3,9 @@ package com.smart.canteen.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.lc.core.controller.BaseController;
 import com.lc.core.dto.Account;
+import com.smart.canteen.dto.CommonList;
 import com.smart.canteen.dto.employee.EmployeeForm;
 import com.smart.canteen.dto.employee.EmployeeSearch;
-import com.smart.canteen.dto.employee.ListEmployee;
 import com.smart.canteen.dto.user.LoginForm;
 import com.smart.canteen.entity.Employee;
 
@@ -19,6 +19,14 @@ import com.smart.canteen.entity.Employee;
  */
 public interface IEmployeeService extends IService<Employee> {
 
+
+    /**
+     * 登录
+     *
+     * @param dto
+     * @param controller
+     */
+    void login(LoginForm dto, BaseController controller);
 
     /**
      * 获取用户信息
@@ -58,7 +66,7 @@ public interface IEmployeeService extends IService<Employee> {
      * @param form
      * @return
      */
-    ListEmployee listByConditional(EmployeeSearch form);
+    CommonList<Employee> listByConditional(EmployeeSearch form);
 
     /**
      * 通过idCard mobile no 查询

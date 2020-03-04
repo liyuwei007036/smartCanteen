@@ -4,7 +4,6 @@ import com.lc.core.dto.Account;
 import com.lc.core.enums.BaseErrorEnums;
 import com.lc.core.error.BaseException;
 import com.smart.canteen.entity.BaseEntity;
-import com.smart.canteen.entity.User;
 
 import java.time.LocalDateTime;
 

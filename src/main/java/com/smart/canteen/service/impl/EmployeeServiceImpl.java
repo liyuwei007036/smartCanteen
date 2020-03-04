@@ -5,16 +5,15 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lc.core.controller.BaseController;
 import com.lc.core.dto.Account;
-import com.lc.core.enums.BaseErrorEnums;
 import com.lc.core.error.BaseException;
 import com.lc.core.utils.EncryptionUtils;
 import com.lc.core.utils.LoginUtils;
 import com.lc.core.utils.ModelMapperUtils;
 import com.lc.core.utils.ValidatorUtil;
+import com.smart.canteen.dto.CommonList;
 import com.smart.canteen.dto.Password;
 import com.smart.canteen.dto.employee.EmployeeForm;
 import com.smart.canteen.dto.employee.EmployeeSearch;
-import com.smart.canteen.dto.employee.ListEmployee;
 import com.smart.canteen.dto.user.LoginForm;
 import com.smart.canteen.entity.Employee;
 import com.smart.canteen.enums.CanteenExceptionEnum;
@@ -26,9 +25,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.UUID;
 
 
 /**
@@ -43,6 +40,29 @@ import java.util.UUID;
 @Transactional(rollbackFor = Exception.class)
 @Service
 public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> implements IEmployeeService {
+
+    @Override
+    public void login(LoginForm dto, BaseController controller) {
+        ValidatorUtil.validator(dto);
+        Employee user = getByAccount(dto.getAccount());
+        if (user == null) {
+            throw new BaseException(CanteenExceptionEnum.USER_NOT_EXIST);
+        }
+        String salt = user.getSalt();
+        String password = EncryptionUtils.md5(dto.getPassword(), salt, false);
+        if (password.equals(user.getPassword())) {
+            Account account = new Account();
+            account.setAccount(user.getNo());
+            account.setName(user.getName());
+            account.setId(user.getId());
+            // todo 获取用户权限
+            account.setPowers(new ArrayList<>());
+            LoginUtils.doUserLogin(account, controller);
+        } else {
+            throw new BaseException(CanteenExceptionEnum.USER_NOT_EXIST);
+        }
+    }
+
 
     @Override
     public void add(EmployeeForm dto, Account creator) {
@@ -93,9 +113,7 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
         if (employee == null) {
             throw new BaseException(CanteenExceptionEnum.USER_NOT_EXIST);
         }
-        EntityLogUtil.addNormalUser(employee, updater);
-        employee.setDeleted(true);
-        updateById(employee);
+        getBaseMapper().logicDeleted(updater, id);
     }
 
     @Override
@@ -114,7 +132,7 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
     }
 
     @Override
-    public ListEmployee listByConditional(EmployeeSearch form) {
+    public CommonList<Employee> listByConditional(EmployeeSearch form) {
         ValidatorUtil.validator(form);
         Page<Employee> page = new Page<>(form.getPage(), form.getSize());
         super.page(page, Wrappers.<Employee>lambdaQuery()
@@ -123,7 +141,7 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
                 .likeLeft(!StringUtils.isEmpty(form.getNo()), Employee::getNo, form.getNo())
 
         );
-        return new ListEmployee(page.hasNext(), page.getTotal(), page.getCurrent(), page.getRecords());
+        return new CommonList<>(page.hasNext(), page.getTotal(), page.getCurrent(), page.getRecords());
     }
 
 

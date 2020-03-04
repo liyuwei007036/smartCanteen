@@ -1,8 +1,10 @@
 package com.smart.canteen.mapper;
 
+import com.lc.core.dto.Account;
 import com.smart.canteen.entity.Role;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * <p>
@@ -14,5 +16,13 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface RoleMapper extends BaseMapper<Role> {
+
+    /**
+     * 逻辑删除
+     *
+     * @param account
+     * @param eid
+     */
+    void logicDeleted(@Param("account") Account account, @Param("eid") Long eid);
 
 }
