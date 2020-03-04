@@ -65,8 +65,12 @@ public class EmployeeForm implements Serializable {
     @ApiModelProperty(value = "组织")
     private String originationName;
 
-    @NotEmpty(groups = {Insert.class, Update.class})
     @Length(min = 6, max = 20, groups = {Insert.class, Update.class})
     @ApiModelProperty(value = "密码")
     private String password;
+
+    @Length(min = 6, max = 20, groups = {Insert.class, Update.class})
+    @ApiModelProperty(value = "确认密码")
+    private String confirmPassword;
+
 }

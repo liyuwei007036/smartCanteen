@@ -6,10 +6,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lc.core.controller.BaseController;
 import com.lc.core.dto.Account;
 import com.lc.core.error.BaseException;
-import com.lc.core.utils.EncryptionUtils;
-import com.lc.core.utils.LoginUtils;
-import com.lc.core.utils.ModelMapperUtils;
-import com.lc.core.utils.ValidatorUtil;
+import com.lc.core.utils.*;
 import com.smart.canteen.dto.CommonList;
 import com.smart.canteen.dto.Password;
 import com.smart.canteen.dto.employee.EmployeeForm;
@@ -73,13 +70,30 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
         }
         employee = ModelMapperUtils.strict(dto, Employee.class);
         EntityLogUtil.addNormalUser(employee, creator);
-        Password password = new Password(dto.getPassword());
-        employee.setSalt(password.getSalt());
-        employee.setPassword(password.getPassword());
+        Password password = createPassword(dto.getPassword(), dto.getConfirmPassword());
+        if (password != null) {
+            employee.setSalt(password.getSalt());
+            employee.setPassword(password.getPassword());
+        }
         boolean save = save(employee);
         if (!save) {
             throw new BaseException(CanteenExceptionEnum.CREATE_FAIL);
         }
+    }
+
+    private Password createPassword(String password, String conformPassword) {
+        password = ObjectUtil.getString(password).trim();
+        conformPassword = ObjectUtil.getString(conformPassword).trim();
+        if (password.equals(conformPassword)) {
+            if (StringUtils.isEmpty(password)) {
+                return null;
+            } else {
+                return new Password(password);
+            }
+        } else {
+            throw new BaseException(CanteenExceptionEnum.PASSWORD_NOT_SAME);
+        }
+
     }
 
 
@@ -97,9 +111,11 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
         }
         byId.setName(employee.getName());
         byId.setNo(employee.getNo());
-        Password password = new Password(employee.getPassword());
-        byId.setSalt(password.getSalt());
-        byId.setPassword(password.getPassword());
+        Password password = createPassword(employee.getPassword(), employee.getConfirmPassword());
+        if (password != null) {
+            byId.setSalt(password.getSalt());
+            byId.setPassword(password.getPassword());
+        }
         EntityLogUtil.addNormalUser(byId, updater);
         boolean b = updateById(byId);
         if (!b) {

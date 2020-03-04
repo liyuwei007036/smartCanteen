@@ -19,6 +19,7 @@ public enum CanteenExceptionEnum implements IErrorInterface {
     ACCOUNT_REPEAT(2004, "工号或身份证号或手机号重复"),
     ROLE_NAME_REPEAT(2006, "角色名称重复"),
     ROLE_NOT_EXIST(2003, "角色不存在"),
+    PASSWORD_NOT_SAME(2003, "密码不一致"),
     UPDATE_FA2IL(99999, "update  fail");
 
     private Integer code;
