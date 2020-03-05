@@ -2,4 +2,26 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.smart.canteen.mapper.EmployeeRoleMapper">
 
+    <insert id="batchAdd">
+        <foreach collection="roleIds" item="role" separator=";">
+            insert into employee_role set role_id = #{role}, employee_id = #{eid},
+            creator_account = #{operator.account}, create_time = now(), creator_id = #{operator.id},
+            creator_name = #{operator.name},last_update_name = #{operator.name},
+            last_update_time = now(), last_update_id = #{operator.id}, last_update_account = #{operator.account},
+            version =0, deleted = 0
+        </foreach>
+    </insert>
+    <update id="batchDeleted">
+        update employee_role
+        set deleted = 1,
+        version = version + 1,
+        last_update_name = #{operator.name},
+        last_update_time = now(),
+        last_update_id = #{operator.id},
+        last_update_account = #{operator.account}
+        where employee_id = #{eid} and role_id in
+        <foreach collection="roleIds" separator="," open="(" item="role" close=")">
+            #{role}
+        </foreach>
+    </update>
 </mapper>

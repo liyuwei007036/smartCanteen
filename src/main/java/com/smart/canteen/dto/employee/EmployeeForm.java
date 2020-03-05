@@ -8,6 +8,7 @@ import org.hibernate.validator.constraints.Length;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * 表单提交user
@@ -57,6 +58,9 @@ public class EmployeeForm implements Serializable {
 
     @ApiModelProperty(value = "组织")
     private String originationName;
+
+    @ApiModelProperty(value = "角色Id列表")
+    private List<Long> roles;
 
     @Length(min = 6, max = 20, groups = {Insert.class, Update.class})
     @ApiModelProperty(value = "密码")

@@ -15,9 +15,11 @@ import com.smart.canteen.dto.user.LoginForm;
 import com.smart.canteen.entity.Employee;
 import com.smart.canteen.enums.CanteenExceptionEnum;
 import com.smart.canteen.mapper.EmployeeMapper;
+import com.smart.canteen.service.IEmployeeRoleService;
 import com.smart.canteen.service.IEmployeeService;
 import com.smart.canteen.utils.EntityLogUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -37,6 +39,9 @@ import java.util.ArrayList;
 @Transactional(rollbackFor = Exception.class)
 @Service
 public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> implements IEmployeeService {
+
+    @Autowired
+    private IEmployeeRoleService iEmployeeRoleService;
 
     @Override
     public void login(LoginForm dto, BaseController controller) {
@@ -58,6 +63,7 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
         } else {
             throw new BaseException(CanteenExceptionEnum.USER_NOT_EXIST);
         }
+
     }
 
 
@@ -79,6 +85,7 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
         if (!save) {
             throw new BaseException(CanteenExceptionEnum.CREATE_FAIL);
         }
+        iEmployeeRoleService.batchAdd(dto.getRoles(), employee.getId(), creator);
     }
 
     private Password createPassword(String password, String conformPassword) {
@@ -93,7 +100,6 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
         } else {
             throw new BaseException(CanteenExceptionEnum.PASSWORD_NOT_SAME);
         }
-
     }
 
 
@@ -121,6 +127,7 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
         if (!b) {
             throw new BaseException(CanteenExceptionEnum.UPDATE_FAIL);
         }
+        iEmployeeRoleService.batchAdd(employee.getRoles(), employee.getId(), updater);
     }
 
     @Override
