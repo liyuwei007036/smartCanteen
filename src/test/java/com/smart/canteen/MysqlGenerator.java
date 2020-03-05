@@ -33,8 +33,8 @@ public class MysqlGenerator {
         gc.setActiveRecord(true);
         gc.setEnableCache(false);// XML 二级缓存
 
-        String entry_name = "User";
-        String table_name = "user";
+        String entry_name = "EmployeeRole";
+        String table_name = "employee_role";
 
 
         gc.setServiceImplName(entry_name + "ServiceImpl");

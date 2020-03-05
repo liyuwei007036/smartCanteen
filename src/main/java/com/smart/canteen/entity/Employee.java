@@ -51,14 +51,6 @@ public class Employee extends BaseEntity {
     @TableField(value = "card_no")
     private String cardNo;
 
-    @ApiModelProperty(value = "角色Id")
-    @TableField(value = "role_id")
-    private Long roleId;
-
-    @ApiModelProperty(value = "角色")
-    @TableField(value = "role_name")
-    private String roleName;
-
     @ApiModelProperty(value = "组织ID")
     @TableField(value = "origination_id")
     private Long originationId;
