@@ -1,12 +1,25 @@
 server:
   port: 5001
-
+  # 下面是配置undertow作为服务器的参数
+  undertow:
+    # 设置IO线程数, 它主要执行非阻塞的任务,它们会负责多个连接, 默认设置每个CPU核心一个线程
+    io-threads: 2
+    # 阻塞任务线程池, 当执行类似servlet请求阻塞操作, undertow会从这个线程池中取得线程,它的值设置取决于系统的负载
+    worker-threads: 20
+    # 以下的配置会影响buffer,这些buffer会用于服务器连接的IO操作,有点类似netty的池化内存管理
+    # 每块buffer的空间大小,越小的空间被利用越充分
+    buffer-size: 1024
+    # 是否分配的直接内存
+    direct-buffers: true
+    accesslog:
+      dir: /usr/serverlogs/
+      enabled: true
+      prefix:  ${spring.application.name}
 spring:
   application:
-    name: lc-member
+    name: smart-centeen
   profiles:
-    active: junit
-
+    active: dev
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://lumia.live:3306/smartcanteen?useUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT%2B8&useSSL=false&allowMultiQueries=true&allowPublicKeyRetrieval=true
@@ -42,9 +55,9 @@ spring:
       direct:
         acknowledge-mode: manual
     publisher-returns: true
+    publisher-confirms: true
     template:
       mandatory: true
-    publisher-confirm-type: correlated
 
   mvc:
     throw-exception-if-no-handler-found: true
@@ -81,3 +94,6 @@ mybatis-plus:
       logic-not-delete-value: 0
     banner: false
   mapper-locations: classpath:/mapper/*.xml
+logging:
+  config: classpath:logback-dev.xml
+  path: D:\code\java\smartCanteen\logs

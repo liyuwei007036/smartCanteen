@@ -25,7 +25,7 @@ public class RoleForm implements Serializable {
 
     }
 
-    @NotEmpty(groups = {Update.class})
+    @NotNull(groups = {Update.class})
     private Long id;
 
     @NotEmpty(groups = {Insert.class, Update.class})
