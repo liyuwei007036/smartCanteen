@@ -1,9 +1,6 @@
 package com.smart.canteen.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -30,16 +27,21 @@ public class Origination extends BaseEntity {
     private Long id;
 
     @ApiModelProperty(value = "名称")
-    @TableField(value = "name")
+    @TableField(value = "name", insertStrategy = FieldStrategy.NOT_EMPTY, updateStrategy = FieldStrategy.NOT_EMPTY)
     private String name;
 
     @ApiModelProperty(value = "上级部门id")
-    @TableField(value = "parent_id")
+    @TableField(value = "parent_id", insertStrategy = FieldStrategy.NOT_NULL)
     private Long parentId;
 
-    @ApiModelProperty(value = "上级部门名称")
-    @TableField(value = "parent_name")
-    private String parentName;
+    @ApiModelProperty(value = "部门代码")
+    @TableField(value = "code", insertStrategy = FieldStrategy.NOT_EMPTY, updateStrategy = FieldStrategy.NOT_EMPTY)
+    private String code;
+
+    @ApiModelProperty(value = "描述")
+    @TableField(value = "description")
+    private String description;
+
 
     @ApiModelProperty(value = "路径")
     @TableField(value = "path")

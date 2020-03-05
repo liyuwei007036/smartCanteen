@@ -17,10 +17,15 @@ public enum CanteenExceptionEnum implements IErrorInterface {
     UPDATE_FAIL(2002, "操作过于频繁，请稍后再试"),
     USER_NOT_EXIST(2003, "用户不存在"),
     ACCOUNT_REPEAT(2004, "工号或身份证号或手机号重复"),
-    ROLE_NAME_REPEAT(2006, "角色名称重复"),
-    ROLE_NOT_EXIST(2003, "角色不存在"),
-    PASSWORD_NOT_SAME(2003, "密码不一致"),
-    ADD_ROLE_FAIL(2003, "添加角色失败"),
+    ROLE_NAME_REPEAT(2005, "角色名称重复"),
+    ROLE_NOT_EXIST(2006, "角色不存在"),
+    PASSWORD_NOT_SAME(2007, "密码不一致"),
+    ADD_ROLE_FAIL(2008, "添加角色失败"),
+    ADD_ORG_FAIL(2009, "添加部门失败"),
+    ORG_NOT_EXIST(2010, "部门不存在"),
+    PAR_ORG_NOT_EXIST(2010, "上级部门不存在"),
+    ORG_NAME_REPEAT(2011, "已经存在相同名称的部门"),
+
     UPDATE_FA2IL(99999, "update  fail");
 
     private Integer code;

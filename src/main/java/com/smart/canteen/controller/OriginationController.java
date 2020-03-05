@@ -1,10 +1,21 @@
 package com.smart.canteen.controller;
 
 
+import com.lc.core.annotations.Valid;
 import com.lc.core.controller.BaseController;
-import org.springframework.web.bind.annotation.RequestMapping;
+import com.lc.core.dto.ResponseInfo;
+import com.lc.core.utils.ObjectUtil;
+import com.smart.canteen.dto.CommonList;
+import com.smart.canteen.dto.origination.OriginationForm;
+import com.smart.canteen.dto.origination.OriginationSearch;
+import com.smart.canteen.entity.Origination;
+import com.smart.canteen.service.IOriginationService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
-import org.springframework.web.bind.annotation.RestController;
+import java.io.Serializable;
 
 /**
  * <p>
@@ -14,9 +25,53 @@ import org.springframework.web.bind.annotation.RestController;
  * @author lc
  * @since 2020-03-02
  */
+@Valid(needLogin = true)
+@Api(tags = {"组织管理"})
 @RestController
 @RequestMapping("/origination")
 public class OriginationController extends BaseController {
+
+    @Autowired
+    private IOriginationService iOriginationService;
+
+    @ApiOperation(value = "添加组织", notes = "添加组织")
+    @RequestMapping(value = "add", method = RequestMethod.POST)
+    public ResponseInfo addEmployee(@RequestBody OriginationForm params) {
+        iOriginationService.add(params, getCurrentUser());
+        return new ResponseInfo<>();
+    }
+
+    @ApiOperation(value = "编辑组织", notes = "编辑组织")
+    @RequestMapping(value = "update", method = RequestMethod.PATCH)
+    public ResponseInfo updateEmployee(@RequestBody OriginationForm params) {
+        iOriginationService.update(params, getCurrentUser());
+        return new ResponseInfo<>();
+    }
+
+    @ApiOperation(value = "删除组织", notes = "删除组织")
+    @RequestMapping(value = "deleted/{id}", method = RequestMethod.DELETE)
+    public ResponseInfo deleteEmployee(@PathVariable("id") Long id) {
+        iOriginationService.delete(id, getCurrentUser());
+        return new ResponseInfo<>();
+    }
+
+    @ApiOperation(value = "列表查询", notes = "列表查询")
+    @RequestMapping(value = "list", method = RequestMethod.POST)
+    public ResponseInfo<CommonList<Origination>> addEmployee(@RequestBody OriginationSearch params) {
+        return new ResponseInfo<>(iOriginationService.listByConditional(params));
+    }
+
+    @ApiOperation(value = "获取组织", notes = "获取组织")
+    @RequestMapping(value = "get/{id}", method = RequestMethod.GET)
+    public ResponseInfo<Origination> addEmployee(@PathVariable String id) {
+        return new ResponseInfo<>(iOriginationService.getById(ObjectUtil.getLong(id)));
+    }
+
+    @ApiOperation(value = "获取所有组织", notes = "获取组织")
+    @RequestMapping(value = "listAll", method = RequestMethod.GET)
+    public ResponseInfo listAll() {
+        return new ResponseInfo((Serializable) iOriginationService.listAll());
+    }
 
 }
 

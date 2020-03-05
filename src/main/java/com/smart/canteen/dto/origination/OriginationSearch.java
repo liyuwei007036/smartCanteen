@@ -1,4 +1,4 @@
-package com.smart.canteen.dto.role;
+package com.smart.canteen.dto.origination;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -14,11 +14,15 @@ import java.io.Serializable;
  */
 @Data
 @ApiModel
-public class RoleSearch implements Serializable {
+public class OriginationSearch implements Serializable {
 
     @ApiModelProperty(value = "名称")
     private String name;
 
+    @ApiModelProperty(value = "组织代码")
+    private String code;
+
+    @ApiModelProperty(value = "页数")
     private Integer page;
 
     @ApiModelProperty(value = "每页数量")
