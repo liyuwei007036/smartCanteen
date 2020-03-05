@@ -60,6 +60,7 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements IR
         if (oldRole != null && !oldRole.getId().equals(id)) {
             throw new BaseException(CanteenExceptionEnum.ROLE_NAME_REPEAT);
         }
+        role.setName(form.getName());
         EntityLogUtil.addNormalUser(role, updater);
         boolean b = updateById(role);
         if (!b) {
