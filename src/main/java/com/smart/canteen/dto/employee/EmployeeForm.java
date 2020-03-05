@@ -52,7 +52,7 @@ public class EmployeeForm implements Serializable {
     @ApiModelProperty(value = "身份证号")
     private String idCard;
 
-    @NotEmpty(groups = {Insert.class, Update.class})
+    @NotNull(groups = {Insert.class, Update.class})
     @ApiModelProperty(value = "组织ID")
     private Long originationId;
 

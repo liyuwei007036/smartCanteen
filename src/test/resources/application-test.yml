@@ -5,11 +5,11 @@ spring:
   application:
     name: lc-member
   profiles:
-    active: junit
+    active: test
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/smartcanteen?useUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT%2B8&useSSL=false&allowMultiQueries=true&allowPublicKeyRetrieval=true
+    url: jdbc:mysql://lumia.live:3306/smartcanteen?useUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT%2B8&useSSL=false&allowMultiQueries=true&allowPublicKeyRetrieval=true
     username: root
     password: 123456
     type: com.zaxxer.hikari.HikariDataSource
@@ -29,7 +29,7 @@ spring:
       max-file-size: 1000MB
 
   rabbitmq:
-    addresses: 127.0.0.1
+    addresses: lumia.live
     port: 5672
     username: admin
     password: admin
@@ -52,7 +52,7 @@ spring:
 
 redis:
   model: standalone
-  host-name: 127.0.0.1
+  host-name: lumia.live
   port: 6379
   connect-timeout: 10000
   read-timeout: 10000
@@ -71,7 +71,7 @@ redis:
 
 mybatis-plus:
   configuration:
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    log-impl: org.apache.ibatis.logging.slf4j.Slf4jLoggerImpl
     map-underscore-to-camel-case: false
     defaultEnumTypeHandler: com.baomidou.mybatisplus.extension.handlers.MybatisEnumTypeHandler
   check-config-location: true
