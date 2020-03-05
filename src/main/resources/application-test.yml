@@ -81,7 +81,7 @@ redis:
 
 mybatis-plus:
   configuration:
-    log-impl: org.apache.ibatis.logging.slf4j.Slf4jLoggerImpl
+    log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
     map-underscore-to-camel-case: false
     defaultEnumTypeHandler: com.baomidou.mybatisplus.extension.handlers.MybatisEnumTypeHandler
   check-config-location: true
@@ -91,6 +91,3 @@ mybatis-plus:
       logic-not-delete-value: 0
     banner: false
   mapper-locations: classpath:/mapper/*.xml
-logging:
-  config: classpath:logback-test.xml
-
