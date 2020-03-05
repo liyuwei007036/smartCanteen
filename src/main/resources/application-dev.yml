@@ -53,7 +53,6 @@ spring:
     publisher-confirms: true
     template:
       mandatory: true
-
   mvc:
     throw-exception-if-no-handler-found: true
 

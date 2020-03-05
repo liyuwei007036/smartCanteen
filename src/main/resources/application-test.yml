@@ -17,7 +17,6 @@ spring:
     name: smart-centeen
   profiles:
     active: test
-
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://lumia.live:3306/smartcanteen?useUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT%2B8&useSSL=false&allowMultiQueries=true&allowPublicKeyRetrieval=true
@@ -53,10 +52,9 @@ spring:
     publisher-returns: true
     template:
       mandatory: true
-    publisher-confirm-type: correlated
+    publisher-confirms: true
   mvc:
     throw-exception-if-no-handler-found: true
-
 
 redis:
   model: standalone

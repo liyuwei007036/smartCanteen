@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.*;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -16,6 +17,7 @@ import java.time.LocalDateTime;
 @Data
 public class BaseEntity implements Serializable {
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss")
     @ApiModelProperty(value = "创建时间")
     @TableField(value = "create_time", insertStrategy = FieldStrategy.NOT_EMPTY, updateStrategy = FieldStrategy.NEVER)
     private LocalDateTime createTime;
@@ -32,6 +34,7 @@ public class BaseEntity implements Serializable {
     @TableField(value = "creator_name", insertStrategy = FieldStrategy.NOT_EMPTY, updateStrategy = FieldStrategy.NEVER)
     private String creatorName;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss")
     @ApiModelProperty(value = "最近更新时间")
     @TableField(value = "last_update_time")
     private LocalDateTime lastUpdateTime;
