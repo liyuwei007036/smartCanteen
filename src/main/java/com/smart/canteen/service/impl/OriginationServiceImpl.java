@@ -97,7 +97,6 @@ public class OriginationServiceImpl extends ServiceImpl<OriginationMapper, Origi
         origination.setName(form.getName());
         origination.setCode(form.getCode());
         origination.setDescription(form.getDescription());
-        addTreeNode(origination);
         EntityLogUtil.addNormalUser(origination, updater);
         boolean b = updateById(origination);
         if (!b) {
