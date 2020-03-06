@@ -81,7 +81,7 @@ public class OriginationController extends BaseController {
     }
 
     @ApiOperation(value = "获取子节点", notes = "获取子节点")
-    @RequestMapping(value = "get/notes/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "get/nodes/{id}", method = RequestMethod.GET)
     public ResponseInfo getNodes(@PathVariable String id) {
         return new ResponseInfo((Serializable) iOriginationService.getChildren(ObjectUtil.getLong(id)));
     }
