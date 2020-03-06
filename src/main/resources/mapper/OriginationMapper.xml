@@ -6,13 +6,14 @@
         set deleted            = 1,
             version            = version + 1,
             last_update_time   = now(),
-            last_update_id=#{account.id},
-            last_update_account=#{account.account},
-            last_update_name=#{account.name}
+            last_update_id= #{account.id},
+            last_update_account= #{account.account},
+            last_update_name= #{account.name}
         WHERE path like CONCAT(#{path}, '%');
         update origination
-        set has_children = 0
-        where id = #{parentId}
+        set has_children = 0,
+            version      = version + 1
+        where id = #{parentId};
     </update>
 
 

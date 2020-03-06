@@ -111,7 +111,7 @@ public class OriginationServiceImpl extends ServiceImpl<OriginationMapper, Origi
             throw new BaseException(CanteenExceptionEnum.ORG_NOT_EXIST);
         }
         if (origination.getParentId() > 0) {
-            getBaseMapper().logicDeletedChildren(updater, String.format("%s%s-", origination.getPath(), origination.getId()), origination.getParentId());
+            getBaseMapper().logicDeletedChildren(updater, origination.getPath(), origination.getParentId());
         } else {
             getBaseMapper().logicDeletedParent(updater, String.format("%s-", origination.getId()), origination.getId());
         }
