@@ -34,6 +34,10 @@ public class Origination extends BaseEntity {
     @TableField(value = "parent_id", insertStrategy = FieldStrategy.NOT_NULL)
     private Long parentId;
 
+    @ApiModelProperty(value = "级别")
+    @TableField(value = "level", insertStrategy = FieldStrategy.NOT_NULL, updateStrategy = FieldStrategy.NOT_EMPTY)
+    private Long level;
+
     @ApiModelProperty(value = "部门代码")
     @TableField(value = "code", insertStrategy = FieldStrategy.NOT_EMPTY, updateStrategy = FieldStrategy.NOT_EMPTY)
     private String code;
@@ -41,7 +45,6 @@ public class Origination extends BaseEntity {
     @ApiModelProperty(value = "描述")
     @TableField(value = "description")
     private String description;
-
 
     @ApiModelProperty(value = "路径")
     @TableField(value = "path")

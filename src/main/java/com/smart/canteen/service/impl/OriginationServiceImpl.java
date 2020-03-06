@@ -37,33 +37,46 @@ public class OriginationServiceImpl extends ServiceImpl<OriginationMapper, Origi
     @Override
     public void add(OriginationForm dto, Account creator) {
         ValidatorUtil.validator(dto, OriginationForm.Insert.class);
-        Origination origination = getByName(dto.getName());
+        Origination origination = judgeIsSame(dto.getName(), dto.getCode());
         if (origination != null) {
             throw new BaseException(CanteenExceptionEnum.ORG_NAME_REPEAT);
         }
         origination = ModelMapperUtils.strict(dto, Origination.class);
-        long parentId = ObjectUtil.getLong(dto.getParentId());
+        addTreeNode(origination);
         EntityLogUtil.addNormalUser(origination, creator);
         boolean save = save(origination);
         if (!save) {
             throw new BaseException(CanteenExceptionEnum.CREATE_FAIL);
         }
-        addPath(parentId, origination);
     }
 
-    public void addPath(Long parentId, Origination origination) {
-        String path = origination.getId().toString();
+    /**
+     * 添加节点线索
+     *
+     * @param origination
+     */
+    private void addTreeNode(Origination origination) {
+        long parentId = ObjectUtil.getLong(origination.getParentId());
+        String path = "-";
+        long level = 1L;
+        Origination parent;
         if (parentId > 0) {
-            Origination parent = getById(parentId);
+            parent = getById(parentId);
             if (parent == null) {
                 throw new BaseException(CanteenExceptionEnum.PAR_ORG_NOT_EXIST);
             }
-            origination.setParentId(parentId);
-            path = parent.getPath() + "." + path;
+            level = parent.getLevel() + 1;
+            if (path.equals(parent.getPath())) {
+                path = parentId + "-";
+            } else {
+                path = parent.getPath() + parentId + "-";
+            }
         }
+        origination.setParentId(parentId);
+        origination.setLevel(level);
         origination.setPath(path);
-        updateById(origination);
     }
+
 
     @Override
     public void update(OriginationForm form, Account updater) {
@@ -73,20 +86,19 @@ public class OriginationServiceImpl extends ServiceImpl<OriginationMapper, Origi
         if (origination == null) {
             throw new BaseException(CanteenExceptionEnum.ORG_NOT_EXIST);
         }
-        Origination oldOrigination = getByName(form.getName());
+        Origination oldOrigination = judgeIsSame(form.getName(), form.getCode());
         if (oldOrigination != null && !oldOrigination.getId().equals(id)) {
             throw new BaseException(CanteenExceptionEnum.ORG_NAME_REPEAT);
         }
         origination.setName(form.getName());
         origination.setCode(form.getCode());
         origination.setDescription(form.getDescription());
+        addTreeNode(origination);
         EntityLogUtil.addNormalUser(origination, updater);
         boolean b = updateById(origination);
         if (!b) {
             throw new BaseException(CanteenExceptionEnum.UPDATE_FAIL);
         }
-        long parentId = ObjectUtil.getLong(form.getParentId());
-        addPath(parentId, origination);
     }
 
     @Override
@@ -123,4 +135,28 @@ public class OriginationServiceImpl extends ServiceImpl<OriginationMapper, Origi
         return list();
     }
 
+
+    @Override
+    public Origination judgeIsSame(String name, String code) {
+        return getOne(Wrappers.<Origination>lambdaQuery().or().eq(!StringUtils.isEmpty(name), Origination::getName, name)
+                .or().eq(!StringUtils.isEmpty(code), Origination::getCode, code), false);
+    }
+
+    @Override
+    public List<Origination> getAllRoot() {
+        return list(Wrappers.<Origination>lambdaQuery().eq(Origination::getPath, "-"));
+    }
+
+    @Override
+    public List<Origination> getChildren(Long id) {
+        Origination org = getById(id);
+        if (org == null) {
+            throw new BaseException(CanteenExceptionEnum.ORG_NOT_EXIST);
+        }
+        long parentId = ObjectUtil.getLong(org.getParentId());
+        return list(Wrappers.<Origination>lambdaQuery()
+                .likeLeft(parentId > 0, Origination::getPath, String.format("%s%s-", org.getPath(), org.getId()))
+                .likeLeft(parentId < 1, Origination::getPath, String.format("%s-", org.getId()))
+                .eq(Origination::getLevel, org.getLevel() + 1));
+    }
 }

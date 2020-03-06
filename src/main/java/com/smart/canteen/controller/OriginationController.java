@@ -63,7 +63,7 @@ public class OriginationController extends BaseController {
 
     @ApiOperation(value = "获取组织", notes = "获取组织")
     @RequestMapping(value = "get/{id}", method = RequestMethod.GET)
-    public ResponseInfo<Origination> addEmployee(@PathVariable String id) {
+    public ResponseInfo<Origination> get(@PathVariable String id) {
         return new ResponseInfo<>(iOriginationService.getById(ObjectUtil.getLong(id)));
     }
 
@@ -71,6 +71,19 @@ public class OriginationController extends BaseController {
     @RequestMapping(value = "listAll", method = RequestMethod.GET)
     public ResponseInfo listAll() {
         return new ResponseInfo((Serializable) iOriginationService.listAll());
+    }
+
+
+    @ApiOperation(value = "获取所有根节点", notes = "获取所有根节点")
+    @RequestMapping(value = "getRoot", method = RequestMethod.GET)
+    public ResponseInfo getRoot() {
+        return new ResponseInfo<>((Serializable) iOriginationService.getAllRoot());
+    }
+
+    @ApiOperation(value = "获取子节点", notes = "获取子节点")
+    @RequestMapping(value = "get/notes/{id}", method = RequestMethod.GET)
+    public ResponseInfo getNodes(@PathVariable String id) {
+        return new ResponseInfo((Serializable) iOriginationService.getChildren(ObjectUtil.getLong(id)));
     }
 
 }

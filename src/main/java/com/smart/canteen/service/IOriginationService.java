@@ -76,4 +76,28 @@ public interface IOriginationService extends IService<Origination> {
      * @return
      */
     List<Origination> listAll();
+
+    /**
+     * 判断是否重复
+     *
+     * @param name
+     * @param code
+     * @return
+     */
+    Origination judgeIsSame(String name, String code);
+
+    /**
+     * 获取所有根节点
+     *
+     * @return
+     */
+    List<Origination> getAllRoot();
+
+    /**
+     * 获取莫个节点下的子节点
+     *
+     * @param id
+     * @return
+     */
+    List<Origination> getChildren(Long id);
 }
