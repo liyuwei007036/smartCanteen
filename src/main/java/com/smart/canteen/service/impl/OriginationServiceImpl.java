@@ -42,6 +42,7 @@ public class OriginationServiceImpl extends ServiceImpl<OriginationMapper, Origi
             throw new BaseException(CanteenExceptionEnum.ORG_NAME_REPEAT);
         }
         origination = ModelMapperUtils.strict(dto, Origination.class);
+        origination.setHasChildren(false);
         addTreeNode(origination);
         EntityLogUtil.addNormalUser(origination, creator);
         boolean save = save(origination);
@@ -55,7 +56,8 @@ public class OriginationServiceImpl extends ServiceImpl<OriginationMapper, Origi
      *
      * @param origination
      */
-    private void addTreeNode(Origination origination) {
+    @Override
+    public void addTreeNode(Origination origination) {
         long parentId = ObjectUtil.getLong(origination.getParentId());
         String path = "-";
         long level = 1L;
@@ -65,6 +67,8 @@ public class OriginationServiceImpl extends ServiceImpl<OriginationMapper, Origi
             if (parent == null) {
                 throw new BaseException(CanteenExceptionEnum.PAR_ORG_NOT_EXIST);
             }
+            parent.setHasChildren(true);
+            updateById(parent);
             level = parent.getLevel() + 1;
             if (path.equals(parent.getPath())) {
                 path = parentId + "-";

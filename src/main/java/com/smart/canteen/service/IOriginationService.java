@@ -28,6 +28,12 @@ public interface IOriginationService extends IService<Origination> {
      */
     void add(OriginationForm dto, Account creator);
 
+    /**
+     * 添加子节点
+     *
+     * @param origination
+     */
+    void addTreeNode(Origination origination);
 
     /**
      * 修改

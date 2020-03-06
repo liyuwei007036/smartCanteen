@@ -2,7 +2,6 @@ package com.smart.canteen.entity;
 
 import com.baomidou.mybatisplus.annotation.*;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreType;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -54,5 +53,10 @@ public class Origination extends BaseEntity {
     @ApiModelProperty(value = "路径")
     @TableField(value = "path")
     private String path;
+
+    @ApiModelProperty(value = "是否拥有子节点")
+    @TableField(value = "has_children")
+    private Boolean hasChildren;
+
 
 }
