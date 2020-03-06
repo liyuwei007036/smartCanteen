@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.smart.canteen.mapper.OriginationMapper">
-    <update id="logicDeleted" parameterType="com.lc.core.dto.Account">
+    <update id="logicDeletedChildren" parameterType="com.lc.core.dto.Account">
         update origination
         set deleted            = 1,
             version            = version + 1,
@@ -9,6 +9,21 @@
             last_update_id=#{account.id},
             last_update_account=#{account.account},
             last_update_name=#{account.name}
-        WHERE id = #{id}
+        WHERE path like CONCAT(#{path}, '%');
+        update origination
+        set has_children = 0
+        where id = #{parentId}
+    </update>
+
+
+    <update id="logicDeletedParent" parameterType="com.lc.core.dto.Account">
+        update origination
+        set deleted            = 1,
+            version            = version + 1,
+            last_update_time   = now(),
+            last_update_id=#{account.id},
+            last_update_account=#{account.account},
+            last_update_name=#{account.name}
+        WHERE (path like CONCAT(#{path}, '%') or id = #{id})
     </update>
 </mapper>

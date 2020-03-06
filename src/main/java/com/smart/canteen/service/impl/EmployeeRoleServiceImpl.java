@@ -60,11 +60,11 @@ public class EmployeeRoleServiceImpl extends ServiceImpl<EmployeeRoleMapper, Emp
 
     @Override
     public Long batchDelete(List<Long> roleIds, Long employeeId, Account operator) {
-        return null;
+        return getBaseMapper().batchDeleted(roleIds, employeeId, operator);
     }
 
     @Override
     public Long batchInsert(List<Long> roleIds, Long employeeId, Account operator) {
-        return null;
+        return getBaseMapper().batchAdd(roleIds, employeeId, operator);
     }
 }

@@ -1,8 +1,8 @@
 package com.smart.canteen.mapper;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.lc.core.dto.Account;
 import com.smart.canteen.entity.Origination;
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -18,11 +18,23 @@ import org.apache.ibatis.annotations.Param;
 public interface OriginationMapper extends BaseMapper<Origination> {
 
     /**
-     * 逻辑删除
+     * 逻辑删除子节点
      *
      * @param account
-     * @param eid
+     * @param path
+     * @param parentId
      */
-    void logicDeleted(@Param("account") Account account, @Param("id") Long id);
+    void logicDeletedChildren(@Param("account") Account account, @Param("path") String path, @Param("parentId") Long parentId);
+
+
+    /**
+     * 逻辑删除根节点
+     *
+     * @param account
+     * @param path
+     * @param id
+     */
+    void logicDeletedParent(@Param("account") Account account, @Param("path") String path, Long id);
+
 
 }
