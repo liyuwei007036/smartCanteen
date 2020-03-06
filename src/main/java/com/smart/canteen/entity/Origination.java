@@ -1,6 +1,8 @@
 package com.smart.canteen.entity;
 
 import com.baomidou.mybatisplus.annotation.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreType;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -30,10 +32,12 @@ public class Origination extends BaseEntity {
     @TableField(value = "name", insertStrategy = FieldStrategy.NOT_EMPTY, updateStrategy = FieldStrategy.NOT_EMPTY)
     private String name;
 
+    @JsonIgnore
     @ApiModelProperty(value = "上级部门id")
     @TableField(value = "parent_id", insertStrategy = FieldStrategy.NOT_NULL)
     private Long parentId;
 
+    @JsonIgnore
     @ApiModelProperty(value = "级别")
     @TableField(value = "level", insertStrategy = FieldStrategy.NOT_NULL, updateStrategy = FieldStrategy.NOT_EMPTY)
     private Long level;
@@ -46,6 +50,7 @@ public class Origination extends BaseEntity {
     @TableField(value = "description")
     private String description;
 
+    @JsonIgnore
     @ApiModelProperty(value = "路径")
     @TableField(value = "path")
     private String path;
