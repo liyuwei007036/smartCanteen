@@ -46,14 +46,10 @@ public class EmployeeRoleServiceImpl extends ServiceImpl<EmployeeRoleMapper, Emp
         List<Long> removeIds = oldIds.parallelStream().filter(x -> !roleIds.contains(x)).collect(Collectors.toList());
         Long adds = batchInsert(addIds, employeeId, operator);
         log.info("添加条数:{},实际添加条数{}", addIds.size(), adds);
-        if (addIds.size() != adds) {
-            throw new BaseException(CanteenExceptionEnum.ADD_ROLE_FAIL);
-        }
+
         adds = batchDelete(addIds, employeeId, operator);
         log.info("删除条数:{},实际删除条数{}", removeIds.size(), adds);
-        if (removeIds.size() != adds) {
-            log.info("添加条数{},删除条数 {}", adds, ObjectUtil.getString(removeIds.size()));
-        }
+
     }
 
 
