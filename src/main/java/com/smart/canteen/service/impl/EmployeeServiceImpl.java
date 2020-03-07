@@ -19,6 +19,7 @@ import com.smart.canteen.service.IEmployeeRoleService;
 import com.smart.canteen.service.IEmployeeService;
 import com.smart.canteen.utils.EntityLogUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -117,6 +118,7 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
         }
         byId.setName(employee.getName());
         byId.setNo(employee.getNo());
+        BeanUtils.copyProperties(employee, byId, "id", "password", "no");
         Password password = createPassword(employee.getPassword(), employee.getConfirmPassword());
         if (password != null) {
             byId.setSalt(password.getSalt());
