@@ -75,9 +75,4 @@ public class IcCardServiceImpl extends ServiceImpl<IcCardMapper, IcCard> impleme
             throw new BaseException(CanteenExceptionEnum.UPDATE_FAIL);
         }
     }
-
-    @Override
-    public IcCard getByEmp(String cardNo) {
-        return getOne(Wrappers.<IcCard>lambdaQuery().eq(IcCard::getNo, cardNo));
-    }
 }
