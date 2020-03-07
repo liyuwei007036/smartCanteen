@@ -23,8 +23,8 @@ public enum CanteenExceptionEnum implements IErrorInterface {
     ADD_ROLE_FAIL(2008, "添加角色失败"),
     ADD_ORG_FAIL(2009, "添加部门失败"),
     ORG_NOT_EXIST(2010, "部门不存在"),
-    PAR_ORG_NOT_EXIST(2010, "上级部门不存在"),
-    ORG_NAME_REPEAT(2011, "已经存在相同名称的部门"),
+    PAR_ORG_NOT_EXIST(2011, "上级部门不存在"),
+    ORG_NAME_REPEAT(2012, "已经存在相同名称或者代码的部门"),
 
     UPDATE_FA2IL(99999, "update  fail");
 

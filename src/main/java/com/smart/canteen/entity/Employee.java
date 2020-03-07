@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -59,10 +60,12 @@ public class Employee extends BaseEntity {
     @TableField(value = "origination_name")
     private String originationName;
 
+    @JsonIgnore
     @ApiModelProperty(value = "盐")
     @TableField(value = "salt")
     private String salt;
 
+    @JsonIgnore
     @ApiModelProperty(value = "密码")
     @TableField(value = "password")
     private String password;
