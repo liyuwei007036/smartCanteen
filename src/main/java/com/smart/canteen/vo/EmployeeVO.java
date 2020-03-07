@@ -1,13 +1,11 @@
 package com.smart.canteen.vo;
 
-import com.smart.canteen.dto.employee.EmployeeForm;
 import com.smart.canteen.enums.CardTypeEnum;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import javax.validation.constraints.Future;
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -46,7 +44,7 @@ public class EmployeeVO implements Serializable {
     private LocalDateTime createTime;
 
     @ApiModelProperty(value = "角色")
-    private List<Map<String, Object>> roles;
+    private List<Long> roles;
 
     @ApiModelProperty(value = "卡Id")
     private Long cardId;
@@ -68,7 +66,6 @@ public class EmployeeVO implements Serializable {
 
     @ApiModelProperty(value = "卡最低余额")
     private Double minimumBalance;
-
 
     @Future
     @ApiModelProperty(value = "有效期")

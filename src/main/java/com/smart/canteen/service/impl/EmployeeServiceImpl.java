@@ -16,14 +16,12 @@ import com.smart.canteen.dto.user.LoginForm;
 import com.smart.canteen.entity.Employee;
 import com.smart.canteen.entity.IcCard;
 import com.smart.canteen.enums.CanteenExceptionEnum;
-import com.smart.canteen.enums.CardTypeEnum;
 import com.smart.canteen.mapper.EmployeeMapper;
 import com.smart.canteen.service.IEmployeeRoleService;
 import com.smart.canteen.service.IEmployeeService;
 import com.smart.canteen.service.IIcCardService;
 import com.smart.canteen.utils.EntityLogUtil;
 import com.smart.canteen.vo.EmployeeVO;
-import io.swagger.annotations.ApiModelProperty;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,11 +29,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
-import javax.validation.constraints.Future;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 
 /**
@@ -212,7 +209,7 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
         vo.setOpenCardAmount(card.getOpenCardAmount());
         vo.setMinimumBalance(card.getMinimumBalance());
         vo.setValidityTime(card.getValidityTime());
-        vo.setRoles(empRole);
+        vo.setRoles(empRole.stream().map(x -> ObjectUtil.getLong(x.get("id"))).collect(Collectors.toList()));
         return vo;
     }
 }
