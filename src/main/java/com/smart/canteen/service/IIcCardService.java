@@ -6,8 +6,6 @@ import com.smart.canteen.dto.card.CardForm;
 import com.smart.canteen.entity.Employee;
 import com.smart.canteen.entity.IcCard;
 
-import javax.smartcardio.Card;
-
 /**
  * <p>
  * iC卡 服务类
@@ -25,7 +23,7 @@ public interface IIcCardService extends IService<IcCard> {
      * @param employee
      * @param create
      */
-    void addCard(CardForm form, Employee employee, Account create);
+    Long addCard(CardForm form, Employee employee, Account create);
 
     /**
      * 通过卡号获取
@@ -42,4 +40,13 @@ public interface IIcCardService extends IService<IcCard> {
      * @return
      */
     IcCard getById(Long id);
+
+    /**
+     * 更新
+     *
+     * @param form
+     * @param create
+     */
+    void update(CardForm form, Account create);
+
 }

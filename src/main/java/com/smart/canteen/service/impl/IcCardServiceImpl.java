@@ -15,6 +15,7 @@ import com.smart.canteen.enums.CardStatusEnum;
 import com.smart.canteen.mapper.IcCardMapper;
 import com.smart.canteen.service.IIcCardService;
 import com.smart.canteen.utils.EntityLogUtil;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,7 +32,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class IcCardServiceImpl extends ServiceImpl<IcCardMapper, IcCard> implements IIcCardService {
 
     @Override
-    public void addCard(CardForm form, Employee employee, Account create) {
+    public Long addCard(CardForm form, Employee employee, Account create) {
         ValidatorUtil.validator(form, CardForm.Insert.class);
         IcCard card = getByCode(form.getNo());
         if (card != null) {
@@ -48,7 +49,7 @@ public class IcCardServiceImpl extends ServiceImpl<IcCardMapper, IcCard> impleme
         if (!save) {
             throw new BaseException(CanteenExceptionEnum.CREATE_FAIL);
         }
-
+        return card.getId();
     }
 
     @Override
@@ -59,5 +60,24 @@ public class IcCardServiceImpl extends ServiceImpl<IcCardMapper, IcCard> impleme
     @Override
     public IcCard getById(Long id) {
         return super.getById(id);
+    }
+
+    @Override
+    public void update(CardForm form, Account create) {
+        ValidatorUtil.validator(form, CardForm.Update.class);
+        IcCard card = getById(form.getId());
+        if (card == null) {
+            throw new BaseException(CanteenExceptionEnum.CARD_NO_EXIST);
+        }
+        BeanUtils.copyProperties(form, card, "id", "no");
+        boolean b = updateById(card);
+        if (!b) {
+            throw new BaseException(CanteenExceptionEnum.UPDATE_FAIL);
+        }
+    }
+
+    @Override
+    public IcCard getByEmp(String cardNo) {
+        return getOne(Wrappers.<IcCard>lambdaQuery().eq(IcCard::getNo, cardNo));
     }
 }

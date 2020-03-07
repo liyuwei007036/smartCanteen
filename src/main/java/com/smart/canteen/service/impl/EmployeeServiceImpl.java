@@ -9,16 +9,21 @@ import com.lc.core.error.BaseException;
 import com.lc.core.utils.*;
 import com.smart.canteen.dto.CommonList;
 import com.smart.canteen.dto.Password;
+import com.smart.canteen.dto.card.CardForm;
 import com.smart.canteen.dto.employee.EmployeeForm;
 import com.smart.canteen.dto.employee.EmployeeSearch;
 import com.smart.canteen.dto.user.LoginForm;
 import com.smart.canteen.entity.Employee;
+import com.smart.canteen.entity.IcCard;
 import com.smart.canteen.enums.CanteenExceptionEnum;
+import com.smart.canteen.enums.CardTypeEnum;
 import com.smart.canteen.mapper.EmployeeMapper;
 import com.smart.canteen.service.IEmployeeRoleService;
 import com.smart.canteen.service.IEmployeeService;
+import com.smart.canteen.service.IIcCardService;
 import com.smart.canteen.utils.EntityLogUtil;
 import com.smart.canteen.vo.EmployeeVO;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +31,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import javax.validation.constraints.Future;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -46,6 +53,10 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
 
     @Autowired
     private IEmployeeRoleService iEmployeeRoleService;
+
+
+    @Autowired
+    private IIcCardService iIcCardService;
 
     @Override
     public void login(LoginForm dto, BaseController controller) {
@@ -70,7 +81,6 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
 
     }
 
-
     @Override
     public void add(EmployeeForm dto, Account creator) {
         ValidatorUtil.validator(dto, EmployeeForm.Insert.class);
@@ -90,6 +100,10 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
             throw new BaseException(CanteenExceptionEnum.CREATE_FAIL);
         }
         iEmployeeRoleService.batchAdd(dto.getRoles(), employee.getId(), creator);
+        CardForm strict = ModelMapperUtils.strict(dto, CardForm.class);
+        strict.setNo(dto.getCardNo());
+        employee.setCardId(iIcCardService.addCard(strict, employee, creator));
+        updateById(employee);
     }
 
     private Password createPassword(String password, String conformPassword) {
@@ -133,6 +147,10 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
             throw new BaseException(CanteenExceptionEnum.UPDATE_FAIL);
         }
         iEmployeeRoleService.batchAdd(employee.getRoles(), employee.getId(), updater);
+        CardForm strict = ModelMapperUtils.strict(employee, CardForm.class);
+        strict.setNo(employee.getCardNo());
+        strict.setId(employee.getCardId());
+        iIcCardService.update(strict, updater);
     }
 
     @Override
@@ -172,12 +190,10 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
         return new CommonList<>(page.hasNext(), page.getTotal(), page.getCurrent(), page.getRecords());
     }
 
-
     @Override
     public Employee getById(Long id) {
         return super.getById(id);
     }
-
 
     @Override
     public EmployeeVO getEmpInfo(Long id) {
@@ -187,6 +203,15 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
         }
         List<Map<String, Object>> empRole = iEmployeeRoleService.getEmpRole(id);
         EmployeeVO vo = ModelMapperUtils.strict(employee, EmployeeVO.class);
+        IcCard card = iIcCardService.getById(employee.getCardId());
+        vo.setCardId(card.getId());
+        vo.setCardNo(card.getNo());
+        vo.setType(card.getType());
+        vo.setExpense(card.getExpense());
+        vo.setDeposit(card.getDeposit());
+        vo.setOpenCardAmount(card.getOpenCardAmount());
+        vo.setMinimumBalance(card.getMinimumBalance());
+        vo.setValidityTime(card.getValidityTime());
         vo.setRoles(empRole);
         return vo;
     }

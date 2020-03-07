@@ -1,13 +1,18 @@
 package com.smart.canteen.dto.employee;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.smart.canteen.enums.CardTypeEnum;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 
+import javax.validation.constraints.Future;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -67,5 +72,38 @@ public class EmployeeForm implements Serializable {
 
     @ApiModelProperty(value = "确认密码")
     private String confirmPassword;
+
+    @NotNull(groups = Update.class)
+    @ApiModelProperty(value = "主键Id")
+    private Long cardId;
+
+    @NotNull(groups = Insert.class)
+    @ApiModelProperty(value = "卡号")
+    private String cardNo;
+
+    @NotNull(groups = {Insert.class, Update.class})
+    @ApiModelProperty(value = "卡类型")
+    private CardTypeEnum type;
+
+    @Min(value = 0, groups = {Insert.class, Update.class})
+    @ApiModelProperty(value = "工本费")
+    private Double expense;
+
+    @Min(value = 0, groups = {Insert.class, Update.class})
+    @ApiModelProperty(value = "押金")
+    private Double deposit;
+
+    @Min(value = 0, groups = {Insert.class, Update.class})
+    @ApiModelProperty(value = "开卡金额")
+    private Double openCardAmount;
+
+    @Min(value = 0, groups = {Insert.class, Update.class})
+    @ApiModelProperty(value = "卡最低余额")
+    private Double minimumBalance;
+
+    @Future(groups = {Insert.class, Update.class})
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+    @ApiModelProperty(value = "有效期")
+    private LocalDateTime validityTime;
 
 }
