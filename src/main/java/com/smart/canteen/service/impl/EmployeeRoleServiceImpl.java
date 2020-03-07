@@ -44,12 +44,12 @@ public class EmployeeRoleServiceImpl extends ServiceImpl<EmployeeRoleMapper, Emp
         });
         List<Long> addIds = roleIds.parallelStream().filter(x -> !oldIds.contains(x)).collect(Collectors.toList());
         List<Long> removeIds = oldIds.parallelStream().filter(x -> !roleIds.contains(x)).collect(Collectors.toList());
-        Long adds = batchInsert(addIds, employeeId, operator);
-        log.info("添加条数:{},实际添加条数{}", addIds.size(), adds);
-
-        adds = batchDelete(addIds, employeeId, operator);
-        log.info("删除条数:{},实际删除条数{}", removeIds.size(), adds);
-
+        batchInsert(addIds, employeeId, operator);
+        Long delete = batchDelete(removeIds, employeeId, operator);
+        log.info("删除条数:{},实际删除条数{}", removeIds.size(), delete);
+        if (removeIds.size() != delete) {
+            throw new BaseException(CanteenExceptionEnum.ADD_ROLE_FAIL);
+        }
     }
 
 
@@ -64,7 +64,12 @@ public class EmployeeRoleServiceImpl extends ServiceImpl<EmployeeRoleMapper, Emp
     }
 
     @Override
-    public Long batchInsert(List<Long> roleIds, Long employeeId, Account operator) {
-        return getBaseMapper().batchAdd(roleIds, employeeId, operator);
+    public void batchInsert(List<Long> roleIds, Long employeeId, Account operator) {
+        getBaseMapper().batchAdd(roleIds, employeeId, operator);
+    }
+
+    @Override
+    public List<Map<String, Object>> getEmpRole(Long empId) {
+        return getBaseMapper().getEmpRole(empId);
     }
 }

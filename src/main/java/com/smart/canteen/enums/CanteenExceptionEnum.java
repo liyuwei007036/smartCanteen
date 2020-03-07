@@ -25,6 +25,7 @@ public enum CanteenExceptionEnum implements IErrorInterface {
     ORG_NOT_EXIST(2010, "部门不存在"),
     PAR_ORG_NOT_EXIST(2011, "上级部门不存在"),
     ORG_NAME_REPEAT(2012, "已经存在相同名称或者代码的部门"),
+    CARD_NO_REPEAT(2013, "卡号重复"),
     SIGN_ERROR(2013, "非法请求，CRC错误"),
 
     UPDATE_FA2IL(99999, "update  fail");

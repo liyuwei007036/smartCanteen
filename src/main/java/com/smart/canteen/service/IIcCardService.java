@@ -1,10 +1,12 @@
 package com.smart.canteen.service;
 
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.lc.core.dto.Account;
 import com.smart.canteen.dto.card.CardForm;
 import com.smart.canteen.entity.Employee;
 import com.smart.canteen.entity.IcCard;
-import com.baomidou.mybatisplus.extension.service.IService;
+
+import javax.smartcardio.Card;
 
 /**
  * <p>
@@ -24,4 +26,20 @@ public interface IIcCardService extends IService<IcCard> {
      * @param create
      */
     void addCard(CardForm form, Employee employee, Account create);
+
+    /**
+     * 通过卡号获取
+     *
+     * @param no
+     * @return
+     */
+    IcCard getByCode(String no);
+
+    /**
+     * 通过id获取
+     *
+     * @param id
+     * @return
+     */
+    IcCard getById(Long id);
 }

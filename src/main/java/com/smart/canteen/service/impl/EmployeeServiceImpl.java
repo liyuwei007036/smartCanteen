@@ -18,6 +18,7 @@ import com.smart.canteen.mapper.EmployeeMapper;
 import com.smart.canteen.service.IEmployeeRoleService;
 import com.smart.canteen.service.IEmployeeService;
 import com.smart.canteen.utils.EntityLogUtil;
+import com.smart.canteen.vo.EmployeeVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -173,5 +176,18 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
     @Override
     public Employee getById(Long id) {
         return super.getById(id);
+    }
+
+
+    @Override
+    public EmployeeVO getEmpInfo(Long id) {
+        Employee employee = getById(id);
+        if (employee == null) {
+            throw new BaseException(CanteenExceptionEnum.USER_NOT_EXIST);
+        }
+        List<Map<String, Object>> empRole = iEmployeeRoleService.getEmpRole(id);
+        EmployeeVO vo = ModelMapperUtils.strict(employee, EmployeeVO.class);
+        vo.setRoles(empRole);
+        return vo;
     }
 }

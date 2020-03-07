@@ -12,6 +12,7 @@ import com.smart.canteen.dto.employee.EmployeeSearch;
 import com.smart.canteen.dto.user.LoginForm;
 import com.smart.canteen.entity.Employee;
 import com.smart.canteen.service.IEmployeeService;
+import com.smart.canteen.vo.EmployeeVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,8 +84,8 @@ public class EmployeeController extends BaseController {
 
     @ApiOperation(value = "获取员工", notes = "获取员工")
     @RequestMapping(value = "get/{id}", method = RequestMethod.GET)
-    public ResponseInfo<Employee> addEmployee(@PathVariable String id) {
-        return new ResponseInfo<>(iEmployeeService.getById(ObjectUtil.getLong(id)));
+    public ResponseInfo<EmployeeVO> addEmployee(@PathVariable String id) {
+        return new ResponseInfo<>(iEmployeeService.getEmpInfo(ObjectUtil.getLong(id)));
     }
 
 

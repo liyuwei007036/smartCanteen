@@ -1,13 +1,13 @@
 package com.smart.canteen.mapper;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.lc.core.dto.Account;
 import com.smart.canteen.entity.EmployeeRole;
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.smart.canteen.entity.Role;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -41,5 +41,13 @@ public interface EmployeeRoleMapper extends BaseMapper<EmployeeRole> {
      */
     Long batchDeleted(@Param("roleIds") List<Long> roleIds, @Param("eid") Long eid, @Param("operator") Account operator);
 
+
+    /**
+     * 获取员工角色
+     *
+     * @param empId
+     * @return
+     */
+    List<Map<String, Object>> getEmpRole(@Param("empId") Long empId);
 
 }

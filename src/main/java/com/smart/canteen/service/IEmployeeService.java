@@ -8,6 +8,7 @@ import com.smart.canteen.dto.employee.EmployeeForm;
 import com.smart.canteen.dto.employee.EmployeeSearch;
 import com.smart.canteen.dto.user.LoginForm;
 import com.smart.canteen.entity.Employee;
+import com.smart.canteen.vo.EmployeeVO;
 
 /**
  * <p>
@@ -86,4 +87,11 @@ public interface IEmployeeService extends IService<Employee> {
      */
     Employee getById(Long id);
 
+    /**
+     * 获取员工信息
+     *
+     * @param id
+     * @return
+     */
+    EmployeeVO getEmpInfo(Long id);
 }

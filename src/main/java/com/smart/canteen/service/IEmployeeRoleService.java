@@ -51,7 +51,14 @@ public interface IEmployeeRoleService extends IService<EmployeeRole> {
      * @param roleIds
      * @param employeeId
      * @param operator
+     */
+    void batchInsert(List<Long> roleIds, Long employeeId, Account operator);
+
+    /**
+     * 获取员工角色
+     *
+     * @param empId
      * @return
      */
-    Long batchInsert(List<Long> roleIds, Long employeeId, Account operator);
+    List<Map<String, Object>> getEmpRole(Long empId);
 }
