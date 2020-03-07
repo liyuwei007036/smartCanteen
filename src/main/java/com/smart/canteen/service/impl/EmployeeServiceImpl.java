@@ -201,14 +201,16 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
         List<Map<String, Object>> empRole = iEmployeeRoleService.getEmpRole(id);
         EmployeeVO vo = ModelMapperUtils.strict(employee, EmployeeVO.class);
         IcCard card = iIcCardService.getById(employee.getCardId());
-        vo.setCardId(card.getId());
-        vo.setCardNo(card.getNo());
-        vo.setType(card.getType());
-        vo.setExpense(card.getExpense());
-        vo.setDeposit(card.getDeposit());
-        vo.setOpenCardAmount(card.getOpenCardAmount());
-        vo.setMinimumBalance(card.getMinimumBalance());
-        vo.setValidityTime(card.getValidityTime());
+        if (card != null) {
+            vo.setCardId(card.getId());
+            vo.setCardNo(card.getNo());
+            vo.setType(card.getType());
+            vo.setExpense(card.getExpense());
+            vo.setDeposit(card.getDeposit());
+            vo.setOpenCardAmount(card.getOpenCardAmount());
+            vo.setMinimumBalance(card.getMinimumBalance());
+            vo.setValidityTime(card.getValidityTime());
+        }
         vo.setRoles(empRole.stream().map(x -> ObjectUtil.getLong(x.get("id"))).collect(Collectors.toList()));
         return vo;
     }
