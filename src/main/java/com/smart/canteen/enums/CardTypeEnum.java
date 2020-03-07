@@ -6,19 +6,19 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
- * 卡状态
+ * 卡类别 暂时不知道用途
  *
  * @author lc
- * @date 2020/3/3下午 9:25
+ * @date 2020/3/7下午 10:52
  */
 @AllArgsConstructor
-public enum CardStatusEnum implements IEnum<Integer> {
+public enum CardTypeEnum implements IEnum<Integer> {
     /**
      *
      */
-    ENABLE(1, "激活"),
+    ENABLE(0, "0"),
 
-    DISABLE(2, "禁止");
+    DISABLE(1, "1");
 
     private Integer value;
 
