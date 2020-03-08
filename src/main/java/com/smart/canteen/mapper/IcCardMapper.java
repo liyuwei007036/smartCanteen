@@ -1,10 +1,12 @@
 package com.smart.canteen.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.smart.canteen.dto.card.CardSearch;
 import com.smart.canteen.entity.IcCard;
 import com.smart.canteen.vo.CardVo;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
 
 /**
  * <p>
@@ -18,10 +20,11 @@ import org.apache.ibatis.annotations.Param;
 public interface IcCardMapper extends BaseMapper<IcCard> {
 
     /**
-     * 通过卡号查询
+     * 分页查询卡列表
      *
-     * @param no
+     * @param page
+     * @param search
      * @return
      */
-    CardVo getByNo(@Param("no") String no);
+    IPage<CardVo> selectPageVo(Page<?> page, CardSearch search);
 }

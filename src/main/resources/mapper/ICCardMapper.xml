@@ -2,11 +2,34 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.smart.canteen.mapper.IcCardMapper">
 
-    <select id="getByNo" resultType="com.smart.canteen.vo.CardVo">
-        select no, employee_name as empName, employee_no as empNo, current_balance as currentBalance
-        from ic_card
-        where no = #{no}
-          and deleted = 0
-        limit 0,1
+    <select id="selectPageVo" resultType="com.smart.canteen.vo.CardVo">
+        select emp.name as empName, card.id as id, emp.no as empNo, emp.mobile as mobile, card.no as cardNo,
+        card.type as cardType, card.deposit as deposit, card.current_balance as currentBalance, card.status as status,
+        card.account_status as accountStatus, card.validity_time as validityTime
+        from employee as emp,
+        ic_card as card
+        where emp.id = card.employee_id
+        and card.deleted = 0
+        <if test="search.empName != null and search.empName != '' ">
+            and emp.name = #{search.empName}
+        </if>
+        <if test="search.empNo != null and search.empNo != '' ">
+            and emp.no = #{search.empNo}
+        </if>
+        <if test="search.mobile != null and search.mobile != '' ">
+            and emp.mobile = #{search.mobile}
+        </if>
+        <if test="search.cardNo != null and search.cardNo != '' ">
+            and card.no = #{search.cardNo}
+        </if>
+        <if test="search.accountStatus != null and search.accountStatus != '' ">
+            and card.account_status = #{search.accountStatus}
+        </if>
+        <if test="search.start != null ">
+            and card.validity_time <![CDATA[ >= ]]> #{search.start}
+        </if>
+        <if test="search.end != null ">
+            and card.validity_time <![CDATA[ <= ]]> #{search.end}
+        </if>
     </select>
 </mapper>

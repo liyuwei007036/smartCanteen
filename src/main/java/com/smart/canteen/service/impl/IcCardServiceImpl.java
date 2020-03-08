@@ -1,14 +1,17 @@
 package com.smart.canteen.service.impl;
 
-import com.baomidou.mybatisplus.core.toolkit.StringUtils;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lc.core.dto.Account;
 import com.lc.core.error.BaseException;
 import com.lc.core.utils.MathUtil;
 import com.lc.core.utils.ModelMapperUtils;
 import com.lc.core.utils.ValidatorUtil;
+import com.smart.canteen.dto.CommonList;
 import com.smart.canteen.dto.card.CardForm;
+import com.smart.canteen.dto.card.CardSearch;
 import com.smart.canteen.entity.Employee;
 import com.smart.canteen.entity.IcCard;
 import com.smart.canteen.enums.*;
@@ -79,12 +82,12 @@ public class IcCardServiceImpl extends ServiceImpl<IcCardMapper, IcCard> impleme
     }
 
     @Override
-    public CardVo getByNo(String no) {
-        if (StringUtils.isEmpty(no)) {
-            throw new BaseException(CanteenExceptionEnum.CARD_NOT_EXIST);
-        }
-        return getBaseMapper().getByNo(no);
+    public CommonList<CardVo> listCard(CardSearch search) {
+        Page<CardVo> page = new Page<>(search.getPage(), search.getSize());
+        getBaseMapper().selectPageVo(page, search);
+        return new CommonList<>(page.hasNext(), page.getTotal(), page.getCurrent(), page.getRecords());
     }
+
 
     @Override
     public ResponseMsg deductions(String cardNo, Integer money) {
@@ -125,4 +128,6 @@ public class IcCardServiceImpl extends ServiceImpl<IcCardMapper, IcCard> impleme
         }
         return new ResponseMsg(CmdCodeEnum.CON, Voices.THANKS, cardNo, MathUtil.mul(card.getCurrentBalance(), 1, 2));
     }
+
+
 }

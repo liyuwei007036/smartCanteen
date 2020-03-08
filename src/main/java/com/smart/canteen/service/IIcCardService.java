@@ -2,7 +2,9 @@ package com.smart.canteen.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.lc.core.dto.Account;
+import com.smart.canteen.dto.CommonList;
 import com.smart.canteen.dto.card.CardForm;
+import com.smart.canteen.dto.card.CardSearch;
 import com.smart.canteen.entity.Employee;
 import com.smart.canteen.entity.IcCard;
 import com.smart.canteen.vo.CardVo;
@@ -51,13 +53,9 @@ public interface IIcCardService extends IService<IcCard> {
      */
     void update(CardForm form, Account create);
 
-    /**
-     * 通过卡片查询
-     *
-     * @param no
-     * @return
-     */
-    CardVo getByNo(String no);
+
+    CommonList<CardVo> listCard(CardSearch search);
+
 
     /**
      * 刷卡扣款
