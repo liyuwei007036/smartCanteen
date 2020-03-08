@@ -92,17 +92,24 @@ public class IcCardServiceImpl extends ServiceImpl<IcCardMapper, IcCard> impleme
                         .eq(IcCard::getNo, cardNo),
                 false);
         if (card == null) {
-            return new ResponseMsg(CmdCodeEnum.CON, Voices.INVALID, cardNo, null, null);
+            return new ResponseMsg(CmdCodeEnum.CON, Voices.INVALID, cardNo, "无效卡!");
         }
         if (card.getStatus() == CardStatusEnum.DISABLE) {
-            return new ResponseMsg(CmdCodeEnum.CON, Voices.LOSS, cardNo, null, null);
+            return new ResponseMsg(CmdCodeEnum.CON, Voices.LOSS, cardNo, "挂失卡!");
         }
         Double currentBalance = card.getCurrentBalance();
         Double lastBalance = currentBalance - MathUtil.div(money, 100, 2);
-        if (currentBalance < 0) {
-            return new ResponseMsg(CmdCodeEnum.CON, Voices.NOT, cardNo, lastBalance, card.getEmployeeName());
+        if (lastBalance < 0) {
+            return new ResponseMsg(CmdCodeEnum.CON, Voices.NOT, cardNo, "余额不足!");
         }
-        return null;
+        // 是否需要加入其他判断
+        card.setCurrentBalance(lastBalance);
+        boolean b = updateById(card);
+        if (b) {
+            return new ResponseMsg(CmdCodeEnum.CON, Voices.SUCCESS, cardNo, lastBalance, money);
+        } else {
+            return new ResponseMsg(CmdCodeEnum.CON, Voices.NOT, cardNo, "刷卡太快请重刷");
+        }
     }
 
     @Override
@@ -111,11 +118,11 @@ public class IcCardServiceImpl extends ServiceImpl<IcCardMapper, IcCard> impleme
                         .eq(IcCard::getNo, cardNo),
                 false);
         if (card == null) {
-            return new ResponseMsg(CmdCodeEnum.CON, Voices.WELCOME, cardNo, null, null);
+            return new ResponseMsg(CmdCodeEnum.CON, Voices.WELCOME, cardNo, "无效卡");
         }
         if (card.getStatus() == CardStatusEnum.DISABLE) {
-            return new ResponseMsg(CmdCodeEnum.CON, Voices.LOSS, cardNo, null, null);
+            return new ResponseMsg(CmdCodeEnum.CON, Voices.LOSS, cardNo, "挂失卡!");
         }
-        return new ResponseMsg(CmdCodeEnum.CON, Voices.WELCOME, cardNo, card.getCurrentBalance(), card.getEmployeeName());
+        return new ResponseMsg(CmdCodeEnum.CON, Voices.THANKS, cardNo, MathUtil.mul(card.getCurrentBalance(), 1, 2));
     }
 }

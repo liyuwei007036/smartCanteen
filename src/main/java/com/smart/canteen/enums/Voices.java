@@ -24,7 +24,18 @@ public class Voices {
     /**
      * 挂失卡
      */
-    public static final byte[] LOSS = new byte[]{(byte) 0x03, (byte) 0x03, (byte) 0x24};
+    public static final byte[] LOSS = new byte[]{(byte) 0x03, (byte) 0x03, (byte) 0x26};
+
+    /**
+     * 本次消费
+     */
+    public static final byte[] COST = new byte[]{(byte) 0x01, (byte) 0x01, (byte) 0x19};
+
+
+    /**
+     * 余额
+     */
+    public static final byte[] BALANCE = new byte[]{(byte) 0x01, (byte) 0x01, (byte) 0x32};
 
 
     /**
@@ -43,4 +54,9 @@ public class Voices {
      * 余额不足
      */
     public static final byte[] NOT = new byte[]{(byte) 0x03, (byte) 0x03, (byte) 0x21};
+
+    /**
+     * 警告音
+     */
+    public static final byte[] WARN = new byte[]{(byte) 0x03, (byte) 0x03, (byte) 0x03};
 }
