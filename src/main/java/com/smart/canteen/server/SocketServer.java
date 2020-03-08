@@ -11,7 +11,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
@@ -34,11 +33,12 @@ public class SocketServer implements Runnable {
         byte[] receiveData = new byte[1024];
         DatagramSocket server = new DatagramSocket(UDP_PORT);
         DatagramPacket packet = new DatagramPacket(receiveData, receiveData.length);
+        Packet recObj;
         log.info("------------------------------------启动监听程序---------------------------");
         while (true) {
             try {
                 server.receive(packet);
-                Packet recObj = new Packet(receiveData);
+                recObj = new Packet(receiveData);
                 InetAddress address = packet.getAddress();
                 byte cmdCode = recObj.getCmdCode();
                 ResponseMsg search;

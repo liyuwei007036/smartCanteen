@@ -34,10 +34,10 @@ import java.util.stream.Collectors;
 public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements IOrderService {
 
     @Override
-    public boolean addOrderForMachine(IcCard card, Double money, String machineNo) {
+    public boolean addOrderForMachine(IcCard card, Double money, String machineNo, Double balance) {
         Order order = new Order();
         order.setCardId(card.getId());
-        order.setBalance(card.getCurrentBalance());
+        order.setBalance(balance);
         order.setCardNo(card.getNo());
         order.setEmployeeName(card.getEmployeeName());
         order.setEmployeeNo(card.getEmployeeNo());

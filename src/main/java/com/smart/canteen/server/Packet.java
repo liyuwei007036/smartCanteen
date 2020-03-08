@@ -9,8 +9,6 @@ import com.smart.canteen.utils.HexUtils;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
 /**
@@ -84,23 +82,17 @@ public class Packet {
 
     }
 
-    public Packet(byte[] dataBytes) throws IOException {
-        log.warn("-------------------------------------开始接受指令--------------------------");
+    public Packet(byte[] dataBytes) {
         // 引导码 0
         this.guideCode = dataBytes[0];
-        log.warn("引导码:" + guideCode);
         // 系统设备号 1
         this.systemMachineNumber = dataBytes[1];
-        log.warn("系统设备号:" + systemMachineNumber);
         // 机器地址码 2 3
         System.arraycopy(dataBytes, 2, this.machineAddrCode, 0, 2);
-        log.warn("机器地址码:" + Arrays.toString(this.machineAddrCode));
         // 数据长度 4 5
         System.arraycopy(dataBytes, 4, this.dataLen, 0, 2);
-        log.warn("数据长度:" + Arrays.toString(this.dataLen));
         // 指令码 6
         this.cmdCode = dataBytes[6];
-        log.warn("指令码:" + HexUtils.byte2Hex(this.cmdCode));
         // 不包含指令码数据包 = 数据长度 -1
         int dataLength = ObjectUtil.getInteger(this.dataLen[0] + "" + this.dataLen[1]) - 1;
         this.data = new byte[dataLength];
@@ -108,9 +100,6 @@ public class Packet {
         System.arraycopy(dataBytes, 7, this.data, 0, dataLength);
         // crc
         System.arraycopy(dataBytes, dataLength + 7, this.crcCode, 0, 2);
-        log.warn("不包含指令码数据包长度:" + dataLength);
-        log.warn("不包含指令码数据包:" + HexUtils.byte2Hex(this.data));
-        log.warn("CRC CODE:" + HexUtils.byte2Hex(this.crcCode));
         // crc 计算方式 从第2位开始 dataLength + 7 - 2结束
         byte[] crcResult = CrcUtil.calcCrc16(dataBytes, 2, dataLength + 5);
         if (!Arrays.equals(crcResult, crcCode)) {
@@ -120,23 +109,14 @@ public class Packet {
         if (CmdCodeEnum.CON == cmd) {
             // 卡号
             System.arraycopy(this.data, 0, this.cardNumber, 0, 4);
-            log.warn("卡号:" + HexUtils.byte2Hex(this.cardNumber));
-            log.warn("卡号222:" + Arrays.toString(this.cardNumber));
-            log.warn("卡号3333:" + new String(this.cardNumber, StandardCharsets.UTF_8));
-            log.warn("卡号4443:" + new String(this.cardNumber, "GB2312"));
-            log.warn("卡号55555:" + HexUtils.byteArrayToInt(this.cardNumber));
             // 事件码
             event = this.data[4];
-            log.warn("事件码:" + HexUtils.byte2Hex(this.event));
             // 真实数据包
             this.realData = new byte[data.length - 5];
             System.arraycopy(this.data, 5, this.realData, 0, data.length - 5);
-            log.warn("真实数据包:" + HexUtils.byte2Hex(this.realData));
-            log.warn("真实数据包2222:" + Arrays.toString(this.realData));
         } else {
             log.warn("数据包:" + HexUtils.byte2Hex(this.data));
         }
-        log.warn("\n\n");
     }
 
 

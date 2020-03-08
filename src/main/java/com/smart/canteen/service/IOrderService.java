@@ -25,9 +25,10 @@ public interface IOrderService extends IService<Order> {
      * @param card
      * @param money
      * @param machineNo
+     * @param balance
      * @return
      */
-    boolean addOrderForMachine(IcCard card, Double money, String machineNo);
+    boolean addOrderForMachine(IcCard card, Double money, String machineNo, Double balance);
 
     /**
      * 消费记录
