@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
@@ -52,7 +53,7 @@ public class SocketServer implements Runnable {
                             break;
                         case NORMAL_REBATES:
                             int money = HexUtils.byteArrayToInt(recObj.getRealData());
-                            search = iIcCardService.deductions(cardNo, money, String.valueOf(Math.abs(HexUtils.byteArrayToInt(recObj.getMachineAddrCode()))));
+                            search = iIcCardService.deductions(cardNo, money, String.format("%s%s", recObj.getMachineAddrCode()[0], recObj.getMachineAddrCode()[1]));
                             responseData = SendMsgUtil.sendMsg(search, address, recObj);
                             server.send(responseData);
                             break;
