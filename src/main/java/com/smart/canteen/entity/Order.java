@@ -73,6 +73,22 @@ public class Order extends Model<Order> {
     private LocalDateTime createTime;
 
     @JsonIgnore
+    @ApiModelProperty(value = "创建人id")
+    @TableField(value = "creator_id")
+    private Long creatorId;
+
+    @JsonIgnore
+    @ApiModelProperty(value = "创建人工号")
+    @TableField(value = "creator_account")
+    private String creatorAccount;
+
+    @JsonIgnore
+    @ApiModelProperty(value = "创建人姓名")
+    @TableField(value = "creator_name")
+    private String creatorName;
+
+
+    @JsonIgnore
     @ApiModelProperty(value = "逻辑锁")
     @TableField(value = "version", fill = FieldFill.INSERT_UPDATE)
     @Version
@@ -89,7 +105,6 @@ public class Order extends Model<Order> {
     protected Serializable pkVal() {
         return this.id;
     }
-
 
 
 }
