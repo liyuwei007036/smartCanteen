@@ -19,6 +19,9 @@
         <if test="search.mobile != null and search.mobile != '' ">
             and emp.mobile = #{search.mobile}
         </if>
+        <if test="search.cardStatus != null and search.cardStatus != '' ">
+            and card.status = #{search.cardStatus}
+        </if>
         <if test="search.cardNo != null and search.cardNo != '' ">
             and card.no = #{search.cardNo}
         </if>
