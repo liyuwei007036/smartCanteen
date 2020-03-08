@@ -2,6 +2,9 @@ package com.smart.canteen.entity;
 
 import com.baomidou.mybatisplus.annotation.*;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.smart.canteen.enums.OrderTypeEnum;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -22,7 +25,7 @@ import java.time.LocalDateTime;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-@TableName("order")
+@TableName("c_order")
 @ApiModel(value = "order", description = "订单")
 public class Order extends Model<Order> {
 
@@ -41,7 +44,7 @@ public class Order extends Model<Order> {
     private String cardNo;
 
     @ApiModelProperty(value = "消费金额")
-    @TableField("money")
+    @TableField(value = "money", insertStrategy = FieldStrategy.NOT_NULL)
     private Double money;
 
     @ApiModelProperty(value = "消费后金额")
@@ -49,28 +52,31 @@ public class Order extends Model<Order> {
     private Double balance;
 
     @ApiModelProperty(value = "消费类型")
-    @TableField("type")
-    private Integer type;
+    @TableField(value = "type", insertStrategy = FieldStrategy.NOT_NULL)
+    private OrderTypeEnum type;
 
     @ApiModelProperty(value = "员工工号")
-    @TableField("employee_no")
+    @TableField(value = "employee_no", insertStrategy = FieldStrategy.NOT_EMPTY)
     private String employeeNo;
 
     @ApiModelProperty(value = "员工姓名")
-    @TableField("employee_name")
+    @TableField(value = "employee_name", insertStrategy = FieldStrategy.NOT_EMPTY)
     private String employeeName;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     @ApiModelProperty(value = "消费时间")
     @TableField("create_time")
     private LocalDateTime createTime;
 
+    @JsonIgnore
     @ApiModelProperty(value = "逻辑锁")
-    @TableField("version")
+    @TableField(value = "version", fill = FieldFill.INSERT_UPDATE)
     @Version
     private Long version;
 
+    @JsonIgnore
     @ApiModelProperty(value = "是否删除 0 1")
-    @TableField("deleted")
+    @TableField(value = "deleted", fill = FieldFill.INSERT)
     @TableLogic
     private Boolean deleted;
 
@@ -79,5 +85,7 @@ public class Order extends Model<Order> {
     protected Serializable pkVal() {
         return this.id;
     }
+
+
 
 }

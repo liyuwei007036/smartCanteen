@@ -1,7 +1,8 @@
 package com.smart.canteen.service;
 
-import com.smart.canteen.entity.Order;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.smart.canteen.entity.IcCard;
+import com.smart.canteen.entity.Order;
 
 /**
  * <p>
@@ -16,7 +17,9 @@ public interface IOrderService extends IService<Order> {
     /**
      * 添加消费订单
      *
-     * @param order
+     * @param card
+     * @param money
+     * @return
      */
-    void addOrder(Order order);
+    boolean addOrderForMachine(IcCard card, Double money);
 }

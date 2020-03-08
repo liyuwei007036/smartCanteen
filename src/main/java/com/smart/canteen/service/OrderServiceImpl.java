@@ -1,10 +1,14 @@
 package com.smart.canteen.service;
 
+import com.smart.canteen.entity.IcCard;
 import com.smart.canteen.entity.Order;
+import com.smart.canteen.enums.OrderTypeEnum;
 import com.smart.canteen.mapper.OrderMapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDateTime;
 
 /**
  * <p>
@@ -19,10 +23,16 @@ import org.springframework.transaction.annotation.Transactional;
 public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements IOrderService {
 
     @Override
-    public void addOrder(Order order) {
-        boolean save = save(order);
-        if (!save){
-
-        }
+    public boolean addOrderForMachine(IcCard card, Double money) {
+        Order order = new Order();
+        order.setCardId(card.getId());
+        order.setBalance(card.getCurrentBalance());
+        order.setCardNo(card.getNo());
+        order.setEmployeeName(card.getEmployeeName());
+        order.setEmployeeNo(card.getEmployeeNo());
+        order.setMoney(money);
+        order.setCreateTime(LocalDateTime.now());
+        order.setType(OrderTypeEnum.MACHINE);
+        return save(order);
     }
 }

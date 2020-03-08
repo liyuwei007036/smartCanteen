@@ -7,6 +7,7 @@ import com.lc.core.dto.Account;
 import com.lc.core.error.BaseException;
 import com.lc.core.utils.MathUtil;
 import com.lc.core.utils.ModelMapperUtils;
+import com.lc.core.utils.ObjectUtil;
 import com.lc.core.utils.ValidatorUtil;
 import com.smart.canteen.dto.CommonList;
 import com.smart.canteen.dto.card.CardForm;
@@ -18,13 +19,17 @@ import com.smart.canteen.entity.RechargeLog;
 import com.smart.canteen.enums.*;
 import com.smart.canteen.mapper.IcCardMapper;
 import com.smart.canteen.service.IIcCardService;
+import com.smart.canteen.service.IOrderService;
 import com.smart.canteen.service.IRechargeLogService;
 import com.smart.canteen.utils.EntityLogUtil;
 import com.smart.canteen.vo.CardVo;
 import com.smart.canteen.vo.ResponseMsg;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.TransactionDefinition;
+import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
@@ -107,14 +112,17 @@ public class IcCardServiceImpl extends ServiceImpl<IcCardMapper, IcCard> impleme
         List<RechargeLog> logs = new ArrayList<>();
         cards.forEach(x -> {
             RechargeLog rechargeLog = new RechargeLog();
-            double lastBalance = x.getCurrentBalance() + form.getMoney();
+            double lastBalance = MathUtil.add(ObjectUtil.getDouble(x.getCurrentBalance()), ObjectUtil.getDouble(form.getMoney()));
             x.setCurrentBalance(lastBalance);
             rechargeLog.setMoney(form.getMoney());
+            rechargeLog.setCardId(x.getId());
+            rechargeLog.setCardNo(x.getNo());
             rechargeLog.setType(form.getRechargeType());
             rechargeLog.setBalance(lastBalance);
             rechargeLog.setEmployeeName(x.getEmployeeName());
             rechargeLog.setEmployeeNo(x.getEmployeeNo());
             EntityLogUtil.addNormalUser(rechargeLog, account);
+            logs.add(rechargeLog);
         });
         boolean b = updateBatchById(cards);
         cardIds.clear();
@@ -126,9 +134,19 @@ public class IcCardServiceImpl extends ServiceImpl<IcCardMapper, IcCard> impleme
         }
     }
 
+    @Autowired
+    private IOrderService iOrderService;
+
+    @Autowired
+    private DataSourceTransactionManager dataSourceTransactionManager;
+    @Autowired
+    private TransactionDefinition transactionDefinition;
+
     @Override
     public ResponseMsg deductions(String cardNo, Integer money) {
+        TransactionStatus transactionStatus = dataSourceTransactionManager.getTransaction(transactionDefinition);
         IcCard card = getOne(Wrappers.<IcCard>lambdaQuery()
+                        .select(IcCard::getCurrentBalance, IcCard::getStatus, IcCard::getId, IcCard::getNo, IcCard::getEmployeeName, IcCard::getEmployeeNo)
                         .eq(IcCard::getNo, cardNo),
                 false);
         if (card == null) {
@@ -138,19 +156,26 @@ public class IcCardServiceImpl extends ServiceImpl<IcCardMapper, IcCard> impleme
             return new ResponseMsg(CmdCodeEnum.CON, Voices.LOSS, cardNo, "挂失卡!");
         }
         Double currentBalance = card.getCurrentBalance();
-        Double lastBalance = currentBalance - MathUtil.div(money, 100, 2);
+        Double lastBalance = MathUtil.sub(currentBalance, MathUtil.div(money, 100, 2));
         if (lastBalance < 0) {
             return new ResponseMsg(CmdCodeEnum.CON, Voices.NOT, cardNo, "余额不足!");
         }
         // 是否需要加入其他判断
-        card.setCurrentBalance(lastBalance);
-        boolean b = updateById(card);
-        if (b) {
-            return new ResponseMsg(CmdCodeEnum.CON, Voices.SUCCESS, cardNo, lastBalance, money);
+        boolean update = update(Wrappers.<IcCard>lambdaUpdate()
+                .set(IcCard::getCurrentBalance, lastBalance)
+                .eq(IcCard::getId, card.getId()));
+        boolean saveOrder = iOrderService.addOrderForMachine(card, MathUtil.div(money, 100, 2));
+        ResponseMsg msg;
+        if (update && saveOrder) {
+            msg = new ResponseMsg(CmdCodeEnum.CON, Voices.SUCCESS, cardNo, lastBalance, money);
+            dataSourceTransactionManager.commit(transactionStatus);
         } else {
-            return new ResponseMsg(CmdCodeEnum.CON, Voices.NOT, cardNo, "刷卡太快请重刷");
+            msg = new ResponseMsg(CmdCodeEnum.CON, Voices.NOT, cardNo, "刷卡太快请重刷");
+            dataSourceTransactionManager.rollback(transactionStatus);
         }
+        return msg;
     }
+
 
     @Override
     public ResponseMsg search(String cardNo) {

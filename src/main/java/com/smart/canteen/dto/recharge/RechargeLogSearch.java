@@ -1,6 +1,5 @@
 package com.smart.canteen.dto.recharge;
 
-import com.smart.canteen.enums.RechargeTypeEnum;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -25,11 +24,8 @@ public class RechargeLogSearch implements Serializable {
     @ApiModelProperty(value = "工号")
     private String empNo;
 
-    @ApiModelProperty(value = "金额")
-    private Double money;
-
     @ApiModelProperty(value = "类型")
-    private RechargeTypeEnum rechargeType;
+    private Integer rechargeType;
 
     @ApiModelProperty(value = "操作人")
     private String operatorName;
