@@ -14,10 +14,10 @@ public enum CardAccountEnum implements IEnum<Integer> {
      * 卡账户状态
      */
     NORMAL(1, "正常"),
-    LOSS(1, "挂失"),
-    UN_LOSS(1, "解卦"),
-    QUIT(5, "已退卡"),
-    REISSUE(1, "解卦");
+    LOSS(2, "挂失"),
+    UN_LOSS(3, "解挂"),
+    QUIT(4, "已退卡"),
+    REISSUE(5, "已补卡");
 
     private Integer value;
 
