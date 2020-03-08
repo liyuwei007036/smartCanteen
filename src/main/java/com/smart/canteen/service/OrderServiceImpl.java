@@ -23,7 +23,6 @@ import java.time.LocalDateTime;
 @Service
 public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements IOrderService {
 
-    @Async
     @Override
     public boolean addOrderForMachine(IcCard card, Double money, String machineNo) {
         Order order = new Order();

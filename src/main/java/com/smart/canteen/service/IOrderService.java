@@ -23,4 +23,7 @@ public interface IOrderService extends IService<Order> {
      * @return
      */
     boolean addOrderForMachine(IcCard card, Double money, String machineNo);
+
+
+
 }
