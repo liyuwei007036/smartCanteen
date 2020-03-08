@@ -1,6 +1,5 @@
 package com.smart.canteen.dto.recharge;
 
-import com.smart.canteen.enums.RechargeTypeEnum;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -26,7 +25,7 @@ public class RechargeForm implements Serializable {
 
     @NotNull
     @ApiModelProperty(value = "充值类型")
-    private RechargeTypeEnum rechargeType;
+    private Integer rechargeType;
 
     @Min(0)
     @NotNull

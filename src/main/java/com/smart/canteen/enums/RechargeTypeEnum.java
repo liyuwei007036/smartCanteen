@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import java.util.Arrays;
+
 /**
  * @author lc
  * @date 2020/3/8下午 5:53
@@ -26,5 +28,10 @@ public enum RechargeTypeEnum implements IEnum<Integer> {
     @Override
     public Integer getValue() {
         return value;
+    }
+
+
+    public static RechargeTypeEnum getByCode(Integer value) {
+        return Arrays.stream(RechargeTypeEnum.values()).filter(x -> x.value.equals(value)).findFirst().orElse(null);
     }
 }

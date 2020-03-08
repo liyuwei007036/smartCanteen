@@ -42,8 +42,8 @@ public class RechargeLogVO implements Serializable {
     @ApiModelProperty(value = "创建时间")
     private LocalDateTime createTime;
 
-    @ApiModelProperty(value = "创建人id")
-    private Long creatorId;
+    @ApiModelProperty(value = "创建人姓名")
+    private String creatorName;
 
     @ApiModelProperty(value = "创建人工号")
     private String creatorAccount;

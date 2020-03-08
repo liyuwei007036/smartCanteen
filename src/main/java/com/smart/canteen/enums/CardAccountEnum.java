@@ -3,6 +3,7 @@ package com.smart.canteen.enums;
 import com.baomidou.mybatisplus.core.enums.IEnum;
 import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 /**
  * @author lc
@@ -21,6 +22,7 @@ public enum CardAccountEnum implements IEnum<Integer> {
 
     private Integer value;
 
+    @Getter
     @JsonValue
     private String disPlay;
 
