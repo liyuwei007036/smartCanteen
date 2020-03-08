@@ -43,6 +43,10 @@ public class Order extends Model<Order> {
     @TableField("card_no")
     private String cardNo;
 
+    @ApiModelProperty(value = "机器编号")
+    @TableField("machine_no")
+    private String machineNo;
+
     @ApiModelProperty(value = "消费金额")
     @TableField(value = "money", insertStrategy = FieldStrategy.NOT_NULL)
     private Double money;

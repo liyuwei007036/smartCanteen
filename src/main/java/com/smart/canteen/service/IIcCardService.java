@@ -63,9 +63,10 @@ public interface IIcCardService extends IService<IcCard> {
      *
      * @param cardNo
      * @param money
+     * @param machineNo
      * @return
      */
-    ResponseMsg deductions(String cardNo, Integer money);
+    ResponseMsg deductions(String cardNo, Integer money, String machineNo);
 
     /**
      * 刷卡查询

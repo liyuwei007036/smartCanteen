@@ -52,7 +52,7 @@ public class SocketServer implements Runnable {
                             break;
                         case NORMAL_REBATES:
                             int money = HexUtils.byteArrayToInt(recObj.getRealData());
-                            search = iIcCardService.deductions(cardNo, money);
+                            search = iIcCardService.deductions(cardNo, money, String.valueOf(Math.abs(HexUtils.byteArrayToInt(recObj.getMachineAddrCode()))));
                             responseData = SendMsgUtil.sendMsg(search, address, recObj);
                             server.send(responseData);
                             break;

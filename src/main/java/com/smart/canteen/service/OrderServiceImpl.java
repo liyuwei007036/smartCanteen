@@ -5,6 +5,7 @@ import com.smart.canteen.entity.Order;
 import com.smart.canteen.enums.OrderTypeEnum;
 import com.smart.canteen.mapper.OrderMapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,8 +23,9 @@ import java.time.LocalDateTime;
 @Service
 public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements IOrderService {
 
+    @Async
     @Override
-    public boolean addOrderForMachine(IcCard card, Double money) {
+    public boolean addOrderForMachine(IcCard card, Double money, String machineNo) {
         Order order = new Order();
         order.setCardId(card.getId());
         order.setBalance(card.getCurrentBalance());
@@ -33,6 +35,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         order.setMoney(money);
         order.setCreateTime(LocalDateTime.now());
         order.setType(OrderTypeEnum.MACHINE);
+        order.setMachineNo(machineNo);
         return save(order);
     }
 }

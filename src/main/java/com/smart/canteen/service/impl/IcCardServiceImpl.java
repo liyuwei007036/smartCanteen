@@ -143,7 +143,7 @@ public class IcCardServiceImpl extends ServiceImpl<IcCardMapper, IcCard> impleme
     private TransactionDefinition transactionDefinition;
 
     @Override
-    public ResponseMsg deductions(String cardNo, Integer money) {
+    public ResponseMsg deductions(String cardNo, Integer money, String machineNo) {
         TransactionStatus transactionStatus = dataSourceTransactionManager.getTransaction(transactionDefinition);
         IcCard card = getOne(Wrappers.<IcCard>lambdaQuery()
                         .select(IcCard::getCurrentBalance, IcCard::getStatus, IcCard::getId, IcCard::getNo, IcCard::getEmployeeName, IcCard::getEmployeeNo)
@@ -164,7 +164,7 @@ public class IcCardServiceImpl extends ServiceImpl<IcCardMapper, IcCard> impleme
         boolean update = update(Wrappers.<IcCard>lambdaUpdate()
                 .set(IcCard::getCurrentBalance, lastBalance)
                 .eq(IcCard::getId, card.getId()));
-        boolean saveOrder = iOrderService.addOrderForMachine(card, MathUtil.div(money, 100, 2));
+        boolean saveOrder = iOrderService.addOrderForMachine(card, MathUtil.div(money, 100, 2), machineNo);
         ResponseMsg msg;
         if (update && saveOrder) {
             msg = new ResponseMsg(CmdCodeEnum.CON, Voices.SUCCESS, cardNo, lastBalance, money);
