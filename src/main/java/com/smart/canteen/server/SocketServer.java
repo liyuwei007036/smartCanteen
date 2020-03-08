@@ -10,7 +10,6 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -21,7 +20,6 @@ import java.net.InetAddress;
  * @date 2020/3/6下午 10:05
  */
 @Slf4j
-@Transactional(rollbackFor = Exception.class)
 @Component
 public class SocketServer implements Runnable {
     private final static int UDP_PORT = 3000;
@@ -36,7 +34,7 @@ public class SocketServer implements Runnable {
         DatagramSocket server = new DatagramSocket(UDP_PORT);
         DatagramPacket packet = new DatagramPacket(receiveData, receiveData.length);
         log.info("------------------------------------启动监听程序---------------------------");
-        do {
+        while (true) {
             try {
                 server.receive(packet);
                 Packet recObj = new Packet(receiveData);
@@ -70,6 +68,6 @@ public class SocketServer implements Runnable {
             } catch (Exception e) {
                 log.error("ooo", e);
             }
-        } while (true);
+        }
     }
 }
