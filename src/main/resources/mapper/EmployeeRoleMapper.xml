@@ -25,14 +25,4 @@
         </foreach>
     </update>
 
-
-    <select id="getEmpRole" resultType="java.util.Map">
-        select r.name as name, r.id as id
-        from role as r,
-             employee_role as er
-        where r.id = er.role_id
-          and er.employee_id = #{empId}
-    </select>
-
-
 </mapper>

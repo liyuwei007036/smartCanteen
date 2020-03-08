@@ -5,6 +5,8 @@ import com.lc.core.dto.Account;
 import com.smart.canteen.dto.card.CardForm;
 import com.smart.canteen.entity.Employee;
 import com.smart.canteen.entity.IcCard;
+import com.smart.canteen.vo.CardVo;
+import com.smart.canteen.vo.ResponseMsg;
 
 /**
  * <p>
@@ -48,5 +50,31 @@ public interface IIcCardService extends IService<IcCard> {
      * @param create
      */
     void update(CardForm form, Account create);
+
+    /**
+     * 通过卡片查询
+     *
+     * @param no
+     * @return
+     */
+    CardVo getByNo(String no);
+
+    /**
+     * 刷卡扣款
+     *
+     * @param cardNo
+     * @param money
+     * @return
+     */
+    ResponseMsg deductions(String cardNo, Integer money);
+
+    /**
+     * 刷卡查询
+     *
+     * @param cardNo
+     * @return
+     */
+    ResponseMsg search(String cardNo);
+
 
 }

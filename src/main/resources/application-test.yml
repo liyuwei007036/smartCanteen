@@ -35,7 +35,9 @@ spring:
   servlet:
     multipart:
       max-file-size: 1000MB
-
+  messages:
+    basename: messages
+    encoding: UTF-8
   rabbitmq:
     addresses: lumia.live
     port: 5672
@@ -77,7 +79,7 @@ redis:
 
 mybatis-plus:
   configuration:
-    log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
     map-underscore-to-camel-case: false
     defaultEnumTypeHandler: com.baomidou.mybatisplus.extension.handlers.MybatisEnumTypeHandler
   check-config-location: true

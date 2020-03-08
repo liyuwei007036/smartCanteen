@@ -1,20 +1,22 @@
 package com.smart.canteen.service.impl;
 
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lc.core.dto.Account;
 import com.lc.core.error.BaseException;
+import com.lc.core.utils.MathUtil;
 import com.lc.core.utils.ModelMapperUtils;
 import com.lc.core.utils.ValidatorUtil;
 import com.smart.canteen.dto.card.CardForm;
 import com.smart.canteen.entity.Employee;
 import com.smart.canteen.entity.IcCard;
-import com.smart.canteen.enums.CanteenExceptionEnum;
-import com.smart.canteen.enums.CardAccountEnum;
-import com.smart.canteen.enums.CardStatusEnum;
+import com.smart.canteen.enums.*;
 import com.smart.canteen.mapper.IcCardMapper;
 import com.smart.canteen.service.IIcCardService;
 import com.smart.canteen.utils.EntityLogUtil;
+import com.smart.canteen.vo.CardVo;
+import com.smart.canteen.vo.ResponseMsg;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -74,5 +76,46 @@ public class IcCardServiceImpl extends ServiceImpl<IcCardMapper, IcCard> impleme
         if (!b) {
             throw new BaseException(CanteenExceptionEnum.UPDATE_FAIL);
         }
+    }
+
+    @Override
+    public CardVo getByNo(String no) {
+        if (StringUtils.isEmpty(no)) {
+            throw new BaseException(CanteenExceptionEnum.CARD_NOT_EXIST);
+        }
+        return getBaseMapper().getByNo(no);
+    }
+
+    @Override
+    public ResponseMsg deductions(String cardNo, Integer money) {
+        IcCard card = getOne(Wrappers.<IcCard>lambdaQuery()
+                        .eq(IcCard::getNo, cardNo),
+                false);
+        if (card == null) {
+            return new ResponseMsg(CmdCodeEnum.CON, Voices.INVALID, cardNo, null, null);
+        }
+        if (card.getStatus() == CardStatusEnum.DISABLE) {
+            return new ResponseMsg(CmdCodeEnum.CON, Voices.LOSS, cardNo, null, null);
+        }
+        Double currentBalance = card.getCurrentBalance();
+        Double lastBalance = currentBalance - MathUtil.div(money, 100, 2);
+        if (currentBalance < 0) {
+            return new ResponseMsg(CmdCodeEnum.CON, Voices.NOT, cardNo, lastBalance, card.getEmployeeName());
+        }
+        return null;
+    }
+
+    @Override
+    public ResponseMsg search(String cardNo) {
+        IcCard card = getOne(Wrappers.<IcCard>lambdaQuery()
+                        .eq(IcCard::getNo, cardNo),
+                false);
+        if (card == null) {
+            return new ResponseMsg(CmdCodeEnum.CON, Voices.WELCOME, cardNo, null, null);
+        }
+        if (card.getStatus() == CardStatusEnum.DISABLE) {
+            return new ResponseMsg(CmdCodeEnum.CON, Voices.LOSS, cardNo, null, null);
+        }
+        return new ResponseMsg(CmdCodeEnum.CON, Voices.WELCOME, cardNo, card.getCurrentBalance(), card.getEmployeeName());
     }
 }

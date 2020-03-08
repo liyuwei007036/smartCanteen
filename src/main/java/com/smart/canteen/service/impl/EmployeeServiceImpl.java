@@ -16,12 +16,14 @@ import com.smart.canteen.dto.user.LoginForm;
 import com.smart.canteen.entity.Employee;
 import com.smart.canteen.entity.IcCard;
 import com.smart.canteen.enums.CanteenExceptionEnum;
+import com.smart.canteen.enums.CardStatusEnum;
 import com.smart.canteen.mapper.EmployeeMapper;
 import com.smart.canteen.service.IEmployeeRoleService;
 import com.smart.canteen.service.IEmployeeService;
 import com.smart.canteen.service.IIcCardService;
 import com.smart.canteen.utils.EntityLogUtil;
 import com.smart.canteen.vo.EmployeeVO;
+import com.smart.canteen.vo.ResponseMsg;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -198,7 +200,6 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
         if (employee == null) {
             throw new BaseException(CanteenExceptionEnum.USER_NOT_EXIST);
         }
-        List<Map<String, Object>> empRole = iEmployeeRoleService.getEmpRole(id);
         EmployeeVO vo = ModelMapperUtils.strict(employee, EmployeeVO.class);
         IcCard card = iIcCardService.getById(employee.getCardId());
         if (card != null) {
@@ -211,7 +212,9 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
             vo.setMinimumBalance(card.getMinimumBalance());
             vo.setValidityTime(card.getValidityTime());
         }
-        vo.setRoles(empRole.stream().map(x -> ObjectUtil.getLong(x.get("id"))).collect(Collectors.toList()));
+        vo.setRoles(iEmployeeRoleService.getEmpRole(id));
         return vo;
     }
+
+
 }

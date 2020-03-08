@@ -39,7 +39,7 @@ public class EmployeeRoleServiceImpl extends ServiceImpl<EmployeeRoleMapper, Emp
         List<Map<String, Object>> maps = getAllRoleByEmployee(employeeId);
         List<Long> oldIds = new ArrayList<>();
         maps.forEach(x -> {
-            Object roleId = x.getOrDefault("role_id", 0);
+            Object roleId = x.getOrDefault("roleId", 0);
             oldIds.add(ObjectUtil.getLong(roleId));
         });
         List<Long> addIds = roleIds.parallelStream().filter(x -> !oldIds.contains(x)).collect(Collectors.toList());
@@ -60,16 +60,24 @@ public class EmployeeRoleServiceImpl extends ServiceImpl<EmployeeRoleMapper, Emp
 
     @Override
     public Long batchDelete(List<Long> roleIds, Long employeeId, Account operator) {
-        return getBaseMapper().batchDeleted(roleIds, employeeId, operator);
+        if (roleIds != null && roleIds.size() > 1) {
+            return getBaseMapper().batchDeleted(roleIds, employeeId, operator);
+        }
+        return 0L;
     }
 
     @Override
     public void batchInsert(List<Long> roleIds, Long employeeId, Account operator) {
-        getBaseMapper().batchAdd(roleIds, employeeId, operator);
+        if (roleIds != null && roleIds.size() > 1) {
+            getBaseMapper().batchAdd(roleIds, employeeId, operator);
+        }
     }
 
     @Override
-    public List<Map<String, Object>> getEmpRole(Long empId) {
-        return getBaseMapper().getEmpRole(empId);
+    public List<Long> getEmpRole(Long empId) {
+        List<Map<String, Object>> maps = listMaps(Wrappers.<EmployeeRole>lambdaQuery().select(EmployeeRole::getRoleId).eq(EmployeeRole::getEmployeeId, empId));
+        return maps.parallelStream()
+                .map(x -> ObjectUtil.getLong(x.get("roleId")))
+                .filter(x -> x > 0).distinct().collect(Collectors.toList());
     }
 }

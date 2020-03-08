@@ -9,6 +9,8 @@ import com.smart.canteen.utils.HexUtils;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
 /**
@@ -82,7 +84,7 @@ public class Packet {
 
     }
 
-    public Packet(byte[] dataBytes) {
+    public Packet(byte[] dataBytes) throws IOException {
         log.warn("-------------------------------------开始接受指令--------------------------");
         // 引导码 0
         this.guideCode = dataBytes[0];
@@ -120,6 +122,9 @@ public class Packet {
             System.arraycopy(this.data, 0, this.cardNumber, 0, 4);
             log.warn("卡号:" + HexUtils.byte2Hex(this.cardNumber));
             log.warn("卡号222:" + Arrays.toString(this.cardNumber));
+            log.warn("卡号3333:" + new String(this.cardNumber, StandardCharsets.UTF_8));
+            log.warn("卡号4443:" + new String(this.cardNumber, "GB2312"));
+            log.warn("卡号55555:" + HexUtils.byteArrayToInt(this.cardNumber));
             // 事件码
             event = this.data[4];
             log.warn("事件码:" + HexUtils.byte2Hex(this.event));

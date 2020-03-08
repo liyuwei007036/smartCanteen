@@ -1,6 +1,7 @@
 package com.smart.canteen.enums;
 
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 import java.util.Arrays;
 
@@ -19,14 +20,16 @@ public enum CmdCodeEnum {
      * 查询按键 （0X00:消费的笔数和金额 0X01:加款的笔数和金额，0X02：退全部余额的笔数和金额)
      */
     SEARCH(0x70),
+
+
     ;
 
+    @Getter
     private int code;
 
     public static CmdCodeEnum getByCode(byte code) {
         return Arrays.stream(CmdCodeEnum.values()).filter(x -> x.code == code).findFirst().orElse(null);
     }
-
 
 
 }

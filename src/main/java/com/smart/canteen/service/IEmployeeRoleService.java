@@ -60,5 +60,5 @@ public interface IEmployeeRoleService extends IService<EmployeeRole> {
      * @param empId
      * @return
      */
-    List<Map<String, Object>> getEmpRole(Long empId);
+    List<Long> getEmpRole(Long empId);
 }
