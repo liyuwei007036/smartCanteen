@@ -5,7 +5,7 @@ import com.lc.core.annotations.Valid;
 import com.lc.core.controller.BaseController;
 import com.lc.core.dto.ResponseInfo;
 import com.smart.canteen.dto.CommonList;
-import com.smart.canteen.dto.card.RechargeForm;
+import com.smart.canteen.dto.recharge.RechargeForm;
 import com.smart.canteen.dto.recharge.RechargeLogSearch;
 import com.smart.canteen.service.IRechargeLogService;
 import com.smart.canteen.service.impl.IcCardServiceImpl;

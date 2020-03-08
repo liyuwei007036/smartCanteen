@@ -1,4 +1,4 @@
-package com.smart.canteen.dto.card;
+package com.smart.canteen.dto.recharge;
 
 import com.smart.canteen.enums.RechargeTypeEnum;
 import io.swagger.annotations.ApiModel;
@@ -24,7 +24,6 @@ public class RechargeForm implements Serializable {
     @ApiModelProperty(value = "卡片Id")
     private List<Long> cardIds;
 
-    @Min(1)
     @NotNull
     @ApiModelProperty(value = "充值类型")
     private RechargeTypeEnum rechargeType;
