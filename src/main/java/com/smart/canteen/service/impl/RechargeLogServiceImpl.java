@@ -35,7 +35,7 @@ public class RechargeLogServiceImpl extends ServiceImpl<RechargeLogMapper, Recha
     public void addRechargeLogs(List<RechargeLog> logs) {
         boolean b = saveBatch(logs);
         logs.clear();
-        if (b) {
+        if (!b) {
             throw new BaseException(CanteenExceptionEnum.RECHARGE_FAIL);
         }
     }
