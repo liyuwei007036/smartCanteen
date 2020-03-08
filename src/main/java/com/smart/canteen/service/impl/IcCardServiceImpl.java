@@ -1,6 +1,7 @@
 package com.smart.canteen.service.impl;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -12,17 +13,26 @@ import com.lc.core.utils.ValidatorUtil;
 import com.smart.canteen.dto.CommonList;
 import com.smart.canteen.dto.card.CardForm;
 import com.smart.canteen.dto.card.CardSearch;
+import com.smart.canteen.dto.card.RechargeForm;
 import com.smart.canteen.entity.Employee;
 import com.smart.canteen.entity.IcCard;
+import com.smart.canteen.entity.RechargeLog;
 import com.smart.canteen.enums.*;
 import com.smart.canteen.mapper.IcCardMapper;
 import com.smart.canteen.service.IIcCardService;
+import com.smart.canteen.service.IRechargeLogService;
 import com.smart.canteen.utils.EntityLogUtil;
 import com.smart.canteen.vo.CardVo;
 import com.smart.canteen.vo.ResponseMsg;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * <p>
@@ -88,6 +98,36 @@ public class IcCardServiceImpl extends ServiceImpl<IcCardMapper, IcCard> impleme
         return new CommonList<>(page.hasNext(), page.getTotal(), page.getCurrent(), page.getRecords());
     }
 
+
+    @Autowired
+    private IRechargeLogService iRechargeLogService;
+
+    @Override
+    public void recharge(RechargeForm form, Account account) {
+        ValidatorUtil.validator(form);
+        List<Long> cardIds = form.getCardIds();
+        Collection<IcCard> cards = listByIds(cardIds);
+        List<RechargeLog> logs = new ArrayList<>();
+        cards.forEach(x -> {
+            RechargeLog rechargeLog = new RechargeLog();
+            double lastBalance = x.getCurrentBalance() + form.getMoney();
+            x.setCurrentBalance(lastBalance);
+            rechargeLog.setMoney(form.getMoney());
+            rechargeLog.setType(form.getRechargeType());
+            rechargeLog.setBalance(lastBalance);
+            rechargeLog.setEmployeeName(x.getEmployeeName());
+            rechargeLog.setEmployeeNo(x.getEmployeeNo());
+            EntityLogUtil.addNormalUser(rechargeLog, account);
+        });
+        boolean b = updateBatchById(cards);
+        cardIds.clear();
+        cards.clear();
+        if (b) {
+            iRechargeLogService.addRechargeLogs(logs);
+        } else {
+            throw new BaseException(CanteenExceptionEnum.RECHARGE_FAIL);
+        }
+    }
 
     @Override
     public ResponseMsg deductions(String cardNo, Integer money) {

@@ -5,6 +5,7 @@ import com.lc.core.dto.Account;
 import com.smart.canteen.dto.CommonList;
 import com.smart.canteen.dto.card.CardForm;
 import com.smart.canteen.dto.card.CardSearch;
+import com.smart.canteen.dto.card.RechargeForm;
 import com.smart.canteen.entity.Employee;
 import com.smart.canteen.entity.IcCard;
 import com.smart.canteen.vo.CardVo;
@@ -74,5 +75,12 @@ public interface IIcCardService extends IService<IcCard> {
      */
     ResponseMsg search(String cardNo);
 
+    /**
+     * 充值
+     *
+     * @param form
+     * @param account
+     */
+    void recharge(RechargeForm form, Account account);
 
 }

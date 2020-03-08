@@ -5,8 +5,6 @@ import com.baomidou.mybatisplus.generator.AutoGenerator;
 import com.baomidou.mybatisplus.generator.config.*;
 import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
 import org.junit.Test;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Profile;
 
 /**
  * <p>
@@ -33,8 +31,8 @@ public class MysqlGenerator {
         gc.setActiveRecord(true);
         gc.setEnableCache(false);// XML 二级缓存
 
-        String entry_name = "EmployeeRole";
-        String table_name = "employee_role";
+        String entry_name = "RechargeLog";
+        String table_name = "recharge_log";
 
 
         gc.setServiceImplName(entry_name + "ServiceImpl");

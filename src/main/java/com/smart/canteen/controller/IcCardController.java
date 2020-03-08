@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author lc
  * @since 2020-03-03
  */
-@Api(value = "卡片管理")
+@Api(tags = "卡片管理")
 @Valid(needLogin = true)
 @RestController
 @RequestMapping("/icCard")
