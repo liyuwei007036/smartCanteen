@@ -9,6 +9,7 @@ import com.smart.canteen.dto.CommonList;
 import com.smart.canteen.dto.order.OrderSearch;
 import com.smart.canteen.entity.IcCard;
 import com.smart.canteen.entity.Order;
+import com.smart.canteen.enums.OrderChannelEnum;
 import com.smart.canteen.enums.OrderTypeEnum;
 import com.smart.canteen.mapper.OrderMapper;
 import com.smart.canteen.service.IOrderService;
@@ -42,8 +43,9 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         order.setEmployeeNo(card.getEmployeeNo());
         order.setMoney(money);
         order.setCreateTime(LocalDateTime.now());
-        order.setType(OrderTypeEnum.MACHINE);
+        order.setChannel(OrderChannelEnum.MACHINE);
         order.setMachineNo(machineNo);
+        order.setType(OrderTypeEnum.NORMAL);
         return save(order);
     }
 

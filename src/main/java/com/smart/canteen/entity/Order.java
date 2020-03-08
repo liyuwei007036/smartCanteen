@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.*;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.smart.canteen.enums.OrderChannelEnum;
 import com.smart.canteen.enums.OrderTypeEnum;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -51,13 +52,19 @@ public class Order extends Model<Order> {
     @TableField(value = "money", insertStrategy = FieldStrategy.NOT_NULL)
     private Double money;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "")
     @ApiModelProperty(value = "消费后金额")
     @TableField("balance")
     private Double balance;
 
+    @ApiModelProperty(value = "消费渠道")
+    @TableField(value = "channel", insertStrategy = FieldStrategy.NOT_NULL)
+    private OrderChannelEnum channel;
+
     @ApiModelProperty(value = "消费类型")
     @TableField(value = "type", insertStrategy = FieldStrategy.NOT_NULL)
     private OrderTypeEnum type;
+
 
     @ApiModelProperty(value = "员工工号")
     @TableField(value = "employee_no", insertStrategy = FieldStrategy.NOT_EMPTY)

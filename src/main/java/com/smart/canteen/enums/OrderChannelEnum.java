@@ -10,12 +10,12 @@ import lombok.Getter;
  * @date 2020/3/8下午 8:18
  */
 @AllArgsConstructor
-public enum OrderTypeEnum implements IEnum<Integer> {
+public enum OrderChannelEnum implements IEnum<Integer> {
     /**
-     * 消费类型
+     * 消费渠道
      */
-    NORMAL(1, "正常"),
-    FILL_BUCKLE(2, "补扣");
+    MACHINE(1, "刷卡机"),
+    WANGYI(2, "网易严选");
 
     private Integer value;
 

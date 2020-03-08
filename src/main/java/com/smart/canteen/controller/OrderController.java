@@ -8,6 +8,7 @@ import com.smart.canteen.dto.CommonList;
 import com.smart.canteen.dto.order.OrderSearch;
 import com.smart.canteen.service.IOrderService;
 import com.smart.canteen.vo.OrderVo;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author lc
  * @since 2020-03-08
  */
+@Api(tags = "消费管理")
 @Valid(needLogin = true)
 @RestController
 @RequestMapping("/order")

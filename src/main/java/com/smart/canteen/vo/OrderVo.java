@@ -1,6 +1,7 @@
 package com.smart.canteen.vo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.smart.canteen.enums.OrderChannelEnum;
 import com.smart.canteen.enums.OrderTypeEnum;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -31,6 +32,9 @@ public class OrderVo implements Serializable {
 
     @ApiModelProperty(value = "消费后金额")
     private Double balance;
+
+    @ApiModelProperty(value = "消费渠道")
+    private OrderChannelEnum channel;
 
     @ApiModelProperty(value = "消费类型")
     private OrderTypeEnum type;
