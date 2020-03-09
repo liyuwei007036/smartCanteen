@@ -27,11 +27,9 @@ import com.smart.canteen.vo.CardVo;
 import com.smart.canteen.vo.ResponseMsg;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.TransactionDefinition;
-import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -45,7 +43,7 @@ import java.util.List;
  * @author lc
  * @since 2020-03-03
  */
-@Transactional(rollbackFor = Exception.class)
+@Transactional(rollbackFor = Exception.class, timeout = 2000)
 @Service
 public class IcCardServiceImpl extends ServiceImpl<IcCardMapper, IcCard> implements IIcCardService {
 
@@ -150,7 +148,7 @@ public class IcCardServiceImpl extends ServiceImpl<IcCardMapper, IcCard> impleme
         if (card.getStatus() == CardStatusEnum.DISABLE) {
             return new ResponseMsg(CmdCodeEnum.CON, Voices.LOSS, cardNo, "挂失卡!");
         }
-        Double currentBalance = card.getCurrentBalance();
+        double currentBalance = ObjectUtil.getDouble(card.getCurrentBalance());
         Double lastBalance = MathUtil.sub(currentBalance, MathUtil.div(money, 100, 2));
         if (lastBalance < 0) {
             return new ResponseMsg(CmdCodeEnum.CON, Voices.NOT, cardNo, "余额不足!");
@@ -164,7 +162,8 @@ public class IcCardServiceImpl extends ServiceImpl<IcCardMapper, IcCard> impleme
         if (update && saveOrder) {
             msg = new ResponseMsg(CmdCodeEnum.CON, Voices.SUCCESS, cardNo, lastBalance, money);
         } else {
-            msg = new ResponseMsg(CmdCodeEnum.CON, Voices.NOT, cardNo, "刷卡太快请重刷");
+            msg = new ResponseMsg(CmdCodeEnum.CON, Voices.WARN, cardNo, "刷卡太快请重刷");
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
         }
         return msg;
     }
@@ -189,7 +188,7 @@ public class IcCardServiceImpl extends ServiceImpl<IcCardMapper, IcCard> impleme
         if (card.getStatus() == CardStatusEnum.DISABLE) {
             return new ResponseMsg(CmdCodeEnum.CON, Voices.LOSS, cardNo, "挂失卡!");
         }
-        return new ResponseMsg(CmdCodeEnum.CON, Voices.THANKS, cardNo, MathUtil.mul(card.getCurrentBalance(), 1, 2));
+        return new ResponseMsg(CmdCodeEnum.CON, Voices.THANKS, cardNo, MathUtil.mul(ObjectUtil.getDouble(card.getCurrentBalance()), 1, 2));
     }
 
     @Override
@@ -197,6 +196,9 @@ public class IcCardServiceImpl extends ServiceImpl<IcCardMapper, IcCard> impleme
         IcCard byId = getById(id);
         if (byId == null) {
             throw new BaseException(CanteenExceptionEnum.CARD_NOT_EXIST);
+        }
+        if (byId.getStatus() != CardStatusEnum.ENABLE) {
+            throw new BaseException(CanteenExceptionEnum.CARD_TYPE_ERROR);
         }
         byId.setStatus(CardStatusEnum.DISABLE);
         byId.setAccountStatus(CardAccountEnum.LOSS);

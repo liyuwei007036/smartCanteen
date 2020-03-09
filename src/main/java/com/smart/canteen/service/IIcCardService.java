@@ -55,6 +55,12 @@ public interface IIcCardService extends IService<IcCard> {
     void update(CardForm form, Account create);
 
 
+    /**
+     * 查询卡片
+     *
+     * @param search
+     * @return
+     */
     CommonList<CardVo> listCard(CardSearch search);
 
 
@@ -91,7 +97,6 @@ public interface IIcCardService extends IService<IcCard> {
      * @param account
      */
     void reportLoss(Long id, Account account);
-
 
 
 }

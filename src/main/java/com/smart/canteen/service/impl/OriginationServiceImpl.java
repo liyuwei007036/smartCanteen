@@ -16,11 +16,14 @@ import com.smart.canteen.enums.CanteenExceptionEnum;
 import com.smart.canteen.mapper.OriginationMapper;
 import com.smart.canteen.service.IOriginationService;
 import com.smart.canteen.utils.EntityLogUtil;
+import com.smart.canteen.vo.OriginationVo;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -138,8 +141,27 @@ public class OriginationServiceImpl extends ServiceImpl<OriginationMapper, Origi
     }
 
     @Override
-    public List<Origination> listAll() {
-        return list();
+    public List<OriginationVo> listAll() {
+        List<Origination> all = list();
+        List<Origination> roots = all.stream().filter(x -> x.getParentId() == 0).collect(Collectors.toList());
+        all.removeAll(roots);
+        return createTreeNode(roots, all);
+    }
+
+
+    private List<OriginationVo> createTreeNode(List<Origination> list, List<Origination> all) {
+        List<OriginationVo> res = new ArrayList<>();
+        list.forEach(x -> {
+            Long id = x.getId();
+            String name = x.getName();
+            List<Origination> s = all.stream().filter(y -> x.getId().equals(y.getParentId())).collect(Collectors.toList());
+            OriginationVo vo = new OriginationVo();
+            vo.setChildren(createTreeNode(s, all));
+            vo.setId(id);
+            vo.setLabel(name);
+            res.add(vo);
+        });
+        return res;
     }
 
 

@@ -4,6 +4,7 @@
 
     <select id="selectPageVo" resultType="com.smart.canteen.vo.CardVo">
         select emp.name as empName, card.id as id, emp.no as empNo, emp.mobile as mobile, card.no as cardNo,
+        emp.id as empId, emp.origination_name as originationName,
         card.type as cardType, card.deposit as deposit, card.current_balance as currentBalance, card.status as status,
         card.account_status as accountStatus, card.validity_time as validityTime
         from employee as emp,

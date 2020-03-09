@@ -13,6 +13,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -104,6 +105,6 @@ public class EmployeeForm implements Serializable {
     @Future(groups = {Insert.class, Update.class})
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     @ApiModelProperty(value = "有效期")
-    private LocalDateTime validityTime;
+    private Date validityTime;
 
 }

@@ -6,6 +6,7 @@ import com.smart.canteen.dto.CommonList;
 import com.smart.canteen.dto.origination.OriginationForm;
 import com.smart.canteen.dto.origination.OriginationSearch;
 import com.smart.canteen.entity.Origination;
+import com.smart.canteen.vo.OriginationVo;
 
 import java.util.List;
 
@@ -81,7 +82,7 @@ public interface IOriginationService extends IService<Origination> {
      *
      * @return
      */
-    List<Origination> listAll();
+    List<OriginationVo> listAll();
 
     /**
      * 判断是否重复

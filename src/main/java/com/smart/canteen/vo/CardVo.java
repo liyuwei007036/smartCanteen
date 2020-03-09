@@ -21,6 +21,9 @@ public class CardVo implements Serializable {
     @ApiModelProperty(value = "ic卡Id")
     private Long id;
 
+    @ApiModelProperty(value = "用户Id")
+    private Long empId;
+
     @ApiModelProperty(value = "姓名")
     private String empName;
 
@@ -41,6 +44,9 @@ public class CardVo implements Serializable {
 
     @ApiModelProperty(value = "卡余额")
     private Double currentBalance;
+
+    @ApiModelProperty(value = "组织名称")
+    private String originationName;
 
     @ApiModelProperty(value = "卡状态")
     private CardStatusEnum status;
