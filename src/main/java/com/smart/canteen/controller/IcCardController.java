@@ -9,6 +9,7 @@ import com.lc.core.service.RedisService;
 import com.lc.core.utils.ObjectUtil;
 import com.smart.canteen.dto.CommonList;
 import com.smart.canteen.dto.card.CardSearch;
+import com.smart.canteen.dto.card.PatchCardForm;
 import com.smart.canteen.enums.CanteenExceptionEnum;
 import com.smart.canteen.service.IIcCardService;
 import com.smart.canteen.vo.CardVo;
@@ -78,6 +79,13 @@ public class IcCardController extends BaseController {
             redisService.remove("CARD_NO", 9);
         }
         return new ResponseInfo<>(ObjectUtil.getString(cardNo).trim());
+    }
+
+    @ApiOperation(value = "补卡", notes = "补卡")
+    @RequestMapping(value = "/patch", method = RequestMethod.POST)
+    public ResponseInfo patch(@RequestBody PatchCardForm form) {
+        iIcCardService.patchCard(form, getCurrentUser());
+        return new ResponseInfo<>();
     }
 }
 
