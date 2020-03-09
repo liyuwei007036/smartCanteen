@@ -2,9 +2,11 @@ package com.smart.canteen.utils;
 
 import com.smart.canteen.server.Packet;
 import com.smart.canteen.vo.ResponseMsg;
+import io.netty.buffer.Unpooled;
+import io.netty.channel.socket.DatagramPacket;
 
-import java.net.DatagramPacket;
-import java.net.InetAddress;
+import java.net.InetSocketAddress;
+
 
 /**
  * @author lc
@@ -12,7 +14,7 @@ import java.net.InetAddress;
  */
 public class SendMsgUtil {
 
-    public static DatagramPacket sendMsg(ResponseMsg msg, InetAddress address, Packet receiveObj) {
+    public static DatagramPacket sendMsg(ResponseMsg msg, InetSocketAddress address, Packet receiveObj) {
         byte[] msgBytes = msg.getMsg();
         int nSendFlag = 0;
         byte[] sendData = new byte[1024];
@@ -40,7 +42,7 @@ public class SendMsgUtil {
         nSendFlag += 3;
         byte[] crcCode = CrcUtil.calcCrc16(sendData, 2, nLen + 4);
         System.arraycopy(crcCode, 0, sendData, nSendFlag, 2);
-        return new DatagramPacket(sendData, sendData.length, address, 3000);
+        return new DatagramPacket(Unpooled.copiedBuffer(sendData), address);
     }
 
 }

@@ -137,15 +137,8 @@ public class IcCardServiceImpl extends ServiceImpl<IcCardMapper, IcCard> impleme
     @Autowired
     private IOrderService iOrderService;
 
-    @Autowired
-    private DataSourceTransactionManager dataSourceTransactionManager;
-    @Autowired
-    private TransactionDefinition transactionDefinition;
-
     @Override
     public ResponseMsg deductions(String cardNo, Integer money, String machineNo) {
-        Long start = System.currentTimeMillis();
-        TransactionStatus transactionStatus = dataSourceTransactionManager.getTransaction(transactionDefinition);
         IcCard card = getOne(Wrappers.<IcCard>lambdaQuery()
                         .select(IcCard::getCurrentBalance, IcCard::getStatus, IcCard::getId, IcCard::getNo, IcCard::getEmployeeName, IcCard::getEmployeeNo)
                         .eq(IcCard::getNo, cardNo),
@@ -167,19 +160,13 @@ public class IcCardServiceImpl extends ServiceImpl<IcCardMapper, IcCard> impleme
                 .eq(IcCard::getId, card.getId()));
         boolean saveOrder = iOrderService.addOrderForMachine(card, MathUtil.div(money, 100, 2), machineNo, lastBalance);
         ResponseMsg msg;
-
         if (update && saveOrder) {
-            Long end = System.currentTimeMillis();
-            System.out.println(end - start);
             msg = new ResponseMsg(CmdCodeEnum.CON, Voices.SUCCESS, cardNo, lastBalance, money);
-            dataSourceTransactionManager.commit(transactionStatus);
         } else {
             msg = new ResponseMsg(CmdCodeEnum.CON, Voices.NOT, cardNo, "刷卡太快请重刷");
-            dataSourceTransactionManager.rollback(transactionStatus);
         }
         return msg;
     }
-
 
     @Override
     public ResponseMsg search(String cardNo) {

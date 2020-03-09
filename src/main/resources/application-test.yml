@@ -12,6 +12,11 @@ server:
     # 是否分配的直接内存
     direct-buffers: true
 
+netty:
+  port: 3000
+  url: 127.0.0.1
+
+
 spring:
   application:
     name: smart-centeen

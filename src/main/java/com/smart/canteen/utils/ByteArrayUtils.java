@@ -8,19 +8,7 @@ import java.io.IOException;
  * @author lc
  * @date 2020/3/6下午 10:13
  */
-public class HexUtils {
-
-    public static String byte2Hex(byte aByte) {
-        return String.format("%x", aByte);
-    }
-
-    public static String byte2Hex(byte[] bytes) {
-        StringBuilder stringBuffer = new StringBuilder();
-        for (byte aByte : bytes) {
-            stringBuffer.append(String.format("%x", aByte));
-        }
-        return stringBuffer.toString();
-    }
+public class ByteArrayUtils {
 
     public static long byteArrayToLong(byte[] data) throws IOException {
         ByteArrayInputStream bai = new ByteArrayInputStream(data);
@@ -33,5 +21,18 @@ public class HexUtils {
         DataInputStream dis = new DataInputStream(bai);
         return dis.readInt();
     }
+
+    public static String byteArrayToString(byte[] data) throws IOException {
+        ByteArrayInputStream bai = new ByteArrayInputStream(data);
+        DataInputStream dis = new DataInputStream(bai);
+        return dis.readUTF();
+    }
+
+    public static int byteArrayToShort(byte[] data) throws IOException {
+        ByteArrayInputStream bai = new ByteArrayInputStream(data);
+        DataInputStream dis = new DataInputStream(bai);
+        return dis.readUnsignedShort();
+    }
+
 
 }

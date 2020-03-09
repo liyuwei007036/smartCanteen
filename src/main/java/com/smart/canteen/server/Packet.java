@@ -1,14 +1,14 @@
 package com.smart.canteen.server;
 
 import com.lc.core.error.BaseException;
-import com.lc.core.utils.ObjectUtil;
 import com.smart.canteen.enums.CanteenExceptionEnum;
 import com.smart.canteen.enums.CmdCodeEnum;
 import com.smart.canteen.utils.CrcUtil;
-import com.smart.canteen.utils.HexUtils;
+import com.smart.canteen.utils.ByteArrayUtils;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
+import java.io.IOException;
 import java.util.Arrays;
 
 /**
@@ -82,7 +82,7 @@ public class Packet {
 
     }
 
-    public Packet(byte[] dataBytes) {
+    public Packet(byte[] dataBytes) throws IOException {
         // 引导码 0
         this.guideCode = dataBytes[0];
         // 系统设备号 1
@@ -94,7 +94,7 @@ public class Packet {
         // 指令码 6
         this.cmdCode = dataBytes[6];
         // 不包含指令码数据包 = 数据长度 -1
-        int dataLength = ObjectUtil.getInteger(this.dataLen[0] + "" + this.dataLen[1]) - 1;
+        int dataLength = ByteArrayUtils.byteArrayToShort(this.dataLen) - 1;
         this.data = new byte[dataLength];
         // 数据包从第7为开始
         System.arraycopy(dataBytes, 7, this.data, 0, dataLength);
@@ -115,7 +115,7 @@ public class Packet {
             this.realData = new byte[data.length - 5];
             System.arraycopy(this.data, 5, this.realData, 0, data.length - 5);
         } else {
-            log.warn("数据包:" + HexUtils.byte2Hex(this.data));
+            log.warn("数据包:" + Arrays.toString(this.data));
         }
     }
 
