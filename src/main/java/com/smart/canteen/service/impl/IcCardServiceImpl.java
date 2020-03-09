@@ -20,6 +20,7 @@ import com.smart.canteen.entity.IcCard;
 import com.smart.canteen.entity.RechargeLog;
 import com.smart.canteen.enums.*;
 import com.smart.canteen.mapper.IcCardMapper;
+import com.smart.canteen.service.IEmployeeService;
 import com.smart.canteen.service.IIcCardService;
 import com.smart.canteen.service.IOrderService;
 import com.smart.canteen.service.IRechargeLogService;
@@ -146,7 +147,7 @@ public class IcCardServiceImpl extends ServiceImpl<IcCardMapper, IcCard> impleme
         if (card == null) {
             return new ResponseMsg(CmdCodeEnum.CON, Voices.INVALID, cardNo, "无效卡!");
         }
-        if (card.getStatus() == CardStatusEnum.DISABLE) {
+        if (card.getStatus() != CardStatusEnum.ENABLE) {
             return new ResponseMsg(CmdCodeEnum.CON, Voices.LOSS, cardNo, "挂失卡!");
         }
         double currentBalance = ObjectUtil.getDouble(card.getCurrentBalance());
@@ -210,6 +211,9 @@ public class IcCardServiceImpl extends ServiceImpl<IcCardMapper, IcCard> impleme
         }
     }
 
+    @Autowired
+    private IEmployeeService iEmployeeService;
+
     @Override
     public void patchCard(PatchCardForm form, Account account) {
         ValidatorUtil.validator(form, PatchCardForm.Insert.class);
@@ -230,11 +234,19 @@ public class IcCardServiceImpl extends ServiceImpl<IcCardMapper, IcCard> impleme
         if (!b) {
             throw new BaseException(CanteenExceptionEnum.UPDATE_FAIL);
         }
+
         newCard = new IcCard();
         BeanUtils.copyProperties(old, newCard, "id", "no", "account_status", "status");
         newCard.setNo(form.getCardNo());
+        newCard.setAccountStatus(CardAccountEnum.REISSUE);
+        newCard.setStatus(CardStatusEnum.ENABLE);
         EntityLogUtil.addNormalUser(newCard, account);
         boolean save = save(newCard);
+        Employee emp = iEmployeeService.getById(old.getEmployeeId());
+        emp.setCardId(newCard.getId());
+        emp.setCardNo(form.getCardNo());
+        EntityLogUtil.addNormalUser(emp, account);
+        iEmployeeService.updateById(emp);
         if (!save) {
             throw new BaseException(CanteenExceptionEnum.PATCH_CARD_ERROR);
         }
