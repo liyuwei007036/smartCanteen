@@ -67,7 +67,6 @@ public class OriginationController extends BaseController {
         return new ResponseInfo<>(iOriginationService.getById(ObjectUtil.getLong(id)));
     }
 
-    @Valid
     @ApiOperation(value = "获取所有组织", notes = "获取组织")
     @RequestMapping(value = "listAll", method = RequestMethod.GET)
     public ResponseInfo listAll() {
