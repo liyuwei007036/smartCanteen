@@ -235,7 +235,7 @@ public class IcCardServiceImpl extends ServiceImpl<IcCardMapper, IcCard> impleme
         newCard.setNo(form.getCardNo());
         EntityLogUtil.addNormalUser(newCard, account);
         boolean save = save(newCard);
-        if (save) {
+        if (!save) {
             throw new BaseException(CanteenExceptionEnum.PATCH_CARD_ERROR);
         }
     }
