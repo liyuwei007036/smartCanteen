@@ -13,6 +13,7 @@ import com.lc.core.utils.ValidatorUtil;
 import com.smart.canteen.dto.CommonList;
 import com.smart.canteen.dto.card.CardForm;
 import com.smart.canteen.dto.card.CardSearch;
+import com.smart.canteen.dto.card.PatchCardForm;
 import com.smart.canteen.dto.recharge.RechargeForm;
 import com.smart.canteen.entity.Employee;
 import com.smart.canteen.entity.IcCard;
@@ -206,6 +207,36 @@ public class IcCardServiceImpl extends ServiceImpl<IcCardMapper, IcCard> impleme
         boolean b = updateById(byId);
         if (!b) {
             throw new BaseException(CanteenExceptionEnum.UPDATE_FAIL);
+        }
+    }
+
+    @Override
+    public void patchCard(PatchCardForm form, Account account) {
+        ValidatorUtil.validator(form, PatchCardForm.Insert.class);
+        IcCard old = getById(form.getId());
+        if (old == null) {
+            throw new BaseException(CanteenExceptionEnum.CARD_NOT_EXIST);
+        }
+        if (old.getStatus() != CardStatusEnum.DISABLE && old.getAccountStatus() != CardAccountEnum.LOSS) {
+            throw new BaseException(CanteenExceptionEnum.CARD_TYPE_ERROR);
+        }
+        IcCard newCard = getByCode(form.getCardNo());
+        if (newCard != null) {
+            throw new BaseException(CanteenExceptionEnum.CARD_NO_REPEAT);
+        }
+        old.setAccountStatus(CardAccountEnum.UN_LOSS);
+        EntityLogUtil.addNormalUser(old, account);
+        boolean b = updateById(old);
+        if (!b) {
+            throw new BaseException(CanteenExceptionEnum.UPDATE_FAIL);
+        }
+        newCard = new IcCard();
+        BeanUtils.copyProperties(old, newCard, "id", "no", "account_status", "status");
+        newCard.setNo(form.getCardNo());
+        EntityLogUtil.addNormalUser(newCard, account);
+        boolean save = save(newCard);
+        if (save) {
+            throw new BaseException(CanteenExceptionEnum.PATCH_CARD_ERROR);
         }
     }
 }

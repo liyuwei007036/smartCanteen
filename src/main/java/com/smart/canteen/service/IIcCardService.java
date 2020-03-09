@@ -5,6 +5,7 @@ import com.lc.core.dto.Account;
 import com.smart.canteen.dto.CommonList;
 import com.smart.canteen.dto.card.CardForm;
 import com.smart.canteen.dto.card.CardSearch;
+import com.smart.canteen.dto.card.PatchCardForm;
 import com.smart.canteen.dto.recharge.RechargeForm;
 import com.smart.canteen.entity.Employee;
 import com.smart.canteen.entity.IcCard;
@@ -98,5 +99,11 @@ public interface IIcCardService extends IService<IcCard> {
      */
     void reportLoss(Long id, Account account);
 
-
+    /**
+     * 补卡
+     *
+     * @param form
+     * @param account
+     */
+    void patchCard(PatchCardForm form, Account account);
 }
