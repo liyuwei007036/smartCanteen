@@ -182,5 +182,18 @@ public class IcCardServiceImpl extends ServiceImpl<IcCardMapper, IcCard> impleme
         return new ResponseMsg(CmdCodeEnum.CON, Voices.THANKS, cardNo, MathUtil.mul(card.getCurrentBalance(), 1, 2));
     }
 
-
+    @Override
+    public void reportLoss(Long id, Account account) {
+        IcCard byId = getById(id);
+        if (byId == null) {
+            throw new BaseException(CanteenExceptionEnum.CARD_NOT_EXIST);
+        }
+        byId.setStatus(CardStatusEnum.DISABLE);
+        byId.setAccountStatus(CardAccountEnum.LOSS);
+        EntityLogUtil.addNormalUser(byId, account);
+        boolean b = updateById(byId);
+        if (!b) {
+            throw new BaseException(CanteenExceptionEnum.UPDATE_FAIL);
+        }
+    }
 }

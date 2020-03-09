@@ -84,4 +84,14 @@ public interface IIcCardService extends IService<IcCard> {
      */
     void recharge(RechargeForm form, Account account);
 
+    /**
+     * 挂失
+     *
+     * @param id
+     * @param account
+     */
+    void reportLoss(Long id, Account account);
+
+
+
 }
