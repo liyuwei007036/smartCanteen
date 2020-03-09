@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lc.core.dto.Account;
 import com.lc.core.error.BaseException;
+import com.lc.core.service.RedisService;
 import com.lc.core.utils.MathUtil;
 import com.lc.core.utils.ModelMapperUtils;
 import com.lc.core.utils.ObjectUtil;
@@ -168,13 +169,22 @@ public class IcCardServiceImpl extends ServiceImpl<IcCardMapper, IcCard> impleme
         return msg;
     }
 
+    @Autowired
+    private RedisService redisService;
+
     @Override
     public ResponseMsg search(String cardNo) {
         IcCard card = getOne(Wrappers.<IcCard>lambdaQuery()
                         .eq(IcCard::getNo, cardNo),
                 false);
         if (card == null) {
-            return new ResponseMsg(CmdCodeEnum.CON, Voices.WELCOME, cardNo, "无效卡");
+            Object value = redisService.get("GET_CARD_NO", 9);
+            if (value == null) {
+                return new ResponseMsg(CmdCodeEnum.CON, Voices.WELCOME, cardNo, "无效卡");
+            } else {
+                redisService.put("CARD_NO", cardNo, 9, 60L);
+                return new ResponseMsg(CmdCodeEnum.CON, Voices.WELCOME, cardNo, "读卡中...");
+            }
         }
         if (card.getStatus() == CardStatusEnum.DISABLE) {
             return new ResponseMsg(CmdCodeEnum.CON, Voices.LOSS, cardNo, "挂失卡!");

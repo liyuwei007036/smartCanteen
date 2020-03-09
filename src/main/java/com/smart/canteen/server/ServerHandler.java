@@ -32,7 +32,12 @@ public class ServerHandler extends SimpleChannelInboundHandler<DatagramPacket> {
         if (cmdCode == (byte) CmdCodeEnum.CON.getCode()) {
             IIcCardService iIcCardService = SpringUtil.getBean(IIcCardService.class);
             int cardNoi = ByteArrayUtils.byteArrayToInt(recObj.getCardNumber());
-            String cardNo = String.valueOf(Math.abs(cardNoi));
+            String cardNo;
+            if (cardNoi < 0) {
+                cardNo = "0" + Math.abs(cardNoi);
+            } else {
+                cardNo = "1" + Math.abs(cardNoi);
+            }
             switch (ConEventEnum.getByCode(recObj.getEvent())) {
                 case QUERY_BALANCE:
                     search = iIcCardService.search(cardNo);
