@@ -20,7 +20,7 @@ public class ServerListener implements CommandLineRunner {
     private int port;
 
     @Override
-    public void run(String... args) throws Exception {
+    public void run(String... args) {
         server.run(port);
     }
 }
