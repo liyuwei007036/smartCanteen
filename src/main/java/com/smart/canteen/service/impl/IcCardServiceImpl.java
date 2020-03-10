@@ -191,6 +191,9 @@ public class IcCardServiceImpl extends ServiceImpl<IcCardMapper, IcCard> impleme
             }
         }
         if (card.getStatus() == CardStatusEnum.DISABLE) {
+            if (card.getAccountStatus() == CardAccountEnum.QUIT) {
+                return new ResponseMsg(CmdCodeEnum.CON, Voices.INVALID, cardNo, "无效卡!");
+            }
             return new ResponseMsg(CmdCodeEnum.CON, Voices.LOSS, cardNo, "挂失卡!");
         }
         return new ResponseMsg(CmdCodeEnum.CON, Voices.THANKS, cardNo, MathUtil.mul(ObjectUtil.getDouble(card.getCurrentBalance()), 1, 2));
@@ -263,6 +266,7 @@ public class IcCardServiceImpl extends ServiceImpl<IcCardMapper, IcCard> impleme
         if (emp.getStatus() != EmployeeStatusEnum.ENABLE) {
             throw new BaseException(CanteenExceptionEnum.USER_IS_QUIT);
         }
+        emp.setStatus(EmployeeStatusEnum.DISABLE);
         boolean b = iEmployeeService.updateById(emp);
         if (!b) {
             throw new BaseException(CanteenExceptionEnum.UPDATE_FAIL);
