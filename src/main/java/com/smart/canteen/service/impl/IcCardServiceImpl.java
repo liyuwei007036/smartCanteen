@@ -13,6 +13,7 @@ import com.lc.core.utils.ValidatorUtil;
 import com.smart.canteen.dto.CommonList;
 import com.smart.canteen.dto.card.CardForm;
 import com.smart.canteen.dto.card.CardSearch;
+import com.smart.canteen.dto.card.DeductionForm;
 import com.smart.canteen.dto.card.PatchCardForm;
 import com.smart.canteen.dto.recharge.RechargeForm;
 import com.smart.canteen.entity.Employee;
@@ -281,6 +282,30 @@ public class IcCardServiceImpl extends ServiceImpl<IcCardMapper, IcCard> impleme
             if (!b) {
                 throw new BaseException(CanteenExceptionEnum.UPDATE_FAIL);
             }
+        }
+    }
+
+
+    @Override
+    public void deduction(DeductionForm form, Account account) {
+        ValidatorUtil.validator(form);
+        IcCard card = getById(form.getCardId());
+        if (card == null) {
+            throw new BaseException(CanteenExceptionEnum.CARD_NOT_EXIST);
+        }
+        if (card.getStatus() != CardStatusEnum.DISABLE) {
+            throw new BaseException(CanteenExceptionEnum.CARD_TYPE_ERROR);
+        }
+        double sub = MathUtil.sub(card.getCurrentBalance(), form.getMoney());
+        card.setCurrentBalance(sub);
+        EntityLogUtil.addNormalUser(card, account);
+        boolean b = updateById(card);
+        if (!b) {
+            throw new BaseException(CanteenExceptionEnum.UPDATE_FAIL);
+        }
+        boolean b1 = iOrderService.addOrderForDeduction(card, form.getMoney(), account, sub);
+        if (!b1) {
+            throw new BaseException(CanteenExceptionEnum.UPDATE_FAIL);
         }
     }
 }

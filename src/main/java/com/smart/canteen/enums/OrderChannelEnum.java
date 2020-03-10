@@ -15,8 +15,8 @@ public enum OrderChannelEnum implements IEnum<Integer> {
      * 消费渠道
      */
     MACHINE(1, "刷卡机"),
-    WANGYI(2, "网易严选");
-
+    WANGYI(2, "网易严选"),
+    DEDUCTION(3, "补扣");
     private Integer value;
 
     @JsonValue

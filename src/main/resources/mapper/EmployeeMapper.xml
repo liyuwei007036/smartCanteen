@@ -10,4 +10,35 @@
         WHERE id=#{eid}
     </update>
 
+    <select id="listEmp" resultType="com.smart.canteen.vo.EmployeeVO">
+        select * from employee as emp, ic_card as card where card.id = emp.card_id
+        and emp.deleted = 0
+
+        <if test="search.name != null and search.name != '' ">
+            and emp.name like CONCAT(#{search.name}, '%')
+        </if>
+        <if test="search.no != null and search.no != '' ">
+            and emp.no like CONCAT(#{search.no}, '%')
+        </if>
+        <if test="search.mobile != null and search.mobile != '' ">
+            and emp.mobile like CONCAT(#{search.mobile}, '%')
+        </if>
+        <if test="search.orgName != null and search.orgName != '' ">
+            and emp.origination_name like CONCAT(#{search.orgName}, '%')
+        </if>
+        <if test="search.cardTimeStart != null ">
+            and card.validity_time <![CDATA[ >= ]]> #{search.cardTimeStart}
+        </if>
+        <if test="search.cardTimeEnd != null ">
+            and card.validity_time <![CDATA[ <= ]]> #{search.cardTimeEnd}
+        </if>
+        <if test="search.cardTimeStart != null ">
+            and card.validity_time <![CDATA[ >= ]]> #{search.cardTimeStart}
+        </if>
+        <if test="search.cardTimeEnd != null ">
+            and card.validity_time <![CDATA[ <= ]]> #{search.cardTimeEnd}
+        </if>
+        order by card.status , card.create_time desc
+    </select>
+
 </mapper>

@@ -1,6 +1,7 @@
 package com.smart.canteen.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.lc.core.dto.Account;
 import com.smart.canteen.dto.CommonList;
 import com.smart.canteen.dto.order.OrderSearch;
 import com.smart.canteen.dto.recharge.RechargeLogSearch;
@@ -29,6 +30,17 @@ public interface IOrderService extends IService<Order> {
      * @return
      */
     boolean addOrderForMachine(IcCard card, Double money, String machineNo, Double balance);
+
+    /**
+     * 添加消费订单
+     *
+     * @param card
+     * @param money
+     * @param account
+     * @param balance
+     * @return
+     */
+    boolean addOrderForDeduction(IcCard card, Double money, Account account, Double balance);
 
     /**
      * 消费记录

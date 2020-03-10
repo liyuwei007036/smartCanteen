@@ -9,6 +9,7 @@ import com.lc.core.service.RedisService;
 import com.lc.core.utils.ObjectUtil;
 import com.smart.canteen.dto.CommonList;
 import com.smart.canteen.dto.card.CardSearch;
+import com.smart.canteen.dto.card.DeductionForm;
 import com.smart.canteen.dto.card.PatchCardForm;
 import com.smart.canteen.enums.CanteenExceptionEnum;
 import com.smart.canteen.service.IIcCardService;
@@ -91,8 +92,16 @@ public class IcCardController extends BaseController {
 
     @ApiOperation(value = "销户", notes = "销户")
     @RequestMapping(value = "deleted/{id}", method = RequestMethod.DELETE)
-    public ResponseInfo deleteEmployee(@PathVariable("id") Long id) {
+    public ResponseInfo deletedCard(@PathVariable("id") Long id) {
         iIcCardService.cancellation(id, getCurrentUser());
+        return new ResponseInfo<>();
+    }
+
+
+    @ApiOperation(value = "补扣", notes = "补扣")
+    @RequestMapping(value = "deduction", method = RequestMethod.POST)
+    public ResponseInfo deduction(@RequestBody DeductionForm form) {
+        iIcCardService.deduction(form, getCurrentUser());
         return new ResponseInfo<>();
     }
 }

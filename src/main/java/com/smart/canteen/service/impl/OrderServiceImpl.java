@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.lc.core.dto.Account;
 import com.lc.core.utils.ModelMapperUtils;
 import com.smart.canteen.dto.CommonList;
 import com.smart.canteen.dto.order.OrderSearch;
@@ -46,6 +47,25 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         order.setChannel(OrderChannelEnum.MACHINE);
         order.setMachineNo(machineNo);
         order.setType(OrderTypeEnum.NORMAL);
+        return save(order);
+    }
+
+
+    @Override
+    public boolean addOrderForDeduction(IcCard card, Double money, Account account, Double balance) {
+        Order order = new Order();
+        order.setCardId(card.getId());
+        order.setBalance(balance);
+        order.setCardNo(card.getNo());
+        order.setEmployeeName(card.getEmployeeName());
+        order.setEmployeeNo(card.getEmployeeNo());
+        order.setMoney(money);
+        order.setCreateTime(LocalDateTime.now());
+        order.setChannel(OrderChannelEnum.DEDUCTION);
+        order.setType(OrderTypeEnum.FILL_BUCKLE);
+        order.setCreatorAccount(account.getAccount());
+        order.setCreatorName(account.getName());
+        order.setCreateTime(LocalDateTime.now());
         return save(order);
     }
 

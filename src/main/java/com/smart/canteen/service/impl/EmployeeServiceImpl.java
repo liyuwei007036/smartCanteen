@@ -16,7 +16,6 @@ import com.smart.canteen.dto.user.LoginForm;
 import com.smart.canteen.entity.Employee;
 import com.smart.canteen.entity.IcCard;
 import com.smart.canteen.enums.CanteenExceptionEnum;
-import com.smart.canteen.enums.CardStatusEnum;
 import com.smart.canteen.enums.EmployeeStatusEnum;
 import com.smart.canteen.mapper.EmployeeMapper;
 import com.smart.canteen.service.IEmployeeRoleService;
@@ -24,7 +23,6 @@ import com.smart.canteen.service.IEmployeeService;
 import com.smart.canteen.service.IIcCardService;
 import com.smart.canteen.utils.EntityLogUtil;
 import com.smart.canteen.vo.EmployeeVO;
-import com.smart.canteen.vo.ResponseMsg;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,9 +31,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 
 /**
@@ -182,15 +177,10 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
     }
 
     @Override
-    public CommonList<Employee> listByConditional(EmployeeSearch form) {
+    public CommonList<EmployeeVO> listByConditional(EmployeeSearch form) {
         ValidatorUtil.validator(form);
-        Page<Employee> page = new Page<>(form.getPage(), form.getSize());
-        super.page(page, Wrappers.<Employee>lambdaQuery()
-                .likeLeft(!StringUtils.isEmpty(form.getMobile()), Employee::getMobile, form.getMobile())
-                .likeLeft(!StringUtils.isEmpty(form.getName()), Employee::getName, form.getName())
-                .likeLeft(!StringUtils.isEmpty(form.getNo()), Employee::getNo, form.getNo())
-
-        );
+        Page<EmployeeVO> page = new Page<>(form.getPage(), form.getSize());
+        getBaseMapper().listEmp(page, form);
         return new CommonList<>(page.hasNext(), page.getTotal(), page.getCurrent(), page.getRecords());
     }
 

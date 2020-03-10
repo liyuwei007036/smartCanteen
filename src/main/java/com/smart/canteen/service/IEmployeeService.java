@@ -68,7 +68,7 @@ public interface IEmployeeService extends IService<Employee> {
      * @param form
      * @return
      */
-    CommonList<Employee> listByConditional(EmployeeSearch form);
+    CommonList<EmployeeVO> listByConditional(EmployeeSearch form);
 
     /**
      * 通过idCard mobile no 查询
