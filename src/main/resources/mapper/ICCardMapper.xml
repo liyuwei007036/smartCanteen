@@ -29,11 +29,11 @@
         <if test="search.accountStatus != null and search.accountStatus != '' ">
             and card.account_status = #{search.accountStatus}
         </if>
-        <if test="search.createStart != null ">
-            and emp.create_time <![CDATA[ >= ]]> #{search.createStart}
+        <if test="search.start != null ">
+            and emp.create_time <![CDATA[ >= ]]> #{search.start}
         </if>
-        <if test="search.createEnd != null ">
-            and emp.create_time <![CDATA[ <= ]]> #{search.createEnd}
+        <if test="search.end != null ">
+            and emp.create_time <![CDATA[ <= ]]> #{search.end}
         </if>
         order by emp.status , emp.create_time desc
     </select>
