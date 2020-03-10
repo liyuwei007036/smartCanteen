@@ -5,7 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.util.Date;
 
 /**
  * @author lc
@@ -31,10 +31,10 @@ public class RechargeLogSearch implements Serializable {
     private String operatorName;
 
     @ApiModelProperty(value = "开始时间")
-    private LocalDateTime start;
+    private Date start;
 
     @ApiModelProperty(value = "结束时间")
-    private LocalDateTime end;
+    private Date end;
 
     @ApiModelProperty(value = "页数")
     private Integer page = 1;

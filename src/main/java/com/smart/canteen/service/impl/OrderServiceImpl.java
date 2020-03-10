@@ -18,7 +18,7 @@ import com.smart.canteen.vo.OrderVo;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -43,7 +43,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         order.setEmployeeName(card.getEmployeeName());
         order.setEmployeeNo(card.getEmployeeNo());
         order.setMoney(money);
-        order.setCreateTime(LocalDateTime.now());
+        order.setCreateTime(new Date());
         order.setChannel(OrderChannelEnum.MACHINE);
         order.setMachineNo(machineNo);
         order.setType(OrderTypeEnum.NORMAL);
@@ -60,12 +60,12 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         order.setEmployeeName(card.getEmployeeName());
         order.setEmployeeNo(card.getEmployeeNo());
         order.setMoney(money);
-        order.setCreateTime(LocalDateTime.now());
+        order.setCreateTime(new Date());
         order.setChannel(OrderChannelEnum.DEDUCTION);
         order.setType(OrderTypeEnum.FILL_BUCKLE);
         order.setCreatorAccount(account.getAccount());
         order.setCreatorName(account.getName());
-        order.setCreateTime(LocalDateTime.now());
+        order.setCreateTime(new Date());
         return save(order);
     }
 

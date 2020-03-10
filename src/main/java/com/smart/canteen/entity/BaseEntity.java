@@ -8,7 +8,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.util.Date;
 
 /**
  * @author lc
@@ -20,7 +20,7 @@ public class BaseEntity implements Serializable {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     @ApiModelProperty(value = "创建时间")
     @TableField(value = "create_time", insertStrategy = FieldStrategy.NOT_EMPTY, updateStrategy = FieldStrategy.NEVER)
-    private LocalDateTime createTime;
+    private Date createTime;
 
     @JsonIgnore
     @ApiModelProperty(value = "创建人id")
@@ -41,7 +41,7 @@ public class BaseEntity implements Serializable {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     @ApiModelProperty(value = "最近更新时间")
     @TableField(value = "last_update_time")
-    private LocalDateTime lastUpdateTime;
+    private Date lastUpdateTime;
 
     @JsonIgnore
     @ApiModelProperty(value = "最近更新人id")

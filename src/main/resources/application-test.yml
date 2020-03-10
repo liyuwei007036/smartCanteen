@@ -53,6 +53,9 @@ spring:
         min-idle: 2
         time-between-eviction-runs: 3000
     host: lumia.live
+  jackson:
+    time-zone: GMT+8
+    date-format: yyyy-MM-dd HH:mm:ss
 
 mybatis-plus:
   configuration:

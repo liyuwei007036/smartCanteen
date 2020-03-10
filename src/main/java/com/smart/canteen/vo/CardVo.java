@@ -8,7 +8,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.util.Date;
 
 /**
  * @author lc
@@ -55,5 +55,5 @@ public class CardVo implements Serializable {
     private CardAccountEnum accountStatus;
 
     @ApiModelProperty(value = "有效期")
-    private LocalDateTime validityTime;
+    private Date validityTime;
 }

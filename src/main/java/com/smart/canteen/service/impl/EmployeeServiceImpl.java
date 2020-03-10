@@ -30,6 +30,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import java.util.Date;
+import java.time.ZoneId;
 import java.util.ArrayList;
 
 
@@ -148,6 +150,7 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
         iEmployeeRoleService.batchAdd(employee.getRoles(), employee.getId(), updater);
         CardForm strict = ModelMapperUtils.strict(employee, CardForm.class);
         strict.setNo(employee.getCardNo());
+        strict.setValidityTime(employee.getValidityTime());
         strict.setId(employee.getCardId());
         iIcCardService.update(strict, updater);
     }

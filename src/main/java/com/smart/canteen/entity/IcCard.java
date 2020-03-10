@@ -12,7 +12,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 
 /**
  * <p>
@@ -84,7 +84,7 @@ public class IcCard extends BaseEntity {
 
     @ApiModelProperty(value = "有效期")
     @TableField(value = "validity_time")
-    private LocalDateTime validityTime;
+    private Date validityTime;
 
 
 }

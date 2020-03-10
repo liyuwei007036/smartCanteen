@@ -12,12 +12,12 @@
 
     <select id="listEmp" resultType="com.smart.canteen.vo.EmployeeVO">
         select
-        emp.id as id, emp.no as `no`, emp.name as `name`, emp.mobile as `mobile`,
-        emp.id_card as `idCard`, emp.origination_id as `originationId`, emp.origination_name as `originationName`,
-        emp.create_time as `createTime`, card.type as `type`, card.expense as `expense`, card.deposit as `deposit`,
-        card.open_card_amount as `openCardAmount`, card.minimum_balance as `minimumBalance`, card.validity_time as
-        `validityTime`
-        from employee as emp, ic_card as card where card.id = emp.card_id
+        emp.id as id, emp.no as no, emp.name as name, emp.mobile as mobile,
+        emp.id_card as idCard, emp.origination_id as originationId, emp.origination_name as originationName,
+        emp.create_time as createTime, card.type as type, card.expense as expense, card.deposit as deposit,
+        card.open_card_amount as openCardAmount, card.minimum_balance as minimumBalance, card.validity_time as
+        validityTime, emp.status as status ,card.no as cardNo
+        from employee as emp left join ic_card as card on card.id = emp.card_id
         and emp.deleted = 0
         <if test="search.name != null and search.name != '' ">
             and emp.name like CONCAT(#{search.name}, '%')

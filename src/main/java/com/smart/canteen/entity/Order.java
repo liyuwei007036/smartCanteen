@@ -13,7 +13,7 @@ import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.util.Date;
 
 /**
  * <p>
@@ -77,7 +77,7 @@ public class Order extends Model<Order> {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     @ApiModelProperty(value = "消费时间")
     @TableField("create_time")
-    private LocalDateTime createTime;
+    private Date createTime;
 
     @JsonIgnore
     @ApiModelProperty(value = "创建人id")

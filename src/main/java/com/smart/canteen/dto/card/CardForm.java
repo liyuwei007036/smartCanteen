@@ -8,7 +8,7 @@ import lombok.Data;
 import javax.validation.constraints.Future;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.util.Date;
 
 /**
  * @author lc
@@ -53,6 +53,6 @@ public class CardForm implements Serializable {
 
     @Future
     @ApiModelProperty(value = "有效期")
-    private LocalDateTime validityTime;
+    private Date validityTime;
 
 }

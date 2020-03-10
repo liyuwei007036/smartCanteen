@@ -5,7 +5,7 @@ import com.lc.core.enums.BaseErrorEnums;
 import com.lc.core.error.BaseException;
 import com.smart.canteen.entity.BaseEntity;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 
 /**
  * @author lc
@@ -17,7 +17,7 @@ public class EntityLogUtil {
         if (entity == null || operation == null) {
             throw new BaseException(BaseErrorEnums.SYSTEM_ERROR);
         }
-        LocalDateTime now = LocalDateTime.now();
+        Date now = new Date();
         entity.setCreateTime(now);
         entity.setCreatorId(operation.getId());
         entity.setCreatorAccount(operation.getAccount());
