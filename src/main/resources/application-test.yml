@@ -41,44 +41,18 @@ spring:
   messages:
     basename: messages
     encoding: UTF-8
-  rabbitmq:
-    addresses: lumia.live
-    port: 5672
-    username: admin
-    password: admin
-    virtual-host: dev
-    listener:
-      simple:
-        concurrency: 5
-        max-concurrency: 10
-        acknowledge-mode: manual
-      direct:
-        acknowledge-mode: manual
-    publisher-returns: true
-    template:
-      mandatory: true
-    publisher-confirms: true
   mvc:
     throw-exception-if-no-handler-found: true
-
-redis:
-  model: standalone
-  host-name: lumia.live
-  port: 6379
-  connect-timeout: 10000
-  read-timeout: 10000
-  max-idle: 20
-  max-total: 30
-  max-wait-millis: 600000
-  min-idle: 5
-  min-evictable-idle-time-millis: 10000
-  num-tests-per-eviction-run: 10
-  time-between-eviction-runs-millis: 300000
-  test-on-borrow: true
-  test-while-idle: true
-  test-ib-on-return: true
-  password: 1qaz@WSX
-
+  redis:
+    password: 1qaz@WSX
+    lettuce:
+      pool:
+        max-active: 20
+        max-idle: 5
+        max-wait: 10000
+        min-idle: 2
+        time-between-eviction-runs: 3000
+    host: lumia.live
 
 mybatis-plus:
   configuration:
