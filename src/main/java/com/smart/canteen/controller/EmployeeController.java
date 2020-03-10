@@ -10,7 +10,6 @@ import com.smart.canteen.dto.CommonList;
 import com.smart.canteen.dto.employee.EmployeeForm;
 import com.smart.canteen.dto.employee.EmployeeSearch;
 import com.smart.canteen.dto.user.LoginForm;
-import com.smart.canteen.entity.Employee;
 import com.smart.canteen.service.IEmployeeService;
 import com.smart.canteen.vo.EmployeeVO;
 import io.swagger.annotations.Api;
@@ -69,7 +68,7 @@ public class EmployeeController extends BaseController {
 
     @ApiOperation(value = "列表查询", notes = "列表查询")
     @RequestMapping(value = "list", method = RequestMethod.POST)
-    public ResponseInfo<CommonList<Employee>> addEmployee(@RequestBody EmployeeSearch params) {
+    public ResponseInfo<CommonList<EmployeeVO>> addEmployee(@RequestBody EmployeeSearch params) {
         return new ResponseInfo<>(iEmployeeService.listByConditional(params));
     }
 
