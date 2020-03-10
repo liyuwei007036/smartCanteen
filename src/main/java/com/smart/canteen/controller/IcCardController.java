@@ -71,7 +71,7 @@ public class IcCardController extends BaseController {
     public ResponseInfo getCard() {
         String cardNo = null;
         Object session = redisService.get("GET_CARD_NO", 9);
-        if (session.equals(getSessionId())) {
+        if (ObjectUtil.getString(session).equals(getSessionId())) {
             cardNo = (String) redisService.get("CARD_NO", 9);
         }
         if (!StringUtils.isEmpty(cardNo)) {

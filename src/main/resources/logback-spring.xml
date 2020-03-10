@@ -171,7 +171,7 @@
     -->
     <!--开发-->
     <springProfile name="dev">
-        <root level="warn">
+        <root level="info">
             <appender-ref ref="console"/>
             <appender-ref ref="info"/>
             <appender-ref ref="debug"/>
