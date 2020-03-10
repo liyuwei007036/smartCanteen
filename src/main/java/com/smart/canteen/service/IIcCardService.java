@@ -106,4 +106,12 @@ public interface IIcCardService extends IService<IcCard> {
      * @param account
      */
     void patchCard(PatchCardForm form, Account account);
+
+    /**
+     * 销户
+     *
+     * @param empId
+     * @param account
+     */
+    void cancellation(Long empId, Account account);
 }

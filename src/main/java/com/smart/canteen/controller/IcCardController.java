@@ -87,5 +87,13 @@ public class IcCardController extends BaseController {
         iIcCardService.patchCard(form, getCurrentUser());
         return new ResponseInfo<>();
     }
+
+
+    @ApiOperation(value = "销户", notes = "销户")
+    @RequestMapping(value = "deleted/{id}", method = RequestMethod.DELETE)
+    public ResponseInfo deleteEmployee(@PathVariable("id") Long id) {
+        iIcCardService.cancellation(id, getCurrentUser());
+        return new ResponseInfo<>();
+    }
 }
 

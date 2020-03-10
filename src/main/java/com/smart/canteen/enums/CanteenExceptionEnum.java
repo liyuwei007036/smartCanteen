@@ -33,6 +33,8 @@ public enum CanteenExceptionEnum implements IErrorInterface {
     GET_CARD_ERROR(2018, "其他人正在获取卡号"),
     CARD_TYPE_ERROR(2019, "卡片状态错误，无法进行下一步操作"),
     PATCH_CARD_ERROR(2020, "补卡失败"),
+    CARD_TYPE_ERROR1(2021, "选择的卡片状态中包含禁止状态的无法充值"),
+    USER_IS_QUIT(2022, "职员已离工无法修改"),
     UPDATE_FA2IL(99999, "update  fail");
 
     private Integer code;

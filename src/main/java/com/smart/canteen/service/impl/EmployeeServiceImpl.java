@@ -17,6 +17,7 @@ import com.smart.canteen.entity.Employee;
 import com.smart.canteen.entity.IcCard;
 import com.smart.canteen.enums.CanteenExceptionEnum;
 import com.smart.canteen.enums.CardStatusEnum;
+import com.smart.canteen.enums.EmployeeStatusEnum;
 import com.smart.canteen.mapper.EmployeeMapper;
 import com.smart.canteen.service.IEmployeeRoleService;
 import com.smart.canteen.service.IEmployeeService;
@@ -61,7 +62,7 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
     public void login(LoginForm dto, BaseController controller) {
         ValidatorUtil.validator(dto);
         Employee user = getByAccount(dto.getAccount());
-        if (user == null) {
+        if (user == null || user.getStatus() != EmployeeStatusEnum.ENABLE) {
             throw new BaseException(CanteenExceptionEnum.USER_NOT_EXIST);
         }
         String salt = user.getSalt();
@@ -88,6 +89,7 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
             throw new BaseException(CanteenExceptionEnum.ACCOUNT_REPEAT);
         }
         employee = ModelMapperUtils.strict(dto, Employee.class);
+        employee.setStatus(EmployeeStatusEnum.ENABLE);
         EntityLogUtil.addNormalUser(employee, creator);
         Password password = createPassword(dto.getPassword(), dto.getConfirmPassword());
         if (password != null) {
@@ -127,6 +129,9 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
         Employee byId = getById(id);
         if (byId == null) {
             throw new BaseException(CanteenExceptionEnum.USER_NOT_EXIST);
+        }
+        if (byId.getStatus() != EmployeeStatusEnum.ENABLE) {
+            throw new BaseException(CanteenExceptionEnum.USER_IS_QUIT);
         }
         Employee other = matchAny(employee.getIdCard(), employee.getMobile(), employee.getNo());
         if (other != null && !other.getId().equals(id)) {

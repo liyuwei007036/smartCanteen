@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.smart.canteen.enums.EmployeeStatusEnum;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -69,5 +70,9 @@ public class Employee extends BaseEntity {
     @ApiModelProperty(value = "密码")
     @TableField(value = "password")
     private String password;
+
+    @ApiModelProperty(value = "状态")
+    @TableField(value = "status")
+    private EmployeeStatusEnum status;
 
 }

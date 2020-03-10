@@ -101,7 +101,6 @@ public class IcCardServiceImpl extends ServiceImpl<IcCardMapper, IcCard> impleme
         return new CommonList<>(page.hasNext(), page.getTotal(), page.getCurrent(), page.getRecords());
     }
 
-
     @Autowired
     private IRechargeLogService iRechargeLogService;
 
@@ -110,6 +109,10 @@ public class IcCardServiceImpl extends ServiceImpl<IcCardMapper, IcCard> impleme
         ValidatorUtil.validator(form);
         List<Long> cardIds = form.getCardIds();
         Collection<IcCard> cards = listByIds(cardIds);
+        boolean b1 = cards.stream().anyMatch(x -> x.getStatus() != CardStatusEnum.ENABLE);
+        if (b1) {
+            throw new BaseException(CanteenExceptionEnum.CARD_TYPE_ERROR1);
+        }
         List<RechargeLog> logs = new ArrayList<>();
         cards.forEach(x -> {
             RechargeLog rechargeLog = new RechargeLog();
@@ -217,7 +220,7 @@ public class IcCardServiceImpl extends ServiceImpl<IcCardMapper, IcCard> impleme
     @Override
     public void patchCard(PatchCardForm form, Account account) {
         ValidatorUtil.validator(form, PatchCardForm.Insert.class);
-        IcCard old = getById(form.getId());
+        IcCard old = getById(form.getCardId());
         if (old == null) {
             throw new BaseException(CanteenExceptionEnum.CARD_NOT_EXIST);
         }
@@ -234,7 +237,6 @@ public class IcCardServiceImpl extends ServiceImpl<IcCardMapper, IcCard> impleme
         if (!b) {
             throw new BaseException(CanteenExceptionEnum.UPDATE_FAIL);
         }
-
         newCard = new IcCard();
         BeanUtils.copyProperties(old, newCard, "id", "no", "account_status", "status");
         newCard.setNo(form.getCardNo());
@@ -249,6 +251,32 @@ public class IcCardServiceImpl extends ServiceImpl<IcCardMapper, IcCard> impleme
         iEmployeeService.updateById(emp);
         if (!save) {
             throw new BaseException(CanteenExceptionEnum.PATCH_CARD_ERROR);
+        }
+    }
+
+    @Override
+    public void cancellation(Long empId, Account account) {
+        Employee emp = iEmployeeService.getById(empId);
+        if (emp == null) {
+            throw new BaseException(CanteenExceptionEnum.USER_NOT_EXIST);
+        }
+        if (emp.getStatus() != EmployeeStatusEnum.ENABLE) {
+            throw new BaseException(CanteenExceptionEnum.USER_IS_QUIT);
+        }
+        boolean b = iEmployeeService.updateById(emp);
+        if (!b) {
+            throw new BaseException(CanteenExceptionEnum.UPDATE_FAIL);
+        }
+        Long cardId = emp.getCardId();
+        IcCard card = getById(cardId);
+        if (card != null) {
+            card.setStatus(CardStatusEnum.DISABLE);
+            card.setAccountStatus(CardAccountEnum.QUIT);
+            EntityLogUtil.addNormalUser(card, account);
+            b = updateById(card);
+            if (!b) {
+                throw new BaseException(CanteenExceptionEnum.UPDATE_FAIL);
+            }
         }
     }
 }

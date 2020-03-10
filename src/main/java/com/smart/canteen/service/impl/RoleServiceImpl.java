@@ -102,4 +102,6 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements IR
     public List<Role> listAll() {
         return list();
     }
+
+
 }

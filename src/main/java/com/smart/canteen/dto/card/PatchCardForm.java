@@ -23,8 +23,8 @@ public class PatchCardForm implements Serializable {
 
 
     @NotNull(groups = Insert.class)
-    @ApiModelProperty(value = "主键Id")
-    private Long id;
+    @ApiModelProperty(value = "老卡的Id")
+    private Long cardId;
 
     @NotNull(groups = Insert.class)
     @ApiModelProperty(value = "卡号")

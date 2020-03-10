@@ -67,14 +67,6 @@ public class EmployeeController extends BaseController {
         return new ResponseInfo<>();
     }
 
-
-    @ApiOperation(value = "删除员工", notes = "删除员工")
-    @RequestMapping(value = "deleted/{id}", method = RequestMethod.DELETE)
-    public ResponseInfo deleteEmployee(@PathVariable("id") Long id) {
-        iEmployeeService.delete(id, getCurrentUser());
-        return new ResponseInfo<>();
-    }
-
     @ApiOperation(value = "列表查询", notes = "列表查询")
     @RequestMapping(value = "list", method = RequestMethod.POST)
     public ResponseInfo<CommonList<Employee>> addEmployee(@RequestBody EmployeeSearch params) {
