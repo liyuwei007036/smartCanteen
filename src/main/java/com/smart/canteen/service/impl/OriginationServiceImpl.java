@@ -113,11 +113,27 @@ public class OriginationServiceImpl extends ServiceImpl<OriginationMapper, Origi
         if (origination == null) {
             throw new BaseException(CanteenExceptionEnum.ORG_NOT_EXIST);
         }
+        String path;
         if (origination.getParentId() > 0) {
-            getBaseMapper().logicDeletedChildren(updater, origination.getPath(), origination.getParentId());
+            path = String.format("%s%s-", origination.getPath(), origination.getId());
+            Origination parent = getById(origination.getParentId());
+            List<Origination> children = getChildren(parent.getId());
+            if (children == null || children.isEmpty()) {
+                parent.setHasChildren(false);
+                boolean b = updateById(parent);
+                if (!b) {
+                    throw new BaseException(CanteenExceptionEnum.UPDATE_FAIL);
+                }
+            }
         } else {
-            getBaseMapper().logicDeletedParent(updater, String.format("%s-", origination.getId()), origination.getId());
+            path = String.format("%ss-", origination.getId());
+            origination.setHasChildren(false);
+            boolean b = updateById(origination);
+            if (!b) {
+                throw new BaseException(CanteenExceptionEnum.UPDATE_FAIL);
+            }
         }
+        getBaseMapper().logicDeleted(updater, path, origination.getId());
     }
 
     @Override

@@ -1,0 +1,59 @@
+package com.smart.canteen.controller;
+
+
+import com.lc.core.annotations.Valid;
+import com.lc.core.controller.BaseController;
+import com.lc.core.dto.ResponseInfo;
+import com.smart.canteen.annotations.Permission;
+import com.smart.canteen.dto.role.PermissionForm;
+import com.smart.canteen.service.IPermissionService;
+import com.smart.canteen.service.IRolePermissionService;
+import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.io.Serializable;
+
+/**
+ * <p>
+ * 前端控制器
+ * </p>
+ *
+ * @author lc
+ * @since 2020-03-11
+ */
+@Valid(needLogin = true)
+@RestController
+@RequestMapping("/rolePermission")
+public class RolePermissionController extends BaseController {
+
+    @Autowired
+    private IPermissionService iPermissionService;
+
+    @Autowired
+    private IRolePermissionService iRolePermissionService;
+
+    @Permission(code = "role:authorization")
+    @ApiOperation(value = "获取权限集合", notes = "获取权限集合")
+    @RequestMapping(value = "listAll", method = RequestMethod.GET)
+    public ResponseInfo listAll() {
+        return new ResponseInfo<>((Serializable) iPermissionService.listAll());
+    }
+
+
+    @Permission(code = "role:authorization")
+    @ApiOperation(value = "添加权限", notes = "添加权限")
+    @RequestMapping(value = "add", method = RequestMethod.POST)
+    public ResponseInfo add(@RequestBody PermissionForm form) {
+        iRolePermissionService.addPermission(form, getCurrentUser());
+        return new ResponseInfo<>();
+    }
+
+    @Permission(code = "role:authorization")
+    @ApiOperation(value = "添加权限", notes = "添加权限")
+    @RequestMapping(value = "getPermission/{role}", method = RequestMethod.GET)
+    public ResponseInfo add(@PathVariable("role") Long role) {
+        return new ResponseInfo<>((Serializable) iRolePermissionService.getRolePermission(role));
+    }
+}
+

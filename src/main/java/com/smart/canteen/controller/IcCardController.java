@@ -7,6 +7,7 @@ import com.lc.core.dto.ResponseInfo;
 import com.lc.core.error.BaseException;
 import com.lc.core.service.RedisService;
 import com.lc.core.utils.ObjectUtil;
+import com.smart.canteen.annotations.Permission;
 import com.smart.canteen.dto.CommonList;
 import com.smart.canteen.dto.card.CardSearch;
 import com.smart.canteen.dto.card.DeductionForm;
@@ -40,12 +41,14 @@ public class IcCardController extends BaseController {
     @Autowired
     private IIcCardService iIcCardService;
 
+    @Permission(code = "icCard:list")
     @ApiOperation(value = "查询卡片列表", notes = "查询卡片列表")
     @RequestMapping(value = "list", method = RequestMethod.POST)
     public ResponseInfo<CommonList<CardVo>> list(@RequestBody CardSearch params) {
         return new ResponseInfo<>(iIcCardService.listCard(params));
     }
 
+    @Permission(code = "icCard:loss")
     @ApiOperation(value = "挂失", notes = "挂失")
     @RequestMapping(value = "report/loss/{id}", method = RequestMethod.PUT)
     public ResponseInfo reportList(@PathVariable(name = "id") Long id) {
@@ -82,6 +85,7 @@ public class IcCardController extends BaseController {
         return new ResponseInfo<>(ObjectUtil.getString(cardNo).trim());
     }
 
+    @Permission(code = "icCard:patch")
     @ApiOperation(value = "补卡", notes = "补卡")
     @RequestMapping(value = "/patch", method = RequestMethod.POST)
     public ResponseInfo patch(@RequestBody PatchCardForm form) {
@@ -90,6 +94,7 @@ public class IcCardController extends BaseController {
     }
 
 
+    @Permission(code = "icCard:deleted")
     @ApiOperation(value = "销户", notes = "销户")
     @RequestMapping(value = "deleted/{id}", method = RequestMethod.DELETE)
     public ResponseInfo deletedCard(@PathVariable("id") Long id) {
@@ -97,7 +102,7 @@ public class IcCardController extends BaseController {
         return new ResponseInfo<>();
     }
 
-
+    @Permission(code = "icCard:deduction")
     @ApiOperation(value = "补扣", notes = "补扣")
     @RequestMapping(value = "deduction", method = RequestMethod.POST)
     public ResponseInfo deduction(@RequestBody DeductionForm form) {

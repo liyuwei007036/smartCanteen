@@ -18,23 +18,12 @@ import org.apache.ibatis.annotations.Param;
 public interface OriginationMapper extends BaseMapper<Origination> {
 
     /**
-     * 逻辑删除子节点
-     *
-     * @param account
-     * @param path
-     * @param parentId
-     */
-    void logicDeletedChildren(@Param("account") Account account, @Param("path") String path, @Param("parentId") Long parentId);
-
-
-    /**
-     * 逻辑删除根节点
+     * 逻辑删除
      *
      * @param account
      * @param path
      * @param id
      */
-    void logicDeletedParent(@Param("account") Account account, @Param("path") String path, Long id);
-
+    void logicDeleted(@Param("account") Account account, @Param("path") String path, Long id);
 
 }

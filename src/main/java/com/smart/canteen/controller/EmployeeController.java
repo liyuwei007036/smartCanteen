@@ -6,6 +6,7 @@ import com.lc.core.controller.BaseController;
 import com.lc.core.dto.Account;
 import com.lc.core.dto.ResponseInfo;
 import com.lc.core.utils.ObjectUtil;
+import com.smart.canteen.annotations.Permission;
 import com.smart.canteen.dto.CommonList;
 import com.smart.canteen.dto.employee.EmployeeForm;
 import com.smart.canteen.dto.employee.EmployeeSearch;
@@ -50,7 +51,7 @@ public class EmployeeController extends BaseController {
         return new ResponseInfo<>();
     }
 
-
+    @Permission(code = "employee:addEmployee")
     @ApiOperation(value = "添加员工", notes = "添加员工")
     @RequestMapping(value = "add", method = RequestMethod.POST)
     public ResponseInfo addEmployee(@RequestBody EmployeeForm params) {
@@ -59,6 +60,7 @@ public class EmployeeController extends BaseController {
     }
 
 
+    @Permission(code = "employee:updateEmployee")
     @ApiOperation(value = "编辑员工", notes = "编辑员工")
     @RequestMapping(value = "update", method = RequestMethod.PATCH)
     public ResponseInfo updateEmployee(@RequestBody EmployeeForm params) {
@@ -66,16 +68,17 @@ public class EmployeeController extends BaseController {
         return new ResponseInfo<>();
     }
 
+    @Permission(code = "employee:addEmployee")
     @ApiOperation(value = "列表查询", notes = "列表查询")
     @RequestMapping(value = "list", method = RequestMethod.POST)
     public ResponseInfo<CommonList<EmployeeVO>> addEmployee(@RequestBody EmployeeSearch params) {
         return new ResponseInfo<>(iEmployeeService.listByConditional(params));
     }
 
-
+    @Permission(code = "employee:getEmployee")
     @ApiOperation(value = "获取员工", notes = "获取员工")
     @RequestMapping(value = "get/{id}", method = RequestMethod.GET)
-    public ResponseInfo<EmployeeVO> addEmployee(@PathVariable String id) {
+    public ResponseInfo<EmployeeVO> getEmployee(@PathVariable String id) {
         return new ResponseInfo<>(iEmployeeService.getEmpInfo(ObjectUtil.getLong(id)));
     }
 

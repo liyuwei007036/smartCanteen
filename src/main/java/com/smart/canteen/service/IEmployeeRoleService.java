@@ -34,26 +34,6 @@ public interface IEmployeeRoleService extends IService<EmployeeRole> {
      * @return
      */
     List<Map<String, Object>> getAllRoleByEmployee(Long employee);
-
-    /**
-     * 批量删除
-     *
-     * @param roleIds
-     * @param employeeId
-     * @param operator
-     * @return
-     */
-    Long batchDelete(List<Long> roleIds, Long employeeId, Account operator);
-
-    /**
-     * 批量插入
-     *
-     * @param roleIds
-     * @param employeeId
-     * @param operator
-     */
-    void batchInsert(List<Long> roleIds, Long employeeId, Account operator);
-
     /**
      * 获取员工角色
      *

@@ -5,6 +5,7 @@ import com.lc.core.annotations.Valid;
 import com.lc.core.controller.BaseController;
 import com.lc.core.dto.ResponseInfo;
 import com.lc.core.utils.ObjectUtil;
+import com.smart.canteen.annotations.Permission;
 import com.smart.canteen.dto.CommonList;
 import com.smart.canteen.dto.role.RoleForm;
 import com.smart.canteen.dto.role.RoleSearch;
@@ -34,39 +35,45 @@ public class RoleController extends BaseController {
     @Autowired
     private IRoleService iRoleService;
 
+    @Permission(code = "role:add")
     @ApiOperation(value = "添加角色", notes = "添加角色")
     @RequestMapping(value = "add", method = RequestMethod.POST)
-    public ResponseInfo addEmployee(@RequestBody RoleForm params) {
+    public ResponseInfo add(@RequestBody RoleForm params) {
         iRoleService.add(params, getCurrentUser());
         return new ResponseInfo<>();
     }
 
+    @Permission(code = "role:update")
     @ApiOperation(value = "编辑角色", notes = "编辑角色")
     @RequestMapping(value = "update", method = RequestMethod.PATCH)
-    public ResponseInfo updateEmployee(@RequestBody RoleForm params) {
+    public ResponseInfo update(@RequestBody RoleForm params) {
         iRoleService.update(params, getCurrentUser());
         return new ResponseInfo<>();
     }
 
+    @Permission(code = "role:deleted")
     @ApiOperation(value = "删除角色", notes = "删除角色")
     @RequestMapping(value = "deleted/{id}", method = RequestMethod.DELETE)
-    public ResponseInfo deleteEmployee(@PathVariable("id") Long id) {
+    public ResponseInfo deleted(@PathVariable("id") Long id) {
         iRoleService.delete(id, getCurrentUser());
         return new ResponseInfo<>();
     }
 
+    @Permission(code = "role:list")
     @ApiOperation(value = "列表查询", notes = "列表查询")
     @RequestMapping(value = "list", method = RequestMethod.POST)
-    public ResponseInfo<CommonList<Role>> addEmployee(@RequestBody RoleSearch params) {
+    public ResponseInfo<CommonList<Role>> list(@RequestBody RoleSearch params) {
         return new ResponseInfo<>(iRoleService.listByConditional(params));
     }
 
+    @Permission(code = "role:get")
     @ApiOperation(value = "获取角色", notes = "获取角色")
     @RequestMapping(value = "get/{id}", method = RequestMethod.GET)
-    public ResponseInfo<Role> addEmployee(@PathVariable String id) {
+    public ResponseInfo<Role> get(@PathVariable String id) {
         return new ResponseInfo<>(iRoleService.getById(ObjectUtil.getLong(id)));
     }
 
+    @Permission(code = "role:list")
     @ApiOperation(value = "获取所有角色", notes = "获取角色")
     @RequestMapping(value = "listAll", method = RequestMethod.GET)
     public ResponseInfo listAll() {

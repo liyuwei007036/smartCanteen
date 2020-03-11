@@ -5,6 +5,7 @@ import com.lc.core.annotations.Valid;
 import com.lc.core.controller.BaseController;
 import com.lc.core.dto.ResponseInfo;
 import com.lc.core.utils.ObjectUtil;
+import com.smart.canteen.annotations.Permission;
 import com.smart.canteen.dto.CommonList;
 import com.smart.canteen.dto.origination.OriginationForm;
 import com.smart.canteen.dto.origination.OriginationSearch;
@@ -34,52 +35,60 @@ public class OriginationController extends BaseController {
     @Autowired
     private IOriginationService iOriginationService;
 
+    @Permission(code = "origination:add")
     @ApiOperation(value = "添加组织", notes = "添加组织")
     @RequestMapping(value = "add", method = RequestMethod.POST)
-    public ResponseInfo addEmployee(@RequestBody OriginationForm params) {
+    public ResponseInfo add(@RequestBody OriginationForm params) {
         iOriginationService.add(params, getCurrentUser());
         return new ResponseInfo<>();
     }
 
+    @Permission(code = "origination:update")
     @ApiOperation(value = "编辑组织", notes = "编辑组织")
     @RequestMapping(value = "update", method = RequestMethod.PATCH)
-    public ResponseInfo updateEmployee(@RequestBody OriginationForm params) {
+    public ResponseInfo update(@RequestBody OriginationForm params) {
         iOriginationService.update(params, getCurrentUser());
         return new ResponseInfo<>();
     }
 
+    @Permission(code = "origination:deleted")
     @ApiOperation(value = "删除组织", notes = "删除组织")
     @RequestMapping(value = "deleted/{id}", method = RequestMethod.DELETE)
-    public ResponseInfo deleteEmployee(@PathVariable("id") Long id) {
+    public ResponseInfo deleted(@PathVariable("id") Long id) {
         iOriginationService.delete(id, getCurrentUser());
         return new ResponseInfo<>();
     }
 
+    @Permission(code = "origination:view")
     @ApiOperation(value = "列表查询", notes = "列表查询")
     @RequestMapping(value = "list", method = RequestMethod.POST)
-    public ResponseInfo<CommonList<Origination>> addEmployee(@RequestBody OriginationSearch params) {
+    public ResponseInfo<CommonList<Origination>> list(@RequestBody OriginationSearch params) {
         return new ResponseInfo<>(iOriginationService.listByConditional(params));
     }
 
+    @Permission(code = "origination:view")
     @ApiOperation(value = "获取组织", notes = "获取组织")
     @RequestMapping(value = "get/{id}", method = RequestMethod.GET)
     public ResponseInfo<Origination> get(@PathVariable String id) {
         return new ResponseInfo<>(iOriginationService.getById(ObjectUtil.getLong(id)));
     }
 
-    @ApiOperation(value = "获取所有组织", notes = "获取组织")
+    @Permission(code = "origination:view")
+    @ApiOperation(value = "获取所有组织", notes = "获取所有组织")
     @RequestMapping(value = "listAll", method = RequestMethod.GET)
     public ResponseInfo listAll() {
         return new ResponseInfo((Serializable) iOriginationService.listAll());
     }
 
 
+    @Permission(code = "origination:view")
     @ApiOperation(value = "获取所有根节点", notes = "获取所有根节点")
     @RequestMapping(value = "getRoot", method = RequestMethod.GET)
     public ResponseInfo getRoot() {
         return new ResponseInfo<>((Serializable) iOriginationService.getAllRoot());
     }
 
+    @Permission(code = "origination:view")
     @ApiOperation(value = "获取子节点", notes = "获取子节点")
     @RequestMapping(value = "get/nodes/{id}", method = RequestMethod.GET)
     public ResponseInfo getNodes(@PathVariable String id) {

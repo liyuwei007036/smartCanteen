@@ -4,6 +4,7 @@ package com.smart.canteen.controller;
 import com.lc.core.annotations.Valid;
 import com.lc.core.controller.BaseController;
 import com.lc.core.dto.ResponseInfo;
+import com.smart.canteen.annotations.Permission;
 import com.smart.canteen.dto.CommonList;
 import com.smart.canteen.dto.order.OrderSearch;
 import com.smart.canteen.service.IOrderService;
@@ -33,7 +34,8 @@ public class OrderController extends BaseController {
     @Autowired
     private IOrderService iOrderService;
 
-    @ApiOperation(value = "查询记录", notes = "查询记录")
+    @Permission(code = "order:list")
+    @ApiOperation(value = "消费记录", notes = "消费记录")
     @RequestMapping(value = "list", method = RequestMethod.POST)
     public ResponseInfo<CommonList<OrderVo>> list(@RequestBody OrderSearch params) {
         return new ResponseInfo<>(iOrderService.listLogs(params));

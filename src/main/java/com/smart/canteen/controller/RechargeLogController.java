@@ -4,6 +4,7 @@ package com.smart.canteen.controller;
 import com.lc.core.annotations.Valid;
 import com.lc.core.controller.BaseController;
 import com.lc.core.dto.ResponseInfo;
+import com.smart.canteen.annotations.Permission;
 import com.smart.canteen.dto.CommonList;
 import com.smart.canteen.dto.recharge.RechargeForm;
 import com.smart.canteen.dto.recharge.RechargeLogSearch;
@@ -39,6 +40,7 @@ public class RechargeLogController extends BaseController {
     private IRechargeLogService iRechargeLogService;
 
 
+    @Permission(code = "recharge:recharge")
     @ApiOperation(value = "充值", notes = "充值")
     @RequestMapping(value = "recharge", method = RequestMethod.POST)
     public ResponseInfo recharge(@RequestBody RechargeForm form) {
@@ -46,6 +48,7 @@ public class RechargeLogController extends BaseController {
         return new ResponseInfo();
     }
 
+    @Permission(code = "recharge:listlog")
     @ApiOperation(value = "查询记录", notes = "查询记录")
     @RequestMapping(value = "list/log", method = RequestMethod.POST)
     public ResponseInfo<CommonList<RechargeLogVO>> list(@RequestBody RechargeLogSearch params) {

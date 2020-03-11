@@ -20,34 +20,6 @@ import java.util.Map;
 @Mapper
 public interface EmployeeRoleMapper extends BaseMapper<EmployeeRole> {
 
-    /**
-     * 批量添加
-     *
-     * @param roleIds
-     * @param eid
-     * @param operator
-     * @return
-     */
-    Long batchAdd(@Param("roleIds") List<Long> roleIds, @Param("eid") Long eid, @Param("operator") Account operator);
 
-
-    /**
-     * 批量逻辑删除
-     *
-     * @param roleIds
-     * @param eid
-     * @param operator
-     * @return
-     */
-    Long batchDeleted(@Param("roleIds") List<Long> roleIds, @Param("eid") Long eid, @Param("operator") Account operator);
-
-
-    /**
-     * 获取员工角色
-     *
-     * @param empId
-     * @return
-     */
-    List<Map<String, Object>> getEmpRole(@Param("empId") Long empId);
 
 }
