@@ -12,6 +12,7 @@ import com.smart.canteen.dto.Password;
 import com.smart.canteen.dto.card.CardForm;
 import com.smart.canteen.dto.employee.EmployeeForm;
 import com.smart.canteen.dto.employee.EmployeeSearch;
+import com.smart.canteen.dto.user.ChangePasswordForm;
 import com.smart.canteen.dto.user.LoginForm;
 import com.smart.canteen.entity.Employee;
 import com.smart.canteen.entity.IcCard;
@@ -215,5 +216,26 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
         }
         vo.setRoles(iEmployeeRoleService.getEmpRole(id));
         return vo;
+    }
+
+
+    @Override
+    public void changePassword(ChangePasswordForm form, Account account) {
+        ValidatorUtil.validator(form);
+        Employee employee = getById(account.getId());
+        if (employee == null) {
+            throw new BaseException(CanteenExceptionEnum.USER_NOT_EXIST);
+        }
+        String salt = employee.getSalt();
+        String password = EncryptionUtils.md5(form.getPassword(), salt, false);
+        if (password.equals(employee.getPassword())) {
+            Password password1 = new Password(form.getPassword());
+            employee.setPassword(password1.getPassword());
+            employee.setSalt(password1.getSalt());
+            EntityLogUtil.addNormalUser(employee, account);
+            updateById(employee);
+        } else {
+            throw new BaseException(CanteenExceptionEnum.PASSWORD_ERROR);
+        }
     }
 }

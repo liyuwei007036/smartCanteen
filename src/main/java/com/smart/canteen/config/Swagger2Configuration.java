@@ -27,7 +27,6 @@ public class Swagger2Configuration {
                 .apiInfo(apiInfo())
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.smart"))
-                // 可以根据url路径设置哪些请求加入文档，忽略哪些请求
                 .paths(PathSelectors.any())
                 .build();
     }
@@ -36,12 +35,8 @@ public class Swagger2Configuration {
         return new ApiInfoBuilder()
                 //设置文档的标题
                 .title("智慧食堂")
-                // 设置文档的描述
                 .description("智慧食堂 API 接口文档")
-                // 设置文档的版本信息-> 1.0.0 Version information
                 .version(VERSION)
-                // 设置文档的License信息->1.3 License information
-                .termsOfServiceUrl("http://www.baidu.com")
                 .build();
     }
 }

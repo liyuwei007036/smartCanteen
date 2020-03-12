@@ -6,6 +6,7 @@ import com.lc.core.dto.Account;
 import com.smart.canteen.dto.CommonList;
 import com.smart.canteen.dto.employee.EmployeeForm;
 import com.smart.canteen.dto.employee.EmployeeSearch;
+import com.smart.canteen.dto.user.ChangePasswordForm;
 import com.smart.canteen.dto.user.LoginForm;
 import com.smart.canteen.entity.Employee;
 import com.smart.canteen.vo.EmployeeVO;
@@ -95,5 +96,12 @@ public interface IEmployeeService extends IService<Employee> {
      */
     EmployeeVO getEmpInfo(Long id);
 
+    /**
+     * 修改密码
+     *
+     * @param form
+     * @param account
+     */
+    void changePassword(ChangePasswordForm form, Account account);
 
 }

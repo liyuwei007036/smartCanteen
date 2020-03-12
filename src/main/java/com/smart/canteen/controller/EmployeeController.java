@@ -10,6 +10,7 @@ import com.smart.canteen.annotations.Permission;
 import com.smart.canteen.dto.CommonList;
 import com.smart.canteen.dto.employee.EmployeeForm;
 import com.smart.canteen.dto.employee.EmployeeSearch;
+import com.smart.canteen.dto.user.ChangePasswordForm;
 import com.smart.canteen.dto.user.LoginForm;
 import com.smart.canteen.service.IEmployeeService;
 import com.smart.canteen.vo.EmployeeVO;
@@ -79,6 +80,13 @@ public class EmployeeController extends BaseController {
     @RequestMapping(value = "get/{id}", method = RequestMethod.GET)
     public ResponseInfo<EmployeeVO> getEmployee(@PathVariable String id) {
         return new ResponseInfo<>(iEmployeeService.getEmpInfo(ObjectUtil.getLong(id)));
+    }
+
+    @ApiOperation(value = "修改密码", notes = "修改密码")
+    @RequestMapping(value = "changePassword", method = RequestMethod.POST)
+    public ResponseInfo changePassword(@RequestBody ChangePasswordForm passwordForm) {
+        iEmployeeService.changePassword(passwordForm, getCurrentUser());
+        return new ResponseInfo<>();
     }
 
 
