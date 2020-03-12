@@ -126,7 +126,7 @@ public class OriginationServiceImpl extends ServiceImpl<OriginationMapper, Origi
                 }
             }
         } else {
-            path = String.format("%ss-", origination.getId());
+            path = String.format("%s-", origination.getId());
             origination.setHasChildren(false);
             boolean b = updateById(origination);
             if (!b) {

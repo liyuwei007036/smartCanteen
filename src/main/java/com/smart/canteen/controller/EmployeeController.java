@@ -40,8 +40,7 @@ public class EmployeeController extends BaseController {
     @ApiOperation(value = "登录", notes = "登录")
     @RequestMapping(value = "login", method = RequestMethod.POST)
     public ResponseInfo<Account> login(@RequestBody LoginForm params) {
-        iEmployeeService.login(params, this);
-        return new ResponseInfo<>(getCurrentUser());
+        return new ResponseInfo<>(iEmployeeService.login(params, this));
     }
 
     @ApiOperation(value = "登出", notes = "登出")
@@ -51,7 +50,7 @@ public class EmployeeController extends BaseController {
         return new ResponseInfo<>();
     }
 
-    @Permission(code = "employee:addEmployee")
+    @Permission(code = "employee:add")
     @ApiOperation(value = "添加员工", notes = "添加员工")
     @RequestMapping(value = "add", method = RequestMethod.POST)
     public ResponseInfo addEmployee(@RequestBody EmployeeForm params) {
@@ -60,7 +59,7 @@ public class EmployeeController extends BaseController {
     }
 
 
-    @Permission(code = "employee:updateEmployee")
+    @Permission(code = "employee:update")
     @ApiOperation(value = "编辑员工", notes = "编辑员工")
     @RequestMapping(value = "update", method = RequestMethod.PATCH)
     public ResponseInfo updateEmployee(@RequestBody EmployeeForm params) {
@@ -68,14 +67,14 @@ public class EmployeeController extends BaseController {
         return new ResponseInfo<>();
     }
 
-    @Permission(code = "employee:addEmployee")
+    @Permission(code = "employee:view")
     @ApiOperation(value = "列表查询", notes = "列表查询")
     @RequestMapping(value = "list", method = RequestMethod.POST)
     public ResponseInfo<CommonList<EmployeeVO>> addEmployee(@RequestBody EmployeeSearch params) {
         return new ResponseInfo<>(iEmployeeService.listByConditional(params));
     }
 
-    @Permission(code = "employee:getEmployee")
+    @Permission(code = "employee:view")
     @ApiOperation(value = "获取员工", notes = "获取员工")
     @RequestMapping(value = "get/{id}", method = RequestMethod.GET)
     public ResponseInfo<EmployeeVO> getEmployee(@PathVariable String id) {

@@ -58,7 +58,7 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
     private IIcCardService iIcCardService;
 
     @Override
-    public void login(LoginForm dto, BaseController controller) {
+    public Account login(LoginForm dto, BaseController controller) {
         ValidatorUtil.validator(dto);
         Employee user = getByAccount(dto.getAccount());
         if (user == null || user.getStatus() != EmployeeStatusEnum.ENABLE) {
@@ -74,6 +74,7 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
             List<Long> empRole = iEmployeeRoleService.getEmpRole(user.getId());
             account.setPowers(new ArrayList<>(iRolePermissionService.getRolePermission(empRole)));
             LoginUtils.doUserLogin(account, controller);
+            return account;
         } else {
             throw new BaseException(CanteenExceptionEnum.USER_NOT_EXIST);
         }

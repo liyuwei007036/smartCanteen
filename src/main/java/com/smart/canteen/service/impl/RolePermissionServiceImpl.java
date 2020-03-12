@@ -12,6 +12,7 @@ import com.smart.canteen.utils.EntityLogUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -39,6 +40,9 @@ public class RolePermissionServiceImpl extends ServiceImpl<RolePermissionMapper,
 
     @Override
     public Set<String> getRolePermission(List<Long> ids) {
+        if (ids == null || ids.isEmpty()) {
+            return new HashSet<>();
+        }
         return list(Wrappers.<RolePermission>lambdaQuery()
                 .select(RolePermission::getPermissionCode)
                 .in(RolePermission::getRoleId, ids))

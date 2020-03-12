@@ -27,7 +27,7 @@ public interface IEmployeeService extends IService<Employee> {
      * @param dto
      * @param controller
      */
-    void login(LoginForm dto, BaseController controller);
+    Account login(LoginForm dto, BaseController controller);
 
     /**
      * 获取用户信息
