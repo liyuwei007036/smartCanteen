@@ -190,6 +190,17 @@
         </root>
     </springProfile>
 
+
+    <!--测试-->
+    <springProfile name="wj">
+        <root level="info">
+            <appender-ref ref="warn"/>
+            <appender-ref ref="info"/>
+            <appender-ref ref="warn"/>
+            <appender-ref ref="error"/>
+        </root>
+    </springProfile>
+
     <!--生产环境-->
     <springProfile name="pro">
         <root level="info">
