@@ -19,7 +19,10 @@ import com.smart.canteen.entity.IcCard;
 import com.smart.canteen.enums.CanteenExceptionEnum;
 import com.smart.canteen.enums.EmployeeStatusEnum;
 import com.smart.canteen.mapper.EmployeeMapper;
-import com.smart.canteen.service.*;
+import com.smart.canteen.service.IEmployeeRoleService;
+import com.smart.canteen.service.IEmployeeService;
+import com.smart.canteen.service.IIcCardService;
+import com.smart.canteen.service.IRolePermissionService;
 import com.smart.canteen.utils.EntityLogUtil;
 import com.smart.canteen.vo.EmployeeVO;
 import lombok.extern.slf4j.Slf4j;
@@ -29,11 +32,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
-import java.util.Date;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 
 /**
@@ -226,10 +226,13 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
         if (employee == null) {
             throw new BaseException(CanteenExceptionEnum.USER_NOT_EXIST);
         }
+        if (!form.getNewPassword().equals(form.getConfirmPassword())) {
+            throw new BaseException(CanteenExceptionEnum.PASSWORD_NOT_SAME);
+        }
         String salt = employee.getSalt();
-        String password = EncryptionUtils.md5(form.getPassword(), salt, false);
+        String password = EncryptionUtils.md5(form.getOldPassword(), salt, false);
         if (password.equals(employee.getPassword())) {
-            Password password1 = new Password(form.getPassword());
+            Password password1 = new Password(form.getConfirmPassword());
             employee.setPassword(password1.getPassword());
             employee.setSalt(password1.getSalt());
             EntityLogUtil.addNormalUser(employee, account);

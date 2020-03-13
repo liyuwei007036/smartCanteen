@@ -15,11 +15,16 @@ import java.io.Serializable;
 @Data
 public class ChangePasswordForm implements Serializable {
 
+    @Length(min = 6, max = 20)
     @NotEmpty
     private String oldPassword;
 
-    @Length(min = 6)
+    @Length(min = 6, max = 20)
     @NotEmpty
-    private String password;
+    private String newPassword;
+
+    @Length(min = 6, max = 20)
+    @NotEmpty
+    private String confirmPassword;
 
 }
