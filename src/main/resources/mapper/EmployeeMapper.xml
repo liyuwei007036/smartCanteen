@@ -17,7 +17,7 @@
         card.open_card_amount as openCardAmount, card.minimum_balance as minimumBalance, card.validity_time as
         validityTime, emp.status as status ,card.no as cardNo
         from employee as emp left join ic_card as card on card.id = emp.card_id
-        and emp.deleted = 0
+        WHERE emp.deleted = 0
         <if test="search.name != null and search.name != '' ">
             and emp.name like CONCAT(#{search.name}, '%')
         </if>
