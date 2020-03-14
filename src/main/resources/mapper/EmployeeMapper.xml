@@ -11,8 +11,7 @@
     </update>
 
     <select id="listEmp" resultType="com.smart.canteen.vo.EmployeeVO">
-        select
-        emp.id as id, emp.no as no, emp.name as name, emp.mobile as mobile,
+        select emp.id as id, emp.no as no, emp.name as name, emp.mobile as mobile,
         emp.id_card as idCard, emp.origination_id as originationId, emp.origination_name as originationName,
         emp.create_time as createTime, card.type as type, card.expense as expense, card.deposit as deposit,
         card.open_card_amount as openCardAmount, card.minimum_balance as minimumBalance, card.validity_time as
@@ -25,6 +24,9 @@
         <if test="search.no != null and search.no != '' ">
             and emp.no like CONCAT(#{search.no}, '%')
         </if>
+        <if test="search.cardNo != null and search.cardNo != '' ">
+            and emp.card_no like CONCAT(#{search.cardNo}, '%')
+        </if>
         <if test="search.mobile != null and search.mobile != '' ">
             and emp.mobile like CONCAT(#{search.mobile}, '%')
         </if>
@@ -36,6 +38,12 @@
         </if>
         <if test="search.cardTimeEnd != null and search.cardTimeEnd != ''">
             and card.validity_time <![CDATA[ <= ]]> #{search.cardTimeEnd}
+        </if>
+        <if test="search.createStart != null and search.createStart != ''">
+            and emp.create_time <![CDATA[ <= ]]> #{search.createStart}
+        </if>
+        <if test="search.createEnd != null and search.createEnd != ''">
+            and card.create_time <![CDATA[ >= ]]> #{search.createEnd}
         </if>
         order by card.status , card.create_time desc
     </select>
