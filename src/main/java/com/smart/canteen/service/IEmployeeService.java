@@ -11,6 +11,8 @@ import com.smart.canteen.dto.user.LoginForm;
 import com.smart.canteen.entity.Employee;
 import com.smart.canteen.vo.EmployeeVO;
 
+import java.util.List;
+
 /**
  * <p>
  * 服务类
@@ -103,5 +105,13 @@ public interface IEmployeeService extends IService<Employee> {
      * @param account
      */
     void changePassword(ChangePasswordForm form, Account account);
+
+    /**
+     * 查询组织下的用户数量
+     *
+     * @param ids
+     * @return
+     */
+    int countByOrg(List<Long> ids);
 
 }

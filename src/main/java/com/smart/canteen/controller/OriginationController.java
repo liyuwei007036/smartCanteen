@@ -77,9 +77,8 @@ public class OriginationController extends BaseController {
     @ApiOperation(value = "获取所有组织", notes = "获取所有组织")
     @RequestMapping(value = "listAll", method = RequestMethod.GET)
     public ResponseInfo listAll() {
-        return new ResponseInfo((Serializable) iOriginationService.listAll());
+        return new ResponseInfo<>((Serializable) iOriginationService.listAll());
     }
-
 
     @Permission(code = "origination:view")
     @ApiOperation(value = "获取所有根节点", notes = "获取所有根节点")
@@ -92,7 +91,7 @@ public class OriginationController extends BaseController {
     @ApiOperation(value = "获取子节点", notes = "获取子节点")
     @RequestMapping(value = "get/nodes/{id}", method = RequestMethod.GET)
     public ResponseInfo getNodes(@PathVariable String id) {
-        return new ResponseInfo((Serializable) iOriginationService.getChildren(ObjectUtil.getLong(id)));
+        return new ResponseInfo<>((Serializable) iOriginationService.getChildren(ObjectUtil.getLong(id)));
     }
 
 }

@@ -14,9 +14,11 @@ import com.smart.canteen.dto.origination.OriginationSearch;
 import com.smart.canteen.entity.Origination;
 import com.smart.canteen.enums.CanteenExceptionEnum;
 import com.smart.canteen.mapper.OriginationMapper;
+import com.smart.canteen.service.IEmployeeService;
 import com.smart.canteen.service.IOriginationService;
 import com.smart.canteen.utils.EntityLogUtil;
 import com.smart.canteen.vo.OriginationVo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -107,12 +109,16 @@ public class OriginationServiceImpl extends ServiceImpl<OriginationMapper, Origi
         }
     }
 
+    @Autowired
+    private IEmployeeService iEmployeeService;
+
     @Override
     public void delete(Long id, Account updater) {
         Origination origination = getById(id);
         if (origination == null) {
             throw new BaseException(CanteenExceptionEnum.ORG_NOT_EXIST);
         }
+        List<Long> orgIds = new ArrayList<>();
         String path;
         if (origination.getParentId() > 0) {
             path = String.format("%s%s-", origination.getPath(), origination.getId());
@@ -124,6 +130,8 @@ public class OriginationServiceImpl extends ServiceImpl<OriginationMapper, Origi
                 if (!b) {
                     throw new BaseException(CanteenExceptionEnum.UPDATE_FAIL);
                 }
+            } else {
+                orgIds.addAll(children.parallelStream().map(Origination::getId).collect(Collectors.toList()));
             }
         } else {
             path = String.format("%s-", origination.getId());
@@ -132,6 +140,12 @@ public class OriginationServiceImpl extends ServiceImpl<OriginationMapper, Origi
             if (!b) {
                 throw new BaseException(CanteenExceptionEnum.UPDATE_FAIL);
             }
+        }
+        orgIds.add(id);
+        int i = iEmployeeService.countByOrg(orgIds);
+        if (i > 0) {
+            throw new BaseException(CanteenExceptionEnum.ORG_HAS_EMP);
+
         }
         getBaseMapper().logicDeleted(updater, path, origination.getId());
     }

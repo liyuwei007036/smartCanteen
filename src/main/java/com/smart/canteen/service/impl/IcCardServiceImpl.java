@@ -36,6 +36,7 @@ import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -154,6 +155,9 @@ public class IcCardServiceImpl extends ServiceImpl<IcCardMapper, IcCard> impleme
         if (card.getStatus() != CardStatusEnum.ENABLE) {
             return new ResponseMsg(CmdCodeEnum.CON, Voices.LOSS, cardNo, "挂失卡!");
         }
+        if (card.getValidityTime() != null && card.getValidityTime().before(new Date())) {
+            return new ResponseMsg(CmdCodeEnum.CON, Voices.INVALID, cardNo, "无效卡!");
+        }
         double currentBalance = ObjectUtil.getDouble(card.getCurrentBalance());
         Double lastBalance = MathUtil.sub(currentBalance, MathUtil.div(money, 100, 2));
         if (lastBalance < 0) {
@@ -191,13 +195,20 @@ public class IcCardServiceImpl extends ServiceImpl<IcCardMapper, IcCard> impleme
                 return new ResponseMsg(CmdCodeEnum.CON, Voices.WELCOME, cardNo, "读卡中...");
             }
         }
-        if (card.getStatus() == CardStatusEnum.DISABLE) {
+        if (card.getStatus() != CardStatusEnum.ENABLE) {
             if (card.getAccountStatus() == CardAccountEnum.QUIT) {
                 return new ResponseMsg(CmdCodeEnum.CON, Voices.INVALID, cardNo, "无效卡!");
             }
             return new ResponseMsg(CmdCodeEnum.CON, Voices.LOSS, cardNo, "挂失卡!");
+        } else {
+            if (card.getValidityTime() != null && card.getValidityTime().before(new Date())) {
+                return new ResponseMsg(CmdCodeEnum.CON, Voices.INVALID, cardNo, "无效卡!");
+            } else {
+                return new ResponseMsg(CmdCodeEnum.CON, Voices.THANKS, cardNo, MathUtil.mul(ObjectUtil.getDouble(card.getCurrentBalance()), 1, 2));
+            }
+
         }
-        return new ResponseMsg(CmdCodeEnum.CON, Voices.THANKS, cardNo, MathUtil.mul(ObjectUtil.getDouble(card.getCurrentBalance()), 1, 2));
+
     }
 
     @Override

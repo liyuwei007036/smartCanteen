@@ -13,8 +13,11 @@ import com.smart.canteen.dto.role.RoleSearch;
 import com.smart.canteen.entity.Role;
 import com.smart.canteen.enums.CanteenExceptionEnum;
 import com.smart.canteen.mapper.RoleMapper;
+import com.smart.canteen.service.IEmployeeRoleService;
+import com.smart.canteen.service.IEmployeeService;
 import com.smart.canteen.service.IRoleService;
 import com.smart.canteen.utils.EntityLogUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -68,11 +71,18 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements IR
         }
     }
 
+    @Autowired
+    private IEmployeeRoleService iEmployeeRoleService;
+
     @Override
     public void delete(Long id, Account updater) {
         Role role = getById(id);
         if (role == null) {
             throw new BaseException(CanteenExceptionEnum.ROLE_NOT_EXIST);
+        }
+        int i = iEmployeeRoleService.countEmp(id);
+        if (i > 0) {
+            throw new BaseException(CanteenExceptionEnum.ROLE_HAS_EMP);
         }
         getBaseMapper().logicDeleted(updater, id);
     }

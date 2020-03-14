@@ -241,4 +241,9 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
             throw new BaseException(CanteenExceptionEnum.PASSWORD_ERROR);
         }
     }
+
+    @Override
+    public int countByOrg(List<Long> ids) {
+        return count(Wrappers.<Employee>lambdaQuery().in(Employee::getOriginationId, ids));
+    }
 }

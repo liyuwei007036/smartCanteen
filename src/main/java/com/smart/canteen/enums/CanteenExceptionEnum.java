@@ -36,6 +36,8 @@ public enum CanteenExceptionEnum implements IErrorInterface {
     CARD_TYPE_ERROR1(2021, "选择的卡片状态中包含禁止状态的无法充值"),
     USER_IS_QUIT(2022, "职员已离工无法修改"),
     PASSWORD_ERROR(2023, "密码错误"),
+    ORG_HAS_EMP(2024, "组织下存在人员无法删除"),
+    ROLE_HAS_EMP(2024, "角色下存在人员无法删除"),
     UPDATE_FA2IL(99999, "update  fail");
 
     private Integer code;

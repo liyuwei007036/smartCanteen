@@ -69,4 +69,9 @@ public class EmployeeRoleServiceImpl extends ServiceImpl<EmployeeRoleMapper, Emp
                 .map(x -> ObjectUtil.getLong(x.get("roleId")))
                 .filter(x -> x > 0).distinct().collect(Collectors.toList());
     }
+
+    @Override
+    public int countEmp(Long roleId) {
+        return count(Wrappers.<EmployeeRole>lambdaQuery().eq(EmployeeRole::getRoleId, roleId));
+    }
 }

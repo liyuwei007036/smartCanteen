@@ -34,6 +34,7 @@ public interface IEmployeeRoleService extends IService<EmployeeRole> {
      * @return
      */
     List<Map<String, Object>> getAllRoleByEmployee(Long employee);
+
     /**
      * 获取员工角色
      *
@@ -41,4 +42,12 @@ public interface IEmployeeRoleService extends IService<EmployeeRole> {
      * @return
      */
     List<Long> getEmpRole(Long empId);
+
+    /**
+     * 统计角色下的人员
+     *
+     * @param roleId
+     * @return
+     */
+    int countEmp(Long roleId);
 }
