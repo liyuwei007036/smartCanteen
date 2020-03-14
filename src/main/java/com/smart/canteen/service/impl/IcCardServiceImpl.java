@@ -308,6 +308,9 @@ public class IcCardServiceImpl extends ServiceImpl<IcCardMapper, IcCard> impleme
             throw new BaseException(CanteenExceptionEnum.CARD_TYPE_ERROR);
         }
         double sub = MathUtil.sub(card.getCurrentBalance(), form.getMoney());
+        if (sub < 0) {
+            throw new BaseException(CanteenExceptionEnum.NUM_ERROR);
+        }
         card.setCurrentBalance(sub);
         EntityLogUtil.addNormalUser(card, account);
         boolean b = updateById(card);
