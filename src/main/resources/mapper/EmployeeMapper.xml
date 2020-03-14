@@ -40,10 +40,10 @@
             and card.validity_time <![CDATA[ <= ]]> #{search.cardTimeEnd}
         </if>
         <if test="search.createStart != null and search.createStart != ''">
-            and emp.create_time <![CDATA[ <= ]]> #{search.createStart}
+            and emp.create_time <![CDATA[ >= ]]> #{search.createStart}
         </if>
         <if test="search.createEnd != null and search.createEnd != ''">
-            and card.create_time <![CDATA[ >= ]]> #{search.createEnd}
+            and card.create_time <![CDATA[ <= ]]> #{search.createEnd}
         </if>
         order by card.status , card.create_time desc
     </select>
