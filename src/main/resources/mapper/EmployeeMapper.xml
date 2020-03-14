@@ -31,16 +31,10 @@
         <if test="search.orgName != null and search.orgName != '' ">
             and emp.origination_name like CONCAT(#{search.orgName}, '%')
         </if>
-        <if test="search.cardTimeStart != null ">
+        <if test="search.cardTimeStart != null and search.cardTimeStart != ''">
             and card.validity_time <![CDATA[ >= ]]> #{search.cardTimeStart}
         </if>
-        <if test="search.cardTimeEnd != null ">
-            and card.validity_time <![CDATA[ <= ]]> #{search.cardTimeEnd}
-        </if>
-        <if test="search.cardTimeStart != null ">
-            and card.validity_time <![CDATA[ >= ]]> #{search.cardTimeStart}
-        </if>
-        <if test="search.cardTimeEnd != null ">
+        <if test="search.cardTimeEnd != null and search.cardTimeEnd != ''">
             and card.validity_time <![CDATA[ <= ]]> #{search.cardTimeEnd}
         </if>
         order by card.status , card.create_time desc
