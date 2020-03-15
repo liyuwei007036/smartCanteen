@@ -42,7 +42,7 @@ public class OriginationServiceImpl extends ServiceImpl<OriginationMapper, Origi
     @Override
     public void add(OriginationForm dto, Account creator) {
         ValidatorUtil.validator(dto, OriginationForm.Insert.class);
-        Origination origination = judgeIsSame(dto.getName(), dto.getCode());
+        Origination origination = judgeIsSame(dto.getName());
         if (origination != null) {
             throw new BaseException(CanteenExceptionEnum.ORG_NAME_REPEAT);
         }
@@ -95,12 +95,11 @@ public class OriginationServiceImpl extends ServiceImpl<OriginationMapper, Origi
         if (origination == null) {
             throw new BaseException(CanteenExceptionEnum.ORG_NOT_EXIST);
         }
-        Origination oldOrigination = judgeIsSame(form.getName(), form.getCode());
+        Origination oldOrigination = judgeIsSame(form.getName());
         if (oldOrigination != null && !oldOrigination.getId().equals(id)) {
             throw new BaseException(CanteenExceptionEnum.ORG_NAME_REPEAT);
         }
         origination.setName(form.getName());
-        origination.setCode(form.getCode());
         origination.setDescription(form.getDescription());
         EntityLogUtil.addNormalUser(origination, updater);
         boolean b = updateById(origination);
@@ -196,9 +195,9 @@ public class OriginationServiceImpl extends ServiceImpl<OriginationMapper, Origi
 
 
     @Override
-    public Origination judgeIsSame(String name, String code) {
-        return getOne(Wrappers.<Origination>lambdaQuery().or().eq(!StringUtils.isEmpty(name), Origination::getName, name)
-                .or().eq(!StringUtils.isEmpty(code), Origination::getCode, code), false);
+    public Origination judgeIsSame(String name) {
+        return getOne(Wrappers.<Origination>lambdaQuery().eq(!StringUtils.isEmpty(name), Origination::getName, name)
+               , false);
     }
 
     @Override

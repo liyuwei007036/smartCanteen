@@ -41,10 +41,6 @@ public class Origination extends BaseEntity {
     @TableField(value = "level", insertStrategy = FieldStrategy.NOT_NULL, updateStrategy = FieldStrategy.NOT_EMPTY)
     private Long level;
 
-    @ApiModelProperty(value = "部门代码")
-    @TableField(value = "code", insertStrategy = FieldStrategy.NOT_EMPTY, updateStrategy = FieldStrategy.NOT_EMPTY)
-    private String code;
-
     @ApiModelProperty(value = "描述")
     @TableField(value = "description")
     private String description;

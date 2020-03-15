@@ -88,10 +88,9 @@ public interface IOriginationService extends IService<Origination> {
      * 判断是否重复
      *
      * @param name
-     * @param code
      * @return
      */
-    Origination judgeIsSame(String name, String code);
+    Origination judgeIsSame(String name);
 
     /**
      * 获取所有根节点

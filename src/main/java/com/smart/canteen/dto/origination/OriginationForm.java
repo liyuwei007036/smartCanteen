@@ -41,10 +41,6 @@ public class OriginationForm implements Serializable {
     @ApiModelProperty(value = "上级部门id")
     private Long parentId;
 
-    @NotNull(groups = {OriginationForm.Insert.class, OriginationForm.Update.class})
-    @ApiModelProperty(value = "部门代码")
-    private String code;
-
     @Length(max = 255)
     @ApiModelProperty(value = "描述")
     private String description;

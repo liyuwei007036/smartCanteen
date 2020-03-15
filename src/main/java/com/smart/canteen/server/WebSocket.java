@@ -5,7 +5,9 @@ import com.alibaba.fastjson.JSONObject;
 import com.lc.core.service.RedisService;
 import io.netty.handler.codec.http.HttpHeaders;
 import io.netty.handler.timeout.IdleStateEvent;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.MultiValueMap;
 import org.yeauty.annotation.*;
 import org.yeauty.pojo.Session;
 
@@ -17,6 +19,7 @@ import java.util.Map;
  * @author lc
  * @date 2020/3/15下午 3:34
  */
+@Slf4j
 @ServerEndpoint(path = "/ws/{arg}", port = "${websocket.port}")
 public class WebSocket {
 
@@ -26,12 +29,12 @@ public class WebSocket {
     private RedisService redisService;
 
     @BeforeHandshake
-    public void handshake(Session session, HttpHeaders headers) {
+    public void handshake(Session session, HttpHeaders headers, @RequestParam String req, @RequestParam MultiValueMap reqMap, @PathVariable String arg, @PathVariable Map pathMap) {
         session.setSubprotocols("stomp");
     }
 
     @OnOpen
-    public void onOpen(Session session, HttpHeaders headers) {
+    public void onOpen(Session session, HttpHeaders headers, @RequestParam String req, @RequestParam MultiValueMap reqMap, @PathVariable String arg, @PathVariable Map pathMap) {
 
     }
 
@@ -49,13 +52,14 @@ public class WebSocket {
 
     @OnMessage
     public void onMessage(Session session, String message) {
+        log.info("webSocket 接收到消息{}", message);
         JSONObject msg = JSON.parseObject(message);
         Boolean start = msg.getBoolean("start");
         String token = msg.getString("token");
         if (start) {
-            redisService.put("", session, 9, 30);
+            redisService.put("GET_CARD_NO", token, 9, 30);
         } else {
-            redisService.remove("", 9);
+            redisService.remove("GET_CARD_NO", 9);
         }
         map.put(token, session);
     }
