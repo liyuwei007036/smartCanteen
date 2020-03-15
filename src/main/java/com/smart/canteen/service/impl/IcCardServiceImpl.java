@@ -307,7 +307,7 @@ public class IcCardServiceImpl extends ServiceImpl<IcCardMapper, IcCard> impleme
         if (card.getStatus() != CardStatusEnum.ENABLE) {
             throw new BaseException(CanteenExceptionEnum.CARD_TYPE_ERROR);
         }
-        double sub = MathUtil.sub(card.getCurrentBalance(), form.getMoney());
+        double sub = MathUtil.sub(ObjectUtil.getDouble(card.getCurrentBalance()), form.getMoney());
         if (sub < 0) {
             throw new BaseException(CanteenExceptionEnum.NUM_ERROR);
         }
