@@ -28,8 +28,10 @@ import com.smart.canteen.service.IRechargeLogService;
 import com.smart.canteen.utils.EntityLogUtil;
 import com.smart.canteen.vo.CardVo;
 import com.smart.canteen.vo.ResponseMsg;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
@@ -47,6 +49,7 @@ import java.util.List;
  * @author lc
  * @since 2020-03-03
  */
+@Slf4j
 @Transactional(rollbackFor = Exception.class, timeout = 2000)
 @Service
 public class IcCardServiceImpl extends ServiceImpl<IcCardMapper, IcCard> implements IIcCardService {
@@ -180,6 +183,8 @@ public class IcCardServiceImpl extends ServiceImpl<IcCardMapper, IcCard> impleme
 
     @Autowired
     private RedisService redisService;
+    @Autowired
+    private StringRedisTemplate template;
 
     @Override
     public ResponseMsg search(String cardNo) {
@@ -191,7 +196,8 @@ public class IcCardServiceImpl extends ServiceImpl<IcCardMapper, IcCard> impleme
             if (value == null) {
                 return new ResponseMsg(CmdCodeEnum.CON, Voices.WELCOME, cardNo, "无效卡");
             } else {
-                redisService.put("CARD_NO", cardNo, 9, 60L);
+                log.info("发送卡号到前端");
+                template.convertAndSend("readCard", cardNo);
                 return new ResponseMsg(CmdCodeEnum.CON, Voices.WELCOME, cardNo, "读卡中...");
             }
         }

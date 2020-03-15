@@ -8,6 +8,7 @@ import com.smart.canteen.annotations.Permission;
 import com.smart.canteen.dto.role.PermissionForm;
 import com.smart.canteen.service.IPermissionService;
 import com.smart.canteen.service.IRolePermissionService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +24,7 @@ import java.io.Serializable;
  * @since 2020-03-11
  */
 @Valid(needLogin = true)
+@Api(tags = {"权限管理"})
 @RestController
 @RequestMapping("/rolePermission")
 public class RolePermissionController extends BaseController {

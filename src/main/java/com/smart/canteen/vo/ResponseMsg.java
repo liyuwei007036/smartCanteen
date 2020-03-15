@@ -78,7 +78,7 @@ public class ResponseMsg {
         byte[] data = new byte[64];
         try {
             List<String> msg = new ArrayList<>();
-            msg.add(0, "欢迎使用IC卡消费机");
+            msg.add(0, "欢迎使用IC消费机");
             msg.add(1, "卡号:" + cardNo);
             msg.add(2, "余额:" + MathUtil.div(balance, 1, 2));
             for (int i = 0; i < msg.size(); i++) {
@@ -92,22 +92,13 @@ public class ResponseMsg {
         this.msg = data;
     }
 
-    public static byte[] double2Bytes(double d) {
-        long value = Double.doubleToRawLongBits(d);
-        byte[] byteRet = new byte[8];
-        for (int i = 0; i < 8; i++) {
-            byteRet[i] = (byte) ((value >> 8 * i) & 0xff);
-        }
-        return byteRet;
-    }
-
     public ResponseMsg(CmdCodeEnum code, byte[] voice, String cardNo, String other) {
         this.code = code.getCode();
         this.voice = voice;
         byte[] data = new byte[64];
         try {
             List<String> msg = new ArrayList<>();
-            msg.add(0, "欢迎使用IC卡消费机");
+            msg.add(0, "欢迎使用IC消费机");
             msg.add(1, "卡号:" + cardNo);
             if (!StringUtils.isEmpty(other)) {
                 msg.add(2, other);
@@ -130,7 +121,7 @@ public class ResponseMsg {
         byte[] data = new byte[64];
         try {
             List<String> msg = new ArrayList<>();
-            msg.add(0, "欢迎使用IC卡消费机");
+            msg.add(0, "欢迎使用IC消费机");
             msg.add(1, "网络连接正常!");
             for (int i = 0; i < msg.size(); i++) {
                 byte[] m = msg.get(i).getBytes("GB2312");
