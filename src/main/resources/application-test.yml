@@ -15,7 +15,7 @@ server:
 netty:
   port: 3000
 websocket:
-  port: 9999
+  port: 8032
 
 spring:
   application:
