@@ -1,6 +1,7 @@
 package com.smart.canteen.dto.role;
 
 import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 
@@ -26,9 +27,11 @@ public class RoleForm implements Serializable {
     }
 
     @NotNull(groups = {Update.class})
+    @ApiModelProperty(value = "角色Id")
     private Long id;
 
     @NotEmpty(groups = {Insert.class, Update.class})
     @Length(min = 2, max = 40, groups = {Insert.class, Update.class})
+    @ApiModelProperty(value = "角色名称")
     private String name;
 }

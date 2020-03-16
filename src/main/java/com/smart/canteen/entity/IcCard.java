@@ -30,7 +30,7 @@ public class IcCard extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty(value = "主键Id")
+    @ApiModelProperty(value = "卡片主键Id")
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 

@@ -1,5 +1,7 @@
 package com.smart.canteen.dto.card;
 
+import com.alibaba.fastjson.annotation.JSONField;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.smart.canteen.enums.CardTypeEnum;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -35,6 +37,7 @@ public class CardForm implements Serializable {
     @ApiModelProperty(value = "卡号")
     private String no;
 
+    @JSONField(serialzeFeatures= SerializerFeature.WriteEnumUsingToString)
     @NotNull(groups = {Insert.class, Update.class})
     @ApiModelProperty(value = "类型")
     private CardTypeEnum type;

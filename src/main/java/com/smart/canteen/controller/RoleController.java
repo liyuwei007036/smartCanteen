@@ -5,8 +5,10 @@ import com.lc.core.annotations.Valid;
 import com.lc.core.controller.BaseController;
 import com.lc.core.dto.ResponseInfo;
 import com.lc.core.utils.ObjectUtil;
+import com.smart.canteen.annotations.Log;
 import com.smart.canteen.annotations.Permission;
 import com.smart.canteen.dto.CommonList;
+import com.smart.canteen.dto.recharge.RechargeForm;
 import com.smart.canteen.dto.role.RoleForm;
 import com.smart.canteen.dto.role.RoleSearch;
 import com.smart.canteen.entity.Role;
@@ -35,6 +37,7 @@ public class RoleController extends BaseController {
     @Autowired
     private IRoleService iRoleService;
 
+    @Log(module = "角色管理", action = "添加", clazz = RoleForm.class)
     @Permission(code = "role:add")
     @ApiOperation(value = "添加角色", notes = "添加角色")
     @RequestMapping(value = "add", method = RequestMethod.POST)
@@ -43,6 +46,7 @@ public class RoleController extends BaseController {
         return new ResponseInfo<>();
     }
 
+    @Log(module = "角色管理", action = "编辑", clazz = RoleForm.class)
     @Permission(code = "role:update")
     @ApiOperation(value = "编辑角色", notes = "编辑角色")
     @RequestMapping(value = "update", method = RequestMethod.PATCH)
@@ -51,6 +55,7 @@ public class RoleController extends BaseController {
         return new ResponseInfo<>();
     }
 
+    @Log(module = "角色管理", action = "删除", dataDesc = "角色ID")
     @Permission(code = "role:deleted")
     @ApiOperation(value = "删除角色", notes = "删除角色")
     @RequestMapping(value = "deleted/{id}", method = RequestMethod.DELETE)

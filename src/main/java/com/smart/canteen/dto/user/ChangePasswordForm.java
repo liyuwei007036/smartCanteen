@@ -1,6 +1,7 @@
 package com.smart.canteen.dto.user;
 
 import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 
@@ -17,14 +18,17 @@ public class ChangePasswordForm implements Serializable {
 
     @Length(min = 6, max = 20)
     @NotEmpty
+    @ApiModelProperty("老密码")
     private String oldPassword;
 
     @Length(min = 6, max = 20)
     @NotEmpty
+    @ApiModelProperty("新密码")
     private String newPassword;
 
     @Length(min = 6, max = 20)
     @NotEmpty
+    @ApiModelProperty("新密码确认")
     private String confirmPassword;
 
 }

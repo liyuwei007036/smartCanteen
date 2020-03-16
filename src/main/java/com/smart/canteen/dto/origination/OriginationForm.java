@@ -34,7 +34,7 @@ public class OriginationForm implements Serializable {
 
     @NotEmpty(groups = {OriginationForm.Insert.class, OriginationForm.Update.class})
     @Length(min = 2, max = 40, groups = {EmployeeForm.Insert.class, OriginationForm.Update.class})
-    @ApiModelProperty(value = "名称")
+    @ApiModelProperty(value = "组织名称")
     private String name;
 
     @NotNull(groups = {OriginationForm.Insert.class})

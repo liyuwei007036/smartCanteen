@@ -1,5 +1,7 @@
 package com.smart.canteen.dto.employee;
 
+import com.alibaba.fastjson.annotation.JSONField;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.smart.canteen.enums.CardTypeEnum;
 import io.swagger.annotations.ApiModel;
@@ -12,7 +14,6 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.util.Date;
 import java.util.Date;
 import java.util.List;
 
@@ -35,7 +36,7 @@ public class EmployeeForm implements Serializable {
     }
 
     @NotNull(groups = Update.class)
-    @ApiModelProperty(value = "主键id")
+    @ApiModelProperty(value = "员工id")
     private Long id;
 
     @NotEmpty(groups = {Insert.class, Update.class})
@@ -75,13 +76,14 @@ public class EmployeeForm implements Serializable {
     private String confirmPassword;
 
     @NotNull(groups = Update.class)
-    @ApiModelProperty(value = "主键Id")
+    @ApiModelProperty(value = "卡片Id")
     private Long cardId;
 
     @NotNull(groups = Insert.class)
     @ApiModelProperty(value = "卡号")
     private String cardNo;
 
+    @JSONField(serialzeFeatures= SerializerFeature.WriteEnumUsingToString)
     @NotNull(groups = {Insert.class, Update.class})
     @ApiModelProperty(value = "卡类型")
     private CardTypeEnum type;

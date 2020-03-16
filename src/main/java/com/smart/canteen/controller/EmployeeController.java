@@ -6,6 +6,7 @@ import com.lc.core.controller.BaseController;
 import com.lc.core.dto.Account;
 import com.lc.core.dto.ResponseInfo;
 import com.lc.core.utils.ObjectUtil;
+import com.smart.canteen.annotations.Log;
 import com.smart.canteen.annotations.Permission;
 import com.smart.canteen.dto.CommonList;
 import com.smart.canteen.dto.employee.EmployeeForm;
@@ -51,6 +52,7 @@ public class EmployeeController extends BaseController {
         return new ResponseInfo<>();
     }
 
+    @Log(module = "人员管理", action = "添加", clazz = EmployeeForm.class)
     @Permission(code = "employee:add")
     @ApiOperation(value = "添加员工", notes = "添加员工")
     @RequestMapping(value = "add", method = RequestMethod.POST)
@@ -59,7 +61,7 @@ public class EmployeeController extends BaseController {
         return new ResponseInfo<>();
     }
 
-
+    @Log(module = "人员管理", action = "编辑", clazz = EmployeeForm.class)
     @Permission(code = "employee:update")
     @ApiOperation(value = "编辑员工", notes = "编辑员工")
     @RequestMapping(value = "update", method = RequestMethod.PATCH)
@@ -82,6 +84,7 @@ public class EmployeeController extends BaseController {
         return new ResponseInfo<>(iEmployeeService.getEmpInfo(ObjectUtil.getLong(id)));
     }
 
+    @Log(module = "人员管理", action = "修改密码", clazz = ChangePasswordForm.class)
     @ApiOperation(value = "修改密码", notes = "修改密码")
     @RequestMapping(value = "changePassword", method = RequestMethod.POST)
     public ResponseInfo changePassword(@RequestBody ChangePasswordForm passwordForm) {

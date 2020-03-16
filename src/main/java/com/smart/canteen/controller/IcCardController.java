@@ -4,11 +4,13 @@ package com.smart.canteen.controller;
 import com.lc.core.annotations.Valid;
 import com.lc.core.controller.BaseController;
 import com.lc.core.dto.ResponseInfo;
+import com.smart.canteen.annotations.Log;
 import com.smart.canteen.annotations.Permission;
 import com.smart.canteen.dto.CommonList;
 import com.smart.canteen.dto.card.CardSearch;
 import com.smart.canteen.dto.card.DeductionForm;
 import com.smart.canteen.dto.card.PatchCardForm;
+import com.smart.canteen.dto.user.ChangePasswordForm;
 import com.smart.canteen.service.IIcCardService;
 import com.smart.canteen.vo.CardVo;
 import io.swagger.annotations.Api;
@@ -40,6 +42,7 @@ public class IcCardController extends BaseController {
         return new ResponseInfo<>(iIcCardService.listCard(params));
     }
 
+    @Log(module = "卡片管理", action = "挂失", dataDesc = "卡片id")
     @Permission(code = "icCard:loss")
     @ApiOperation(value = "挂失", notes = "挂失")
     @RequestMapping(value = "report/loss/{id}", method = RequestMethod.PUT)
@@ -48,6 +51,7 @@ public class IcCardController extends BaseController {
         return new ResponseInfo<>();
     }
 
+    @Log(module = "卡片管理", action = "补卡", clazz = PatchCardForm.class)
     @Permission(code = "icCard:patch")
     @ApiOperation(value = "补卡", notes = "补卡")
     @RequestMapping(value = "/patch", method = RequestMethod.POST)
@@ -56,6 +60,7 @@ public class IcCardController extends BaseController {
         return new ResponseInfo<>();
     }
 
+    @Log(module = "卡片管理", action = "销户", dataDesc = "人员id")
     @Permission(code = "icCard:deleted")
     @ApiOperation(value = "销户", notes = "销户")
     @RequestMapping(value = "deleted/{id}", method = RequestMethod.DELETE)
@@ -64,6 +69,7 @@ public class IcCardController extends BaseController {
         return new ResponseInfo<>();
     }
 
+    @Log(module = "卡片管理", action = "补扣", clazz = DeductionForm.class)
     @Permission(code = "icCard:deduction")
     @ApiOperation(value = "补扣", notes = "补扣")
     @RequestMapping(value = "deduction", method = RequestMethod.POST)

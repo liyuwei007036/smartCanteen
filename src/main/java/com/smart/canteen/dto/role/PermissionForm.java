@@ -1,5 +1,6 @@
 package com.smart.canteen.dto.role;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import javax.validation.constraints.Min;
@@ -16,9 +17,11 @@ import java.util.Set;
 public class PermissionForm implements Serializable {
 
     @NotNull
+    @ApiModelProperty("角色的权限集合")
     private Set<String> permissions;
 
     @Min(0)
     @NotNull
+    @ApiModelProperty("角色ID")
     private Long id;
 }

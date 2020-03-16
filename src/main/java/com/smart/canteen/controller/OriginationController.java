@@ -5,8 +5,10 @@ import com.lc.core.annotations.Valid;
 import com.lc.core.controller.BaseController;
 import com.lc.core.dto.ResponseInfo;
 import com.lc.core.utils.ObjectUtil;
+import com.smart.canteen.annotations.Log;
 import com.smart.canteen.annotations.Permission;
 import com.smart.canteen.dto.CommonList;
+import com.smart.canteen.dto.card.DeductionForm;
 import com.smart.canteen.dto.origination.OriginationForm;
 import com.smart.canteen.dto.origination.OriginationSearch;
 import com.smart.canteen.entity.Origination;
@@ -35,8 +37,9 @@ public class OriginationController extends BaseController {
     @Autowired
     private IOriginationService iOriginationService;
 
+    @Log(module = "组织管理", action = "添加组织", clazz = OriginationForm.class)
     @Permission(code = "origination:add")
-    @ApiOperation(value = "添加组织", notes = "添加组织")
+    @ApiOperation(value = "添加组织", notes = "添加")
     @RequestMapping(value = "add", method = RequestMethod.POST)
     public ResponseInfo add(@RequestBody OriginationForm params) {
         iOriginationService.add(params, getCurrentUser());
@@ -45,6 +48,7 @@ public class OriginationController extends BaseController {
 
     @Permission(code = "origination:update")
     @ApiOperation(value = "编辑组织", notes = "编辑组织")
+    @Log(module = "组织管理", action = "编辑", clazz = OriginationForm.class)
     @RequestMapping(value = "update", method = RequestMethod.PATCH)
     public ResponseInfo update(@RequestBody OriginationForm params) {
         iOriginationService.update(params, getCurrentUser());
@@ -52,6 +56,7 @@ public class OriginationController extends BaseController {
     }
 
     @Permission(code = "origination:deleted")
+    @Log(module = "组织管理", action = "删除", dataDesc = "组织ID")
     @ApiOperation(value = "删除组织", notes = "删除组织")
     @RequestMapping(value = "deleted/{id}", method = RequestMethod.DELETE)
     public ResponseInfo deleted(@PathVariable("id") Long id) {

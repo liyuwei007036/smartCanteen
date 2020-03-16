@@ -1,5 +1,6 @@
 package com.smart.canteen.dto.card;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import javax.validation.constraints.Min;
@@ -14,9 +15,11 @@ import java.io.Serializable;
 public class DeductionForm implements Serializable {
 
     @NotNull
+    @ApiModelProperty("卡片ID")
     private Long cardId;
 
     @NotNull
+    @ApiModelProperty("补扣金额")
     @Min(value = 0, message = "补扣金额不能小于0")
     private Double money;
 }

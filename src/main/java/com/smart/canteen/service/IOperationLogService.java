@@ -1,0 +1,27 @@
+package com.smart.canteen.service;
+
+import com.baomidou.mybatisplus.extension.service.IService;
+import com.lc.core.dto.Account;
+import com.smart.canteen.annotations.Log;
+import com.smart.canteen.entity.OperationLog;
+
+/**
+ * <p>
+ * 操作日志 服务类
+ * </p>
+ *
+ * @author lc
+ * @since 2020-03-16
+ */
+public interface IOperationLogService extends IService<OperationLog> {
+
+    /**
+     * 添加日志
+     *
+     * @param args
+     * @param log
+     * @param account
+     */
+    void addLog(Object[] args, Log log, Account account);
+
+}

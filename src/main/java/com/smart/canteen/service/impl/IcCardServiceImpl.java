@@ -126,7 +126,7 @@ public class IcCardServiceImpl extends ServiceImpl<IcCardMapper, IcCard> impleme
             rechargeLog.setMoney(form.getMoney());
             rechargeLog.setCardId(x.getId());
             rechargeLog.setCardNo(x.getNo());
-            rechargeLog.setType(RechargeTypeEnum.getByCode(form.getRechargeType()));
+            rechargeLog.setType(form.getRechargeType());
             rechargeLog.setBalance(lastBalance);
             rechargeLog.setEmployeeName(x.getEmployeeName());
             rechargeLog.setEmployeeNo(x.getEmployeeNo());
