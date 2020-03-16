@@ -19,10 +19,7 @@ import com.smart.canteen.entity.IcCard;
 import com.smart.canteen.enums.CanteenExceptionEnum;
 import com.smart.canteen.enums.EmployeeStatusEnum;
 import com.smart.canteen.mapper.EmployeeMapper;
-import com.smart.canteen.service.IEmployeeRoleService;
-import com.smart.canteen.service.IEmployeeService;
-import com.smart.canteen.service.IIcCardService;
-import com.smart.canteen.service.IRolePermissionService;
+import com.smart.canteen.service.*;
 import com.smart.canteen.utils.EntityLogUtil;
 import com.smart.canteen.vo.EmployeeVO;
 import lombok.extern.slf4j.Slf4j;
@@ -58,6 +55,9 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
     @Autowired
     private IIcCardService iIcCardService;
 
+    @Autowired
+    private ILoginLogService iLoginLogService;
+
     @Override
     public Account login(LoginForm dto, BaseController controller) {
         ValidatorUtil.validator(dto);
@@ -75,6 +75,7 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
             List<Long> empRole = iEmployeeRoleService.getEmpRole(user.getId());
             account.setPowers(new ArrayList<>(iRolePermissionService.getRolePermission(empRole)));
             LoginUtils.doUserLogin(account, controller);
+            iLoginLogService.addLog(account, RequestUtils.getIpAddress(controller.getRequest()));
             return account;
         } else {
             throw new BaseException(CanteenExceptionEnum.USER_NOT_EXIST);

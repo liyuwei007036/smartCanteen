@@ -2,10 +2,16 @@ package com.smart.canteen.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lc.core.dto.Account;
+import com.lc.core.utils.ObjectUtil;
 import com.smart.canteen.annotations.Log;
+import com.smart.canteen.dto.CommonList;
+import com.smart.canteen.dto.log.OperationSearch;
 import com.smart.canteen.entity.OperationLog;
 import com.smart.canteen.mapper.OperationLogMapper;
 import com.smart.canteen.service.IOperationLogService;
@@ -13,9 +19,9 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 
 import java.util.Date;
+import java.util.Objects;
 
 /**
  * <p>
@@ -42,7 +48,7 @@ public class OperationLogServiceImpl extends ServiceImpl<OperationLogMapper, Ope
                 JSONObject da = JSON.parseObject(objectMapper.writeValueAsString(args[0]));
                 da.forEach((k, v) -> {
                     try {
-                        if (!StringUtils.isEmpty(v)) {
+                        if (!StringUtils.isEmpty(ObjectUtil.getString(v))) {
                             ApiModelProperty desc = clazz1.getDeclaredField(k).getAnnotation(ApiModelProperty.class);
                             if (desc != null) {
                                 res.put(desc.value(), v);
@@ -66,5 +72,20 @@ public class OperationLogServiceImpl extends ServiceImpl<OperationLogMapper, Ope
         } catch (Exception e) {
             log.error("添加操作记录失败", e);
         }
+    }
+
+
+    @Override
+    public CommonList<OperationLog> listLogs(OperationSearch search) {
+        Page<OperationLog> page = new Page<>(search.getPage(), search.getSize());
+        page(page, Wrappers.<OperationLog>lambdaQuery()
+                .eq(StringUtils.isNotEmpty(search.getEmpName()), OperationLog::getEmpName, search.getEmpName())
+                .eq(StringUtils.isNotEmpty(search.getModule()), OperationLog::getModule, search.getModule())
+                .eq(StringUtils.isNotEmpty(search.getAction()), OperationLog::getAction, search.getAction())
+                .ge(Objects.nonNull(search.getStart()), OperationLog::getOperationTime, search.getStart())
+                .lt(Objects.nonNull(search.getEnd()), OperationLog::getOperationTime, search.getEnd()).orderByDesc(OperationLog::getOperationTime)
+        );
+        return new CommonList<>(page.hasNext(), page.getTotal(), page.getCurrent(), page.getRecords());
+
     }
 }

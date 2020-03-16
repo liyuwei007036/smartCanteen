@@ -3,6 +3,8 @@ package com.smart.canteen.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.lc.core.dto.Account;
 import com.smart.canteen.annotations.Log;
+import com.smart.canteen.dto.CommonList;
+import com.smart.canteen.dto.log.OperationSearch;
 import com.smart.canteen.entity.OperationLog;
 
 /**
@@ -23,5 +25,13 @@ public interface IOperationLogService extends IService<OperationLog> {
      * @param account
      */
     void addLog(Object[] args, Log log, Account account);
+
+    /**
+     * 查询
+     *
+     * @param search
+     * @return
+     */
+    CommonList<OperationLog> listLogs(OperationSearch search);
 
 }
