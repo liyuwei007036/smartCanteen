@@ -34,4 +34,11 @@ public interface IOperationLogService extends IService<OperationLog> {
      */
     CommonList<OperationLog> listLogs(OperationSearch search);
 
+    /**
+     * 查询
+     *
+     * @param id
+     * @return
+     */
+    OperationLog getById(Long id);
 }

@@ -14,12 +14,7 @@ import com.smart.canteen.service.IOperationLogService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModelProperty;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.expression.Operation;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * <p>
@@ -51,6 +46,12 @@ public class LogController extends BaseController {
     @RequestMapping(value = "/list/operation", method = RequestMethod.POST)
     public ResponseInfo<CommonList<OperationLog>> listOperation(@RequestBody OperationSearch search) {
         return new ResponseInfo<>(iOperationLogService.listLogs(search));
+    }
+
+    @ApiModelProperty(value = "查询一个操作日志")
+    @RequestMapping(value = "/get/operation/{id}", method = RequestMethod.GET)
+    public ResponseInfo<OperationLog> getOperation(@PathVariable("id") Long id) {
+        return new ResponseInfo<>(iOperationLogService.getById(id));
     }
 
 }

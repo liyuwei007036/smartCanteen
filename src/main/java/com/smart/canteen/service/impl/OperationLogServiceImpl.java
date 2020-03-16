@@ -86,6 +86,10 @@ public class OperationLogServiceImpl extends ServiceImpl<OperationLogMapper, Ope
                 .lt(Objects.nonNull(search.getEnd()), OperationLog::getOperationTime, search.getEnd()).orderByDesc(OperationLog::getOperationTime)
         );
         return new CommonList<>(page.hasNext(), page.getTotal(), page.getCurrent(), page.getRecords());
+    }
 
+    @Override
+    public OperationLog getById(Long id) {
+        return super.getById(id);
     }
 }
