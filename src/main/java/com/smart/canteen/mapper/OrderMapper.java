@@ -3,6 +3,11 @@ package com.smart.canteen.mapper;
 import com.smart.canteen.entity.Order;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
+import javax.xml.crypto.Data;
+import java.util.Date;
+import java.util.List;
 
 /**
  * <p>
@@ -15,4 +20,13 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface OrderMapper extends BaseMapper<Order> {
 
+    /**
+     * 统计一天
+     *
+     * @param begin
+     * @param end
+     * @param min
+     * @return
+     */
+    List<String> summaryOrderNum(@Param("begin") Date begin, @Param("end") Date end, @Param("min") int min);
 }

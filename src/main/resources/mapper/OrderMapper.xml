@@ -2,4 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.smart.canteen.mapper.OrderMapper">
 
+    <select id="summaryOrderNum" resultType="java.lang.String">
+        SELECT DATE_FORMAT(concat( date( create_time ), ' ', HOUR ( create_time ), ':', floor( MINUTE ( create_time ) / #{min} ) *  #{min} ),'%H:%i') AS time
+		FROM c_order WHERE deleted = 0 and  create_time <![CDATA[ <= ]]> #{end} and create_time <![CDATA[ >= ]]> #{begin}
+    </select>
 </mapper>

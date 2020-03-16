@@ -3,12 +3,16 @@ package com.smart.canteen.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.lc.core.dto.Account;
 import com.smart.canteen.dto.CommonList;
+import com.smart.canteen.dto.order.OrderCountSummary;
 import com.smart.canteen.dto.order.OrderSearch;
 import com.smart.canteen.dto.recharge.RechargeLogSearch;
 import com.smart.canteen.entity.IcCard;
 import com.smart.canteen.entity.Order;
 import com.smart.canteen.vo.OrderVo;
 import com.smart.canteen.vo.RechargeLogVO;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -49,5 +53,9 @@ public interface IOrderService extends IService<Order> {
      * @return
      */
     CommonList<OrderVo> listLogs(OrderSearch search);
+
+
+    Map<String, Long> getSummaryDay();
+
 
 }

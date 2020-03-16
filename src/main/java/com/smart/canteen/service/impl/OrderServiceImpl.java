@@ -5,8 +5,11 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lc.core.dto.Account;
+import com.lc.core.utils.DateUtils;
 import com.lc.core.utils.ModelMapperUtils;
+import com.lc.core.utils.ObjectUtil;
 import com.smart.canteen.dto.CommonList;
+import com.smart.canteen.dto.order.OrderCountSummary;
 import com.smart.canteen.dto.order.OrderSearch;
 import com.smart.canteen.entity.IcCard;
 import com.smart.canteen.entity.Order;
@@ -18,8 +21,8 @@ import com.smart.canteen.vo.OrderVo;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
-import java.util.List;
+import java.time.LocalDateTime;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -87,4 +90,15 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         return new CommonList<>(voPage.hasNext(), voPage.getTotal(), voPage.getCurrent(), collect);
     }
 
+    @Override
+    public Map<String, Long> getSummaryDay() {
+        Calendar now = Calendar.getInstance();
+        Date end = now.getTime();
+        now.add(Calendar.HOUR, -7);
+        Date begin = now.getTime();
+        List<String> strings = getBaseMapper().summaryOrderNum(begin, end, 30);
+        Map<String, Long> res = new HashMap<>(16);
+        strings.forEach(x -> res.put(x, ObjectUtil.getLong(res.get(x)) + 1));
+        return res;
+    }
 }

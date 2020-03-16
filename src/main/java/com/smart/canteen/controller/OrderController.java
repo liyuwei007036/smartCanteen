@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.Serializable;
+
 /**
  * <p>
  * 充值记录 前端控制器
@@ -39,6 +41,12 @@ public class OrderController extends BaseController {
     @RequestMapping(value = "list", method = RequestMethod.POST)
     public ResponseInfo<CommonList<OrderVo>> list(@RequestBody OrderSearch params) {
         return new ResponseInfo<>(iOrderService.listLogs(params));
+    }
+
+    @ApiOperation(value = "消费统计", notes = "消费统计")
+    @RequestMapping(value = "summary", method = RequestMethod.GET)
+    public ResponseInfo summary() {
+        return new ResponseInfo<>((Serializable) iOrderService.getSummaryDay());
     }
 
 }
