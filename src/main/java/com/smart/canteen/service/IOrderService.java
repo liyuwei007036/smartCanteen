@@ -57,5 +57,6 @@ public interface IOrderService extends IService<Order> {
 
     Map<String, Long> getSummaryDay();
 
+    Map<String, Double> getYearSaleData();
 
 }

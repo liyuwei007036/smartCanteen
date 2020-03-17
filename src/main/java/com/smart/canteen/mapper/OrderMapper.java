@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Param;
 import javax.xml.crypto.Data;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -29,4 +30,13 @@ public interface OrderMapper extends BaseMapper<Order> {
      * @return
      */
     List<String> summaryOrderNum(@Param("begin") Date begin, @Param("end") Date end, @Param("min") int min);
+
+    /**
+     * 统计年销售额
+     *
+     * @param begin
+     * @param end
+     * @return
+     */
+    List<Map<String, Object>> summaryYearSale(Date begin, Date end);
 }

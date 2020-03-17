@@ -1,6 +1,7 @@
 package com.smart.canteen.dto.user;
 
 import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import javax.validation.constraints.NotEmpty;
@@ -14,12 +15,11 @@ import java.io.Serializable;
 @Data
 public class LoginForm implements Serializable {
 
+    @ApiModelProperty(example = "admin")
     @NotEmpty
     private String account;
 
-    @NotEmpty
+    @ApiModelProperty(example = "123456")
     private String password;
 
-    @NotEmpty
-    private String code;
 }
