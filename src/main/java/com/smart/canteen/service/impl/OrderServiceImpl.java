@@ -95,7 +95,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
     public Map<String, Long> getSummaryDay() {
         Calendar now = Calendar.getInstance();
         Date end = now.getTime();
-        now.add(Calendar.HOUR, -7);
+        now.add(Calendar.HOUR, -12);
         Date begin = now.getTime();
         List<String> strings = getBaseMapper().summaryOrderNum(begin, end, 30);
         Map<String, Long> res = new LinkedHashMap<>(16);
