@@ -67,6 +67,7 @@ public class IcCardServiceImpl extends ServiceImpl<IcCardMapper, IcCard> impleme
         card.setEmployeeId(employee.getId());
         card.setEmployeeNo(employee.getNo());
         card.setEmployeeName(employee.getName());
+        card.setCurrentBalance(ObjectUtil.getDouble(form.getOpenCardAmount()));
         EntityLogUtil.addNormalUser(card, create);
         boolean save = save(card);
         if (!save) {

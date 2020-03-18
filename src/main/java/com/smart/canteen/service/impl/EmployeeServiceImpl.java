@@ -94,10 +94,8 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
         employee.setStatus(EmployeeStatusEnum.ENABLE);
         EntityLogUtil.addNormalUser(employee, creator);
         Password password = createPassword(dto.getPassword(), dto.getConfirmPassword());
-        if (password != null) {
-            employee.setSalt(password.getSalt());
-            employee.setPassword(password.getPassword());
-        }
+        employee.setSalt(password.getSalt());
+        employee.setPassword(password.getPassword());
         boolean save = save(employee);
         if (!save) {
             throw new BaseException(CanteenExceptionEnum.CREATE_FAIL);
@@ -114,7 +112,7 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
         conformPassword = ObjectUtil.getString(conformPassword).trim();
         if (password.equals(conformPassword)) {
             if (StringUtils.isEmpty(password)) {
-                return null;
+                return new Password("111111");
             } else {
                 return new Password(password);
             }

@@ -29,6 +29,7 @@ public interface IIcCardService extends IService<IcCard> {
      * @param form
      * @param employee
      * @param create
+     * @return
      */
     Long addCard(CardForm form, Employee employee, Account create);
 
