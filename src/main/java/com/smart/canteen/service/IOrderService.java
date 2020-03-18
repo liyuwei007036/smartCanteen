@@ -3,6 +3,7 @@ package com.smart.canteen.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.lc.core.dto.Account;
 import com.smart.canteen.dto.CommonList;
+import com.smart.canteen.dto.SummaryDTO;
 import com.smart.canteen.dto.order.OrderCountSummary;
 import com.smart.canteen.dto.order.OrderSearch;
 import com.smart.canteen.dto.recharge.RechargeLogSearch;
@@ -66,14 +67,14 @@ public interface IOrderService extends IService<Order> {
      *
      * @return
      */
-    Map<String, Double> getYearSaleData();
+    SummaryDTO getYearSaleData();
 
     /**
      * 柱状图月
      *
      * @return
      */
-    Map<String, Double> getMonthSaleData();
+    SummaryDTO getMonthSaleData();
 
 
     /**
@@ -81,7 +82,7 @@ public interface IOrderService extends IService<Order> {
      *
      * @return
      */
-    Map<String, Double> getDaySaleData();
+    SummaryDTO getDaySaleData();
 
 
 }

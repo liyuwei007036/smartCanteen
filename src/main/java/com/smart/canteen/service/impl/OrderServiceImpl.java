@@ -10,7 +10,7 @@ import com.lc.core.utils.MathUtil;
 import com.lc.core.utils.ModelMapperUtils;
 import com.lc.core.utils.ObjectUtil;
 import com.smart.canteen.dto.CommonList;
-import com.smart.canteen.dto.order.OrderCountSummary;
+import com.smart.canteen.dto.SummaryDTO;
 import com.smart.canteen.dto.order.OrderSearch;
 import com.smart.canteen.entity.IcCard;
 import com.smart.canteen.entity.Order;
@@ -22,8 +22,8 @@ import com.smart.canteen.vo.OrderVo;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 /**
@@ -113,7 +113,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
     }
 
     @Override
-    public Map<String, Double> getYearSaleData() {
+    public SummaryDTO getYearSaleData() {
         Calendar now = Calendar.getInstance();
         now.set(Calendar.DAY_OF_MONTH, 1);
         now.add(Calendar.MONTH, 1);
@@ -125,6 +125,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         now.add(Calendar.YEAR, -1);
         Date begin = now.getTime();
         Map<String, Double> res = new LinkedHashMap<>(16);
+        AtomicReference<Double> total = new AtomicReference<>(0d);
         List<Map<String, Object>> maps = getBaseMapper().summaryYearSale(begin, end);
         while (end.after(begin)) {
             now.setTime(begin);
@@ -134,16 +135,17 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
             begin = now.getTime();
         }
         maps.forEach(x -> {
-            String yearMonth = (String) x.get("yearMonth");
-            Double money = (Double) x.get("money");
+            String yearMonth = ObjectUtil.getString(x.get("yearMonth"));
+            double money = ObjectUtil.getDouble(x.get("money"));
+            total.set(MathUtil.add(total.get(), ObjectUtil.getDouble(money)));
             res.put(yearMonth, MathUtil.add(ObjectUtil.getDouble(res.get(yearMonth)), money));
         });
-        return res;
+        return new SummaryDTO(res, total.get());
     }
 
 
     @Override
-    public Map<String, Double> getMonthSaleData() {
+    public SummaryDTO getMonthSaleData() {
         Calendar now = Calendar.getInstance();
         now.add(Calendar.DAY_OF_MONTH, 1);
         now.set(Calendar.HOUR_OF_DAY, 0);
@@ -154,6 +156,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         now.add(Calendar.DAY_OF_MONTH, -12);
         Date begin = now.getTime();
         Map<String, Double> res = new LinkedHashMap<>(16);
+        AtomicReference<Double> total = new AtomicReference<>(0d);
         List<Map<String, Object>> maps = getBaseMapper().summaryMonthSale(begin, end);
         while (end.after(begin)) {
             now.setTime(begin);
@@ -163,15 +166,16 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
             begin = now.getTime();
         }
         maps.forEach(x -> {
-            String yearMonth = (String) x.get("yearMonth");
-            Double money = (Double) x.get("money");
+            String yearMonth = ObjectUtil.getString(x.get("yearMonth"));
+            double money = ObjectUtil.getDouble(x.get("money"));
+            total.set(MathUtil.add(total.get(), ObjectUtil.getDouble(money)));
             res.put(yearMonth, MathUtil.add(ObjectUtil.getDouble(res.get(yearMonth)), money));
         });
-        return res;
+        return new SummaryDTO(res, total.get());
     }
 
     @Override
-    public Map<String, Double> getDaySaleData() {
+    public SummaryDTO getDaySaleData() {
         Calendar now = Calendar.getInstance();
         now.add(Calendar.HOUR_OF_DAY, 1);
         now.set(Calendar.MINUTE, 0);
@@ -181,6 +185,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         now.add(Calendar.HOUR_OF_DAY, -12);
         Date begin = now.getTime();
         Map<String, Double> res = new LinkedHashMap<>(16);
+        AtomicReference<Double> total = new AtomicReference<>(0d);
         List<Map<String, Object>> maps = getBaseMapper().summaryDaySale(begin, end);
         while (end.after(begin)) {
             now.setTime(begin);
@@ -190,10 +195,11 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
             begin = now.getTime();
         }
         maps.forEach(x -> {
-            String yearMonth = (String) x.get("yearMonth");
-            Double money = (Double) x.get("money");
+            String yearMonth = ObjectUtil.getString(x.get("yearMonth"));
+            double money = ObjectUtil.getDouble(x.get("money"));
+            total.set(MathUtil.add(total.get(), ObjectUtil.getDouble(money)));
             res.put(yearMonth, MathUtil.add(ObjectUtil.getDouble(res.get(yearMonth)), money));
         });
-        return res;
+        return new SummaryDTO(res, total.get());
     }
 }
