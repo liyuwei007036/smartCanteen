@@ -12,6 +12,8 @@ import com.smart.canteen.entity.Order;
 import com.smart.canteen.vo.OrderVo;
 import com.smart.canteen.vo.RechargeLogVO;
 
+import javax.xml.crypto.Data;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -84,5 +86,10 @@ public interface IOrderService extends IService<Order> {
      */
     SummaryDTO getDaySaleData();
 
-
+    /**
+     * 计算2个时间段内的金额
+     *
+     * @return
+     */
+    Double getSaleSummary(Date start, Date end);
 }

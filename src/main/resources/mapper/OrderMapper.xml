@@ -20,5 +20,9 @@
             SELECT DATE_FORMAT(create_time,'%Y-%m-%d-%H') AS yearMonth, sum(money) as money
 		FROM c_order WHERE deleted = 0 and  create_time <![CDATA[ <= ]]> #{end} and create_time <![CDATA[ >= ]]> #{begin} group by yearMonth
     </select>
+    <select id="getSummary" resultType="java.lang.Double">
+         SELECT sum(money)
+		FROM c_order WHERE deleted = 0 and  create_time <![CDATA[ <= ]]> #{end} and create_time <![CDATA[ >= ]]> #{begin}
+    </select>
 
 </mapper>

@@ -38,7 +38,7 @@ public interface OrderMapper extends BaseMapper<Order> {
      * @param end
      * @return
      */
-    List<Map<String, Object>> summaryYearSale(Date begin, Date end);
+    List<Map<String, Object>> summaryYearSale(@Param("begin") Date begin, @Param("end") Date end);
 
     /**
      * 统计月销售额
@@ -47,13 +47,23 @@ public interface OrderMapper extends BaseMapper<Order> {
      * @param end
      * @return
      */
-    List<Map<String, Object>> summaryMonthSale(Date begin, Date end);
+    List<Map<String, Object>> summaryMonthSale(@Param("begin") Date begin, @Param("end") Date end);
 
     /**
      * 统计天销售额
+     *
      * @param begin
      * @param end
      * @return
      */
-    List<Map<String, Object>> summaryDaySale(Date begin, Date end);
+    List<Map<String, Object>> summaryDaySale(@Param("begin") Date begin, @Param("end") Date end);
+
+    /**
+     * 计算某个时间段内的销售总额
+     *
+     * @param begin
+     * @param end
+     * @return
+     */
+    Double getSummary(@Param("begin") Date begin, @Param("end") Date end);
 }

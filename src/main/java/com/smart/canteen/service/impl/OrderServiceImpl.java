@@ -99,6 +99,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         Date begin = now.getTime();
         List<String> strings = getBaseMapper().summaryOrderNum(begin, end, 30);
         Map<String, Long> res = new LinkedHashMap<>(16);
+
         while (end.after(begin)) {
             now.setTime(begin);
             int min = now.get(Calendar.MINUTE) / 30 * 30;
@@ -108,6 +109,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
             now.add(Calendar.MINUTE, 30);
             begin = now.getTime();
         }
+
         strings.forEach(x -> res.put(x, ObjectUtil.getLong(res.get(x)) + 1));
         return res;
     }
@@ -140,7 +142,12 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
             total.set(MathUtil.add(total.get(), ObjectUtil.getDouble(money)));
             res.put(yearMonth, MathUtil.add(ObjectUtil.getDouble(res.get(yearMonth)), money));
         });
-        return new SummaryDTO(res, total.get());
+
+        now.setTime(end);
+        now.set(Calendar.DAY_OF_YEAR, 1);
+        Date start = now.getTime();
+        Double saleSummary = getSaleSummary(start, end);
+        return new SummaryDTO(res, total.get(), saleSummary);
     }
 
 
@@ -171,7 +178,11 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
             total.set(MathUtil.add(total.get(), ObjectUtil.getDouble(money)));
             res.put(yearMonth, MathUtil.add(ObjectUtil.getDouble(res.get(yearMonth)), money));
         });
-        return new SummaryDTO(res, total.get());
+        now.setTime(end);
+        now.set(Calendar.DAY_OF_MONTH, 1);
+        Date start = now.getTime();
+        Double avg = getSaleSummary(start, end);
+        return new SummaryDTO(res, total.get(), avg);
     }
 
     @Override
@@ -200,6 +211,18 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
             total.set(MathUtil.add(total.get(), ObjectUtil.getDouble(money)));
             res.put(yearMonth, MathUtil.add(ObjectUtil.getDouble(res.get(yearMonth)), money));
         });
-        return new SummaryDTO(res, total.get());
+        now.setTime(end);
+        now.set(Calendar.HOUR_OF_DAY, 0);
+        Date start = now.getTime();
+        Double avg = getSaleSummary(start, end);
+        return new SummaryDTO(res, total.get(), avg);
+    }
+
+
+    @Override
+    public Double getSaleSummary(Date start, Date end) {
+        int dayDiff = Math.max(DateUtils.getDayDiff(end, start), 1);
+        Double summary = getBaseMapper().getSummary(start, end);
+        return MathUtil.div(ObjectUtil.getDouble(summary), dayDiff, 2);
     }
 }
