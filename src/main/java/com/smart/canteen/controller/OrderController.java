@@ -55,5 +55,17 @@ public class OrderController extends BaseController {
         return new ResponseInfo<>((Serializable) iOrderService.getYearSaleData());
     }
 
+
+    @ApiOperation(value = "月消费统计", notes = "月消费统计")
+    @RequestMapping(value = "/summary/month", method = RequestMethod.GET)
+    public ResponseInfo summaryMonth() {
+        return new ResponseInfo<>((Serializable) iOrderService.getMonthSaleData());
+    }
+
+    @ApiOperation(value = "天消费统计", notes = "天消费统计")
+    @RequestMapping(value = "/summary/day", method = RequestMethod.GET)
+    public ResponseInfo summaryDay() {
+        return new ResponseInfo<>((Serializable) iOrderService.getDaySaleData());
+    }
 }
 

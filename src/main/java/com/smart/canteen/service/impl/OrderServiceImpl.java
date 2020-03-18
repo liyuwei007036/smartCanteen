@@ -117,10 +117,10 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         Calendar now = Calendar.getInstance();
         now.set(Calendar.DAY_OF_MONTH, 1);
         now.add(Calendar.MONTH, 1);
-        now.add(Calendar.HOUR, 0);
-        now.add(Calendar.MINUTE, 0);
-        now.add(Calendar.SECOND, 0);
-        now.add(Calendar.MILLISECOND, 0);
+        now.set(Calendar.HOUR_OF_DAY, 0);
+        now.set(Calendar.MINUTE, 0);
+        now.set(Calendar.SECOND, 0);
+        now.set(Calendar.MILLISECOND, 0);
         Date end = now.getTime();
         now.add(Calendar.YEAR, -1);
         Date begin = now.getTime();
@@ -131,6 +131,62 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
             String key = DateUtils.dateToStr(now.getTime(), "yyyy-MM");
             res.put(key, 0d);
             now.add(Calendar.MONTH, 1);
+            begin = now.getTime();
+        }
+        maps.forEach(x -> {
+            String yearMonth = (String) x.get("yearMonth");
+            Double money = (Double) x.get("money");
+            res.put(yearMonth, MathUtil.add(ObjectUtil.getDouble(res.get(yearMonth)), money));
+        });
+        return res;
+    }
+
+
+    @Override
+    public Map<String, Double> getMonthSaleData() {
+        Calendar now = Calendar.getInstance();
+        now.add(Calendar.DAY_OF_MONTH, 1);
+        now.set(Calendar.HOUR_OF_DAY, 0);
+        now.set(Calendar.MINUTE, 0);
+        now.set(Calendar.SECOND, 0);
+        now.set(Calendar.MILLISECOND, 0);
+        Date end = now.getTime();
+        now.add(Calendar.DAY_OF_MONTH, -12);
+        Date begin = now.getTime();
+        Map<String, Double> res = new LinkedHashMap<>(16);
+        List<Map<String, Object>> maps = getBaseMapper().summaryMonthSale(begin, end);
+        while (end.after(begin)) {
+            now.setTime(begin);
+            String key = DateUtils.dateToStr(now.getTime(), "yyyy-MM-dd");
+            res.put(key, 0d);
+            now.add(Calendar.DAY_OF_MONTH, 1);
+            begin = now.getTime();
+        }
+        maps.forEach(x -> {
+            String yearMonth = (String) x.get("yearMonth");
+            Double money = (Double) x.get("money");
+            res.put(yearMonth, MathUtil.add(ObjectUtil.getDouble(res.get(yearMonth)), money));
+        });
+        return res;
+    }
+
+    @Override
+    public Map<String, Double> getDaySaleData() {
+        Calendar now = Calendar.getInstance();
+        now.add(Calendar.HOUR_OF_DAY, 1);
+        now.set(Calendar.MINUTE, 0);
+        now.set(Calendar.SECOND, 0);
+        now.set(Calendar.MILLISECOND, 0);
+        Date end = now.getTime();
+        now.add(Calendar.HOUR_OF_DAY, -12);
+        Date begin = now.getTime();
+        Map<String, Double> res = new LinkedHashMap<>(16);
+        List<Map<String, Object>> maps = getBaseMapper().summaryDaySale(begin, end);
+        while (end.after(begin)) {
+            now.setTime(begin);
+            String key = DateUtils.dateToStr(now.getTime(), "yyyy-MM-dd-HH");
+            res.put(key, 0d);
+            now.add(Calendar.HOUR_OF_DAY, 1);
             begin = now.getTime();
         }
         maps.forEach(x -> {

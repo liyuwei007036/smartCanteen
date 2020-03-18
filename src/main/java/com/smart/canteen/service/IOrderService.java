@@ -54,9 +54,34 @@ public interface IOrderService extends IService<Order> {
      */
     CommonList<OrderVo> listLogs(OrderSearch search);
 
-
+    /**
+     * 折线图数据
+     *
+     * @return
+     */
     Map<String, Long> getSummaryDay();
 
+    /**
+     * 柱状图年
+     *
+     * @return
+     */
     Map<String, Double> getYearSaleData();
+
+    /**
+     * 柱状图月
+     *
+     * @return
+     */
+    Map<String, Double> getMonthSaleData();
+
+
+    /**
+     * 柱状图天
+     *
+     * @return
+     */
+    Map<String, Double> getDaySaleData();
+
 
 }

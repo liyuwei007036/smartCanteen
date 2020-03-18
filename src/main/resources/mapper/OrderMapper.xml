@@ -11,4 +11,14 @@
          SELECT DATE_FORMAT(create_time,'%Y-%m') AS yearMonth, sum(money) as money
 		FROM c_order WHERE deleted = 0 and  create_time <![CDATA[ <= ]]> #{end} and create_time <![CDATA[ >= ]]> #{begin} group by yearMonth
     </select>
+
+    <select id="summaryMonthSale" resultType="java.util.Map">
+         SELECT DATE_FORMAT(create_time,'%Y-%m-%d') AS yearMonth, sum(money) as money
+		FROM c_order WHERE deleted = 0 and  create_time <![CDATA[ <= ]]> #{end} and create_time <![CDATA[ >= ]]> #{begin} group by yearMonth
+    </select>
+    <select id="summaryDaySale" resultType="java.util.Map">
+            SELECT DATE_FORMAT(create_time,'%Y-%m-%d-%H') AS yearMonth, sum(money) as money
+		FROM c_order WHERE deleted = 0 and  create_time <![CDATA[ <= ]]> #{end} and create_time <![CDATA[ >= ]]> #{begin} group by yearMonth
+    </select>
+
 </mapper>

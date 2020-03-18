@@ -39,4 +39,21 @@ public interface OrderMapper extends BaseMapper<Order> {
      * @return
      */
     List<Map<String, Object>> summaryYearSale(Date begin, Date end);
+
+    /**
+     * 统计月销售额
+     *
+     * @param begin
+     * @param end
+     * @return
+     */
+    List<Map<String, Object>> summaryMonthSale(Date begin, Date end);
+
+    /**
+     * 统计天销售额
+     * @param begin
+     * @param end
+     * @return
+     */
+    List<Map<String, Object>> summaryDaySale(Date begin, Date end);
 }
