@@ -3,11 +3,14 @@
 <mapper namespace="com.smart.canteen.mapper.EmployeeMapper">
 
     <update id="logicDeleted" parameterType="com.lc.core.dto.Account">
-        update employee set deleted = 1, version = version+1, last_update_time = now(),
-       last_update_id=#{account.id},
-        last_update_account=#{account.account},
-      last_update_name=#{account.name},
-        WHERE id=#{eid}
+        update employee
+        set deleted            = 1,
+            version            = version + 1,
+            last_update_time   = now(),
+            last_update_id=#{account.id},
+            last_update_account=#{account.account},
+            last_update_name=#{account.name},
+            WHERE id = #{eid}
     </update>
 
     <select id="listEmp" resultType="com.smart.canteen.vo.EmployeeVO">
@@ -19,19 +22,19 @@
         from employee as emp left join ic_card as card on card.id = emp.card_id
         WHERE emp.deleted = 0
         <if test="search.name != null and search.name != '' ">
-            and emp.name like CONCAT(#{search.name}, '%')
+            and emp.name like CONCAT('%',#{search.name}, '%')
         </if>
         <if test="search.no != null and search.no != '' ">
-            and emp.no like CONCAT(#{search.no}, '%')
+            and emp.no like CONCAT('%', #{search.no}, '%')
         </if>
         <if test="search.cardNo != null and search.cardNo != '' ">
-            and emp.card_no like CONCAT(#{search.cardNo}, '%')
+            and emp.card_no like CONCAT('%', #{search.cardNo}, '%')
         </if>
         <if test="search.mobile != null and search.mobile != '' ">
-            and emp.mobile like CONCAT(#{search.mobile}, '%')
+            and emp.mobile like CONCAT('%', #{search.mobile}, '%')
         </if>
         <if test="search.orgName != null and search.orgName != '' ">
-            and emp.origination_name like CONCAT(#{search.orgName}, '%')
+            and emp.origination_name like CONCAT('%', #{search.orgName}, '%')
         </if>
         <if test="search.cardTimeStart != null and search.cardTimeStart != ''">
             and card.validity_time <![CDATA[ >= ]]> #{search.cardTimeStart}
@@ -44,6 +47,9 @@
         </if>
         <if test="search.createEnd != null and search.createEnd != ''">
             and card.create_time <![CDATA[ <= ]]> #{search.createEnd}
+        </if>
+        <if test="search.status != null and search.status != ''">
+            and emp.status  = #{search.status}
         </if>
         order by card.status , card.create_time desc
     </select>

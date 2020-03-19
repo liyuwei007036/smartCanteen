@@ -25,6 +25,9 @@ public class EmployeeSearch implements Serializable {
     @ApiModelProperty(value = "卡号")
     private String cardNo;
 
+    @ApiModelProperty(value = "人员状态")
+    private String status;
+
     @ApiModelProperty(value = "手机号")
     private String mobile;
 
