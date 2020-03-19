@@ -167,7 +167,7 @@ public class IcCardServiceImpl extends ServiceImpl<IcCardMapper, IcCard> impleme
         if (lastBalance < 0) {
             return new ResponseMsg(CmdCodeEnum.CON, Voices.NOT, cardNo, "余额不足!");
         }
-        // 是否需要加入其他判断
+        // todo 是否需要加入其他判断
         boolean update = update(Wrappers.<IcCard>lambdaUpdate()
                 .set(IcCard::getCurrentBalance, lastBalance)
                 .eq(IcCard::getId, card.getId()));
@@ -255,10 +255,6 @@ public class IcCardServiceImpl extends ServiceImpl<IcCardMapper, IcCard> impleme
         }
         old.setAccountStatus(CardAccountEnum.UN_LOSS);
         EntityLogUtil.addNormalUser(old, account);
-        boolean b = updateById(old);
-        if (!b) {
-            throw new BaseException(CanteenExceptionEnum.UPDATE_FAIL);
-        }
         newCard = new IcCard();
         BeanUtils.copyProperties(old, newCard, "id", "no", "account_status", "status");
         newCard.setNo(form.getCardNo());
@@ -273,6 +269,11 @@ public class IcCardServiceImpl extends ServiceImpl<IcCardMapper, IcCard> impleme
         iEmployeeService.updateById(emp);
         if (!save) {
             throw new BaseException(CanteenExceptionEnum.PATCH_CARD_ERROR);
+        }
+        old.setCurrentBalance(0d);
+        boolean b = updateById(old);
+        if (!b) {
+            throw new BaseException(CanteenExceptionEnum.UPDATE_FAIL);
         }
     }
 

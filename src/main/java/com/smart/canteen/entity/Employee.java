@@ -1,9 +1,6 @@
 package com.smart.canteen.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.smart.canteen.enums.EmployeeStatusEnum;
 import io.swagger.annotations.ApiModel;
@@ -75,4 +72,7 @@ public class Employee extends BaseEntity {
     @TableField(value = "status")
     private EmployeeStatusEnum status;
 
+    @ApiModelProperty(value = "能否修改")
+    @TableField(value = "can_edit")
+    private Boolean canEdit = true;
 }

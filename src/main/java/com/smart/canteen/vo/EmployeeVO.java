@@ -1,5 +1,6 @@
 package com.smart.canteen.vo;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.smart.canteen.enums.CardTypeEnum;
 import com.smart.canteen.enums.EmployeeStatusEnum;
 import io.swagger.annotations.ApiModel;
@@ -71,5 +72,9 @@ public class EmployeeVO implements Serializable {
 
     @ApiModelProperty(value = "状态")
     private EmployeeStatusEnum status;
+
+    @ApiModelProperty(value = "能否修改")
+    @TableField(value = "can_edit")
+    private Boolean canEdit;
 
 }
