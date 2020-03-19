@@ -4,6 +4,7 @@ package com.smart.canteen.controller;
 import com.lc.core.annotations.Valid;
 import com.lc.core.controller.BaseController;
 import com.lc.core.dto.ResponseInfo;
+import com.smart.canteen.annotations.Permission;
 import com.smart.canteen.dto.CommonList;
 import com.smart.canteen.dto.log.LoginSearch;
 import com.smart.canteen.dto.log.OperationSearch;
@@ -36,18 +37,21 @@ public class LogController extends BaseController {
     @Autowired
     private IOperationLogService iOperationLogService;
 
+    @Permission(code = "log:login")
     @ApiModelProperty(value = "查询登录日志")
     @RequestMapping(value = "/list/login", method = RequestMethod.POST)
     public ResponseInfo<CommonList<LoginLog>> listLogin(@RequestBody LoginSearch loginSearch) {
         return new ResponseInfo<>(iLoginLogService.listLogs(loginSearch));
     }
 
+    @Permission(code = "log:operation")
     @ApiModelProperty(value = "查询操作日志")
     @RequestMapping(value = "/list/operation", method = RequestMethod.POST)
     public ResponseInfo<CommonList<OperationLog>> listOperation(@RequestBody OperationSearch search) {
         return new ResponseInfo<>(iOperationLogService.listLogs(search));
     }
 
+    @Permission(code = "log:operation")
     @ApiModelProperty(value = "查询一个操作日志")
     @RequestMapping(value = "/get/operation/{id}", method = RequestMethod.GET)
     public ResponseInfo<OperationLog> getOperation(@PathVariable("id") Long id) {
