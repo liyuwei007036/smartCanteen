@@ -80,9 +80,9 @@ public class RoleController extends BaseController {
 
     @Permission(code = "role:list")
     @ApiOperation(value = "获取所有角色", notes = "获取角色")
-    @RequestMapping(value = "listAll", method = RequestMethod.GET)
+    @RequestMapping(value = "/listAll", method = RequestMethod.GET)
     public ResponseInfo listAll() {
-        return new ResponseInfo((Serializable) iRoleService.listAll());
+        return new ResponseInfo((Serializable) iRoleService.listAll(true));
     }
 
 

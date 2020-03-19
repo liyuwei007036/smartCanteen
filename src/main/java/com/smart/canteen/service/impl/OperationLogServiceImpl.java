@@ -40,32 +40,34 @@ public class OperationLogServiceImpl extends ServiceImpl<OperationLogMapper, Ope
     public void addLog(Object[] args, Log slog, Account account) {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
-            JSONObject res = new JSONObject();
+//            JSONObject res = new JSONObject();
             String action = slog.action();
             String module = slog.module();
-            Class<?> clazz1 = slog.clazz();
-            if (clazz1 != void.class) {
-                JSONObject da = JSON.parseObject(objectMapper.writeValueAsString(args[0]));
-                da.forEach((k, v) -> {
-                    try {
-                        if (!StringUtils.isEmpty(ObjectUtil.getString(v))) {
-                            ApiModelProperty desc = clazz1.getDeclaredField(k).getAnnotation(ApiModelProperty.class);
-                            if (desc != null) {
-                                res.put(desc.value(), v);
-                            }
-                        }
-                    } catch (NoSuchFieldException e) {
-                        e.printStackTrace();
-                    }
-                });
-            } else {
-                res.put(slog.dataDesc(), args[0].toString());
-            }
+//            Class<?> clazz1 = slog.clazz();
+//            if (clazz1 != void.class) {
+//                JSONObject da = JSON.parseObject(objectMapper.writeValueAsString(args[0]));
+//                da.forEach((k, v) -> {
+//                    try {
+//                        if (!StringUtils.isEmpty(ObjectUtil.getString(v))) {
+//                            ApiModelProperty desc = clazz1.getDeclaredField(k).getAnnotation(ApiModelProperty.class);
+//                            if (desc != null) {
+//                                res.put(desc.value(), v);
+//                            }
+//                        }
+//                    } catch (NoSuchFieldException e) {
+//                        e.printStackTrace();
+//                    }
+//                });
+//            } else {
+//                res.put(slog.dataDesc(), args[0].toString());
+//            }
+            String res = objectMapper.writeValueAsString(args);
+
             OperationLog operationLog = new OperationLog();
             operationLog.setAction(action);
             operationLog.setEmpName(account.getName());
             operationLog.setModule(module);
-            operationLog.setDetail(res.toString());
+            operationLog.setDetail(res);
             operationLog.setOperationTime(new Date());
             operationLog.setEmpNo(account.getAccount());
             save(operationLog);

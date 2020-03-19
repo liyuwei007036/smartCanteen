@@ -35,4 +35,12 @@ public class Role extends BaseEntity {
     @TableField(value = "can_edit")
     private Boolean canEdit = true;
 
+    @ApiModelProperty(value = "下拉是否显示")
+    @TableField(value = "can_select")
+    private Boolean canSelect = true;
+
+    @ApiModelProperty(value = "是否默认角色")
+    @TableField(value = "is_default")
+    private Boolean isDefault = false;
+
 }

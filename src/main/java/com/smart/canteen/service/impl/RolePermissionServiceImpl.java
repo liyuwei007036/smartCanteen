@@ -57,10 +57,9 @@ public class RolePermissionServiceImpl extends ServiceImpl<RolePermissionMapper,
         Long roleId = form.getId();
         Set<String> oldPermissions = getRolePermission(roleId);
         Set<String> permissions = form.getPermissions();
-        // 老的-新的=需要删除的
-        oldPermissions.removeAll(permissions);
-        // 新的-需要删除的 需要添加的
-        permissions.removeAll(oldPermissions);
+        if (oldPermissions.equals(permissions)) {
+            return;
+        }
         if (oldPermissions.size() > 0) {
             remove(Wrappers.<RolePermission>lambdaQuery()
                     .eq(RolePermission::getRoleId, form.getId())

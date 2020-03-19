@@ -71,11 +71,10 @@ public interface IRoleService extends IService<Role> {
     /**
      * 查询所有角色
      *
+     * @param select
      * @return
      */
-    List<Role> listAll();
-
-
+    List<Role> listAll(Boolean select);
 
 
 }

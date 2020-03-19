@@ -93,7 +93,6 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements IR
         Page<Role> page = new Page<>(search.getPage(), search.getSize());
         super.page(page, Wrappers.<Role>lambdaQuery()
                 .like(!StringUtils.isEmpty(search.getName()), Role::getName, search.getName())
-
         );
         return new CommonList<>(page.hasNext(), page.getTotal(), page.getCurrent(), page.getRecords());
     }
@@ -109,8 +108,8 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements IR
     }
 
     @Override
-    public List<Role> listAll() {
-        return list();
+    public List<Role> listAll(Boolean select) {
+        return list((Wrappers.<Role>lambdaQuery().eq(Role::getCanSelect, select)));
     }
 
 

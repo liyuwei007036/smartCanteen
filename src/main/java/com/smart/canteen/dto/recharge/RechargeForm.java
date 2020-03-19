@@ -1,10 +1,10 @@
 package com.smart.canteen.dto.recharge;
 
-import com.smart.canteen.enums.RechargeTypeEnum;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -13,7 +13,7 @@ import java.util.List;
 
 /**
  * @author lc
- * @date 2020/3/8下午 5:58
+ * @date 2020/3/8下午 5:58xO
  */
 @Data
 @ApiModel
@@ -24,9 +24,11 @@ public class RechargeForm implements Serializable {
     @ApiModelProperty(value = "卡片Id")
     private List<Long> cardIds;
 
+    @Min(1)
+    @Max(2)
     @NotNull
     @ApiModelProperty(value = "充值类型")
-    private RechargeTypeEnum rechargeType;
+    private Integer rechargeType;
 
     @Min(0)
     @NotNull
