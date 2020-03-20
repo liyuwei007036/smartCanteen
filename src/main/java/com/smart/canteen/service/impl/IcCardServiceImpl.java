@@ -21,10 +21,7 @@ import com.smart.canteen.entity.IcCard;
 import com.smart.canteen.entity.RechargeLog;
 import com.smart.canteen.enums.*;
 import com.smart.canteen.mapper.IcCardMapper;
-import com.smart.canteen.service.IEmployeeService;
-import com.smart.canteen.service.IIcCardService;
-import com.smart.canteen.service.IOrderService;
-import com.smart.canteen.service.IRechargeLogService;
+import com.smart.canteen.service.*;
 import com.smart.canteen.utils.EntityLogUtil;
 import com.smart.canteen.vo.CardUserVo;
 import com.smart.canteen.vo.CardVo;
@@ -37,10 +34,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * <p>
@@ -54,6 +48,9 @@ import java.util.List;
 @Transactional(rollbackFor = Exception.class, timeout = 2000)
 @Service
 public class IcCardServiceImpl extends ServiceImpl<IcCardMapper, IcCard> implements IIcCardService {
+
+    @Autowired
+    private IEmployeeRoleService iEmployeeRoleService;
 
     @Override
     public Long addCard(CardForm form, Employee employee, Account create) {
@@ -83,7 +80,9 @@ public class IcCardServiceImpl extends ServiceImpl<IcCardMapper, IcCard> impleme
         if (ObjectUtil.getLong(cardId) < 1) {
             return null;
         }
-        return getBaseMapper().getByCardId(cardId);
+        CardUserVo vo = getBaseMapper().getByCardId(cardId);
+        vo.setRoleName(new HashSet<>(iEmployeeRoleService.getEmpRoleName(vo.getEmpId())));
+        return vo;
     }
 
     @Override

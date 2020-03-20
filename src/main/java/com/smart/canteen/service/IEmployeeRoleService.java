@@ -44,6 +44,14 @@ public interface IEmployeeRoleService extends IService<EmployeeRole> {
     List<Long> getEmpRole(Long empId);
 
     /**
+     * 获取员工角色名称
+     *
+     * @param empId
+     * @return
+     */
+    List<String> getEmpRoleName(Long empId);
+
+    /**
      * 统计角色下的人员
      *
      * @param roleId

@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -69,6 +70,15 @@ public class EmployeeRoleServiceImpl extends ServiceImpl<EmployeeRoleMapper, Emp
         return maps.parallelStream()
                 .map(x -> ObjectUtil.getLong(x.get("roleId")))
                 .filter(x -> x > 0).distinct().collect(Collectors.toList());
+    }
+
+
+    @Override
+    public List<String> getEmpRoleName(Long empId) {
+        if (ObjectUtil.getLong(empId) < 1) {
+            return new ArrayList<>();
+        }
+        return getBaseMapper().getEmpRoleName(empId);
     }
 
     @Override

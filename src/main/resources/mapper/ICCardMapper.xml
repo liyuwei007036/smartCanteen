@@ -54,11 +54,13 @@
     <select id="getByCardId" resultType="com.smart.canteen.vo.CardUserVo">
         select emp.name             as empName,
                card.id              as cardId,
+               emp.id               as empId,
                emp.no               as empNo,
                emp.mobile           as mobile,
                emp.id_card          as idCard,
                card.current_balance as currentBalance,
-               card.validity_time   as validityTime
+               card.validity_time   as validityTime,
+               emp.origination_name as orgName
         from employee as emp,
              ic_card as card
         where card.employee_id = emp.id

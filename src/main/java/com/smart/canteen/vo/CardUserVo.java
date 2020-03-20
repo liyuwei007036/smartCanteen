@@ -1,5 +1,6 @@
 package com.smart.canteen.vo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.lc.core.utils.ObjectUtil;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -7,6 +8,7 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Set;
 
 /**
  * @author lc
@@ -19,6 +21,10 @@ public class CardUserVo implements Serializable {
     @ApiModelProperty(value = "卡余额")
     private Long cardId;
 
+    @JsonIgnore
+    @ApiModelProperty(value = "卡余额")
+    private Long empId;
+
     @ApiModelProperty(value = "姓名")
     private String empName;
 
@@ -30,6 +36,12 @@ public class CardUserVo implements Serializable {
 
     @ApiModelProperty(value = "手机号")
     private String mobile;
+
+    @ApiModelProperty(value = "组织名称")
+    private String orgName;
+
+    @ApiModelProperty(value = "角色名称")
+    private Set<String> roleName;
 
     @ApiModelProperty(value = "卡号")
     private String cardNo;

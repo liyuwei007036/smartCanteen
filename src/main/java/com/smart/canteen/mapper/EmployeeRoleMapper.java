@@ -20,6 +20,12 @@ import java.util.Map;
 @Mapper
 public interface EmployeeRoleMapper extends BaseMapper<EmployeeRole> {
 
-
+    /**
+     * 获取用户所有角色
+     *
+     * @param empId
+     * @return
+     */
+    List<String> getEmpRoleName(@Param("empId") Long empId);
 
 }
