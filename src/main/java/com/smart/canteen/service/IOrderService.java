@@ -39,15 +39,16 @@ public interface IOrderService extends IService<Order> {
     boolean addOrderForMachine(IcCard card, Double money, String machineNo, Double balance);
 
     /**
-     * 添加消费订单
+     * 添加消费订单(补扣)
      *
      * @param card
      * @param money
      * @param account
      * @param balance
+     * @param desc
      * @return
      */
-    boolean addOrderForDeduction(IcCard card, Double money, Account account, Double balance);
+    boolean addOrderForDeduction(IcCard card, Double money, Account account, Double balance, String desc);
 
     /**
      * 消费记录

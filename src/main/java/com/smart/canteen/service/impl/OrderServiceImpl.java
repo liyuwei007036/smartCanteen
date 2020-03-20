@@ -56,7 +56,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
 
 
     @Override
-    public boolean addOrderForDeduction(IcCard card, Double money, Account account, Double balance) {
+    public boolean addOrderForDeduction(IcCard card, Double money, Account account, Double balance, String desc) {
         Order order = new Order();
         order.setCardId(card.getId());
         order.setBalance(balance);
@@ -69,7 +69,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         order.setType(OrderTypeEnum.FILL_BUCKLE);
         order.setCreatorAccount(account.getAccount());
         order.setCreatorName(account.getName());
-        order.setCreateTime(new Date());
+        order.setDescription(desc);
         return save(order);
     }
 

@@ -334,7 +334,7 @@ public class IcCardServiceImpl extends ServiceImpl<IcCardMapper, IcCard> impleme
         if (!b) {
             throw new BaseException(CanteenExceptionEnum.UPDATE_FAIL);
         }
-        boolean b1 = iOrderService.addOrderForDeduction(card, form.getMoney(), account, sub);
+        boolean b1 = iOrderService.addOrderForDeduction(card, form.getMoney(), account, sub, form.getDescription());
         if (!b1) {
             throw new BaseException(CanteenExceptionEnum.UPDATE_FAIL);
         }

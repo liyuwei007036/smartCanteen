@@ -1,6 +1,5 @@
 package com.smart.canteen.vo;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.smart.canteen.enums.OrderChannelEnum;
 import com.smart.canteen.enums.OrderTypeEnum;
 import io.swagger.annotations.ApiModel;
@@ -39,7 +38,6 @@ public class OrderVo implements Serializable {
     @ApiModelProperty(value = "消费类型")
     private OrderTypeEnum type;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     @ApiModelProperty(value = "创建时间")
     private Date createTime;
 
@@ -51,4 +49,7 @@ public class OrderVo implements Serializable {
 
     @ApiModelProperty(value = "创建人工号")
     private String creatorAccount;
+
+    @ApiModelProperty(value = "描述")
+    private String description;
 }

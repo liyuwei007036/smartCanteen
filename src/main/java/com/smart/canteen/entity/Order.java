@@ -74,6 +74,10 @@ public class Order extends Model<Order> {
     @TableField(value = "employee_name", insertStrategy = FieldStrategy.NOT_EMPTY)
     private String employeeName;
 
+    @ApiModelProperty(value = "描述")
+    @TableField("description")
+    private String description;
+
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     @ApiModelProperty(value = "消费时间")
     @TableField("create_time")
@@ -93,7 +97,6 @@ public class Order extends Model<Order> {
     @ApiModelProperty(value = "创建人姓名")
     @TableField(value = "creator_name")
     private String creatorName;
-
 
     @JsonIgnore
     @ApiModelProperty(value = "逻辑锁")
