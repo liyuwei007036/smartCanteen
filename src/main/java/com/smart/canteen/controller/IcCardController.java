@@ -46,7 +46,7 @@ public class IcCardController extends BaseController {
     @ApiOperation(value = "查询卡片列表", notes = "查询卡片列表")
     @RequestMapping(value = "list/recharge", method = RequestMethod.POST)
     public ResponseInfo<CommonList<CardVo>> listRecharge(@RequestBody CardSearch params) {
-        return new ResponseInfo<>(iIcCardService.listCard(params));
+        return new ResponseInfo<>(iIcCardService.listCardForRecharge(params));
     }
 
 

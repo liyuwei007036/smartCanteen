@@ -36,8 +36,9 @@ public class EmployeeRoleServiceImpl extends ServiceImpl<EmployeeRoleMapper, Emp
             return;
         }
         List<Long> old = getEmpRole(employeeId);
-        old.removeAll(roleIds);
-        roleIds.removeAll(old);
+        if (old.equals(roleIds)) {
+            return;
+        }
         if (old.size() > 0) {
             remove(Wrappers.<EmployeeRole>lambdaQuery()
                     .eq(EmployeeRole::getEmployeeId, employeeId)
