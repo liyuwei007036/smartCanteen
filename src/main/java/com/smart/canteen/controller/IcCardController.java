@@ -10,7 +10,6 @@ import com.smart.canteen.dto.CommonList;
 import com.smart.canteen.dto.card.CardSearch;
 import com.smart.canteen.dto.card.DeductionForm;
 import com.smart.canteen.dto.card.PatchCardForm;
-import com.smart.canteen.dto.user.ChangePasswordForm;
 import com.smart.canteen.service.IIcCardService;
 import com.smart.canteen.vo.CardVo;
 import io.swagger.annotations.Api;
@@ -66,6 +65,14 @@ public class IcCardController extends BaseController {
     public ResponseInfo patch(@RequestBody PatchCardForm form) {
         iIcCardService.patchCard(form, getCurrentUser());
         return new ResponseInfo<>();
+    }
+
+    @Log(module = "卡片管理", action = "补卡", clazz = PatchCardForm.class)
+    @Permission(code = "icCard:patch")
+    @ApiOperation(value = "补卡时获取用户信息", notes = "补卡时获取用户信息")
+    @RequestMapping(value = "/patch/{cardId}", method = RequestMethod.GET)
+    public ResponseInfo getCardUser(@PathVariable("cardId") Long cardId) {
+        return new ResponseInfo<>(iIcCardService.getCardUser(cardId));
     }
 
     @Log(module = "卡片管理", action = "销户", dataDesc = "人员id")

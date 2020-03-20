@@ -10,6 +10,7 @@ import com.smart.canteen.dto.card.PatchCardForm;
 import com.smart.canteen.dto.recharge.RechargeForm;
 import com.smart.canteen.entity.Employee;
 import com.smart.canteen.entity.IcCard;
+import com.smart.canteen.vo.CardUserVo;
 import com.smart.canteen.vo.CardVo;
 import com.smart.canteen.vo.ResponseMsg;
 
@@ -116,6 +117,14 @@ public interface IIcCardService extends IService<IcCard> {
      * @param account
      */
     void patchCard(PatchCardForm form, Account account);
+
+    /**
+     * 查询卡片人员信息
+     *
+     * @param cardId
+     * @return
+     */
+    CardUserVo getCardUser(Long cardId);
 
     /**
      * 销户

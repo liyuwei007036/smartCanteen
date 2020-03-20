@@ -26,6 +26,7 @@ import com.smart.canteen.service.IIcCardService;
 import com.smart.canteen.service.IOrderService;
 import com.smart.canteen.service.IRechargeLogService;
 import com.smart.canteen.utils.EntityLogUtil;
+import com.smart.canteen.vo.CardUserVo;
 import com.smart.canteen.vo.CardVo;
 import com.smart.canteen.vo.ResponseMsg;
 import lombok.extern.slf4j.Slf4j;
@@ -74,6 +75,15 @@ public class IcCardServiceImpl extends ServiceImpl<IcCardMapper, IcCard> impleme
             throw new BaseException(CanteenExceptionEnum.CREATE_FAIL);
         }
         return card.getId();
+    }
+
+
+    @Override
+    public CardUserVo getCardUser(Long cardId) {
+        if (ObjectUtil.getLong(cardId) < 1) {
+            return null;
+        }
+        return getBaseMapper().getByCardId(cardId);
     }
 
     @Override

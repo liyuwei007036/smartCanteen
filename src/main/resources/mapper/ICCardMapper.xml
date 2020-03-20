@@ -3,13 +3,22 @@
 <mapper namespace="com.smart.canteen.mapper.IcCardMapper">
 
     <select id="selectPageVo" resultType="com.smart.canteen.vo.CardVo">
-        select emp.name as empName, card.id as id, emp.no as empNo, emp.mobile as mobile, card.no as cardNo,
-        emp.id as empId, emp.origination_name as originationName,
-        card.type as cardType, card.deposit as deposit, card.current_balance as currentBalance, card.status as status,
-        card.account_status as accountStatus, card.validity_time as validityTime
-        from employee as emp,
+        SELECT emp.name as empName,
+        card.id as id,
+        emp.no as empNo,
+        emp.mobile as mobile,
+        card.no as cardNo,
+        emp.id as empId,
+        emp.origination_name as originationName,
+        card.type as cardType,
+        card.deposit as deposit,
+        card.current_balance as currentBalance,
+        card.status as status,
+        card.account_status as accountStatus,
+        card.validity_time as validityTime
+        FROM employee as emp,
         ic_card as card
-        where emp.id = card.employee_id
+        where card.employee_id = emp.id
         and card.deleted = 0
         <if test="b == true">
             and card.status = 1
@@ -38,6 +47,24 @@
         <if test="search.end != null ">
             and emp.create_time <![CDATA[ <= ]]> #{search.end}
         </if>
-        order by emp.status , emp.create_time desc
+        order by emp.status, emp.create_time desc
+    </select>
+
+
+    <select id="getByCardId" resultType="com.smart.canteen.vo.CardUserVo">
+        select emp.name             as empName,
+               card.id              as cardId,
+               emp.no               as empNo,
+               emp.mobile           as mobile,
+               card.no              as cardNo,
+               emp.id_card          as idCard,
+               card.current_balance as currentBalance,
+               card.validity_time   as validityTime
+        from employee as emp,
+             ic_card as card
+        where card.employee_id = emp.id
+          and card.deleted = 0
+          and card_id = #{cardId}
+        limit 0 ,1
     </select>
 </mapper>

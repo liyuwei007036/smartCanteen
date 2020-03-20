@@ -5,8 +5,10 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.smart.canteen.dto.card.CardSearch;
 import com.smart.canteen.entity.IcCard;
+import com.smart.canteen.vo.CardUserVo;
 import com.smart.canteen.vo.CardVo;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * <p>
@@ -28,6 +30,9 @@ public interface IcCardMapper extends BaseMapper<IcCard> {
      * @return
      */
     IPage<CardVo> selectPageVo(Page<?> page, CardSearch search, Boolean b);
+
+
+    CardUserVo getByCardId(@Param("cardId") Long cardId);
 
 
 }
