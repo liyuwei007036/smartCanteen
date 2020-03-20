@@ -104,8 +104,6 @@ public class EmployeeForm implements Serializable {
     @ApiModelProperty(value = "卡最低余额")
     private Double minimumBalance;
 
-    @Future(groups = {Insert.class, Update.class})
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     @ApiModelProperty(value = "有效期")
     private Date validityTime;
 
