@@ -42,6 +42,14 @@ public class IcCardController extends BaseController {
         return new ResponseInfo<>(iIcCardService.listCard(params));
     }
 
+    @Permission(code = "icCard:list")
+    @ApiOperation(value = "查询卡片列表", notes = "查询卡片列表")
+    @RequestMapping(value = "list/recharge", method = RequestMethod.POST)
+    public ResponseInfo<CommonList<CardVo>> listRecharge(@RequestBody CardSearch params) {
+        return new ResponseInfo<>(iIcCardService.listCard(params));
+    }
+
+
     @Log(module = "卡片管理", action = "挂失", dataDesc = "卡片id")
     @Permission(code = "icCard:loss")
     @ApiOperation(value = "挂失", notes = "挂失")

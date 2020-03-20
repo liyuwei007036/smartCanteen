@@ -60,5 +60,7 @@ public class RechargeLog extends BaseEntity {
     @TableField("type")
     private RechargeTypeEnum type;
 
-
+    @ApiModelProperty(value = "充值描述")
+    @TableField("description")
+    private String description;
 }

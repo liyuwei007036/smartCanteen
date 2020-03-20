@@ -68,6 +68,14 @@ public interface IIcCardService extends IService<IcCard> {
 
 
     /**
+     * 充值卡片列表
+     *
+     * @param search
+     * @return
+     */
+    CommonList<CardVo> listCardForRecharge(CardSearch search);
+
+    /**
      * 刷卡扣款
      *
      * @param cardNo

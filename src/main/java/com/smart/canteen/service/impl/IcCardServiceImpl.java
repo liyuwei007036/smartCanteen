@@ -103,7 +103,15 @@ public class IcCardServiceImpl extends ServiceImpl<IcCardMapper, IcCard> impleme
     @Override
     public CommonList<CardVo> listCard(CardSearch search) {
         Page<CardVo> page = new Page<>(search.getPage(), search.getSize());
-        getBaseMapper().selectPageVo(page, search);
+        getBaseMapper().selectPageVo(page, search, false);
+        return new CommonList<>(page.hasNext(), page.getTotal(), page.getCurrent(), page.getRecords());
+    }
+
+
+    @Override
+    public CommonList<CardVo> listCardForRecharge(CardSearch search) {
+        Page<CardVo> page = new Page<>(search.getPage(), search.getSize());
+        getBaseMapper().selectPageVo(page, search, true);
         return new CommonList<>(page.hasNext(), page.getTotal(), page.getCurrent(), page.getRecords());
     }
 
@@ -131,6 +139,7 @@ public class IcCardServiceImpl extends ServiceImpl<IcCardMapper, IcCard> impleme
             rechargeLog.setBalance(lastBalance);
             rechargeLog.setEmployeeName(x.getEmployeeName());
             rechargeLog.setEmployeeNo(x.getEmployeeNo());
+            rechargeLog.setDescription(form.getDescription());
             EntityLogUtil.addNormalUser(rechargeLog, account);
             logs.add(rechargeLog);
         });

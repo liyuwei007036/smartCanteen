@@ -47,7 +47,7 @@ public class RechargeLogController extends BaseController {
     @RequestMapping(value = "recharge", method = RequestMethod.POST)
     public ResponseInfo recharge(@RequestBody RechargeForm form) {
         icCardService.recharge(form, getCurrentUser());
-        return new ResponseInfo();
+        return new ResponseInfo<>();
     }
 
     @Permission(code = "recharge:listlog")

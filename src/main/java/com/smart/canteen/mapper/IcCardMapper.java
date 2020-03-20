@@ -24,7 +24,10 @@ public interface IcCardMapper extends BaseMapper<IcCard> {
      *
      * @param page
      * @param search
+     * @param b
      * @return
      */
-    IPage<CardVo> selectPageVo(Page<?> page, CardSearch search);
+    IPage<CardVo> selectPageVo(Page<?> page, CardSearch search, Boolean b);
+
+
 }

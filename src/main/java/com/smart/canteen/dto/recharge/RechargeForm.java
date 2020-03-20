@@ -3,6 +3,7 @@ package com.smart.canteen.dto.recharge;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
@@ -34,4 +35,8 @@ public class RechargeForm implements Serializable {
     @NotNull
     @ApiModelProperty(value = "充值金额")
     private Double money;
+
+    @Length(max = 255)
+    @ApiModelProperty(value = "充值描述")
+    private String description;
 }

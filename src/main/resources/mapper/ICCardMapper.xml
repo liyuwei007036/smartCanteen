@@ -11,6 +11,9 @@
         ic_card as card
         where emp.id = card.employee_id
         and card.deleted = 0
+        <if test="b == true">
+            and card.status = 1 and card.account_status = 1
+        </if>
         <if test="search.empName != null and search.empName != '' ">
             and emp.name = #{search.empName}
         </if>

@@ -1,9 +1,6 @@
 package com.smart.canteen.vo;
 
-import com.baomidou.mybatisplus.annotation.FieldStrategy;
-import com.baomidou.mybatisplus.annotation.TableField;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.smart.canteen.enums.RechargeTypeEnum;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -47,5 +44,9 @@ public class RechargeLogVO implements Serializable {
 
     @ApiModelProperty(value = "创建人工号")
     private String creatorAccount;
+
+    @ApiModelProperty(value = "描述")
+    private String description;
+
 
 }
