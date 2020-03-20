@@ -67,7 +67,6 @@ public class IcCardController extends BaseController {
         return new ResponseInfo<>();
     }
 
-    @Log(module = "卡片管理", action = "补卡", clazz = PatchCardForm.class)
     @Permission(code = "icCard:patch")
     @ApiOperation(value = "补卡时获取用户信息", notes = "补卡时获取用户信息")
     @RequestMapping(value = "/patch/{cardId}", method = RequestMethod.GET)
