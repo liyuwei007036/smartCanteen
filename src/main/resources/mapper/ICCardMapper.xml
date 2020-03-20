@@ -56,7 +56,6 @@
                card.id              as cardId,
                emp.no               as empNo,
                emp.mobile           as mobile,
-               card.no              as cardNo,
                emp.id_card          as idCard,
                card.current_balance as currentBalance,
                card.validity_time   as validityTime
@@ -64,7 +63,7 @@
              ic_card as card
         where card.employee_id = emp.id
           and card.deleted = 0
-          and card_id = #{cardId}
+          and card.id = #{cardId}
         limit 0 ,1
     </select>
 </mapper>
