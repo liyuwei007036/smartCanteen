@@ -11,6 +11,7 @@ import com.smart.canteen.entity.IcCard;
 import com.smart.canteen.entity.Order;
 import com.smart.canteen.vo.OrderVo;
 import com.smart.canteen.vo.RechargeLogVO;
+import com.smart.canteen.vo.SummaryTotal;
 
 import javax.xml.crypto.Data;
 import java.util.Date;
@@ -93,5 +94,5 @@ public interface IOrderService extends IService<Order> {
      * @param end
      * @return
      */
-    Double getSaleSummary(Date start, Date end);
+    SummaryTotal getSaleSummary(Date start, Date end);
 }
