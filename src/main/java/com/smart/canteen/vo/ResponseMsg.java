@@ -49,7 +49,7 @@ public class ResponseMsg {
         byte[] data = new byte[64];
         try {
             List<String> msg = new ArrayList<>();
-            msg.add(0, "欢迎使用IC卡消费机");
+            msg.add(0, "通服信息管理系统");
             msg.add(1, "卡号:" + cardNo);
             msg.add(2, "当前消费:" + MathUtil.div(cost, 100, 2));
             msg.add(3, "余额:" + balance);
@@ -78,7 +78,7 @@ public class ResponseMsg {
         byte[] data = new byte[64];
         try {
             List<String> msg = new ArrayList<>();
-            msg.add(0, "欢迎使用IC消费机");
+            msg.add(0, "通服信息管理系统");
             msg.add(1, "卡号:" + cardNo);
             msg.add(2, "余额:" + MathUtil.div(balance, 1, 2));
             for (int i = 0; i < msg.size(); i++) {
@@ -98,7 +98,7 @@ public class ResponseMsg {
         byte[] data = new byte[64];
         try {
             List<String> msg = new ArrayList<>();
-            msg.add(0, "欢迎使用IC消费机");
+            msg.add(0, "通服信息管理系统");
             msg.add(1, "卡号:" + cardNo);
             if (!StringUtils.isEmpty(other)) {
                 msg.add(2, other);
@@ -121,7 +121,7 @@ public class ResponseMsg {
         byte[] data = new byte[64];
         try {
             List<String> msg = new ArrayList<>();
-            msg.add(0, "欢迎使用IC消费机");
+            msg.add(0, "通服信息管理系统");
             msg.add(1, "网络连接正常!");
             for (int i = 0; i < msg.size(); i++) {
                 byte[] m = msg.get(i).getBytes("GB2312");

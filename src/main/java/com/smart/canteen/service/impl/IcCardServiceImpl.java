@@ -30,6 +30,7 @@ import com.smart.canteen.vo.ResponseMsg;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -169,9 +170,12 @@ public class IcCardServiceImpl extends ServiceImpl<IcCardMapper, IcCard> impleme
     @Autowired
     private WebSocket webSocket;
 
+    @Value("${card.timeout}")
+    private Long timeout;
 
     @Override
     public ResponseMsg deductions(String cardNo, Integer money, String machineNo) {
+        Long start = System.currentTimeMillis();
         IcCard card = getOne(Wrappers.<IcCard>lambdaQuery()
                         .select(IcCard::getCurrentBalance, IcCard::getStatus, IcCard::getId, IcCard::getNo, IcCard::getEmployeeName, IcCard::getEmployeeNo)
                         .eq(IcCard::getNo, cardNo),
@@ -196,12 +200,18 @@ public class IcCardServiceImpl extends ServiceImpl<IcCardMapper, IcCard> impleme
                 .eq(IcCard::getId, card.getId()));
         boolean saveOrder = iOrderService.addOrderForMachine(card, MathUtil.div(money, 100, 2), machineNo, lastBalance);
         ResponseMsg msg;
-        if (update && saveOrder) {
-            msg = new ResponseMsg(CmdCodeEnum.CON, Voices.SUCCESS, cardNo, lastBalance, money);
-            webSocket.update();
-        } else {
-            msg = new ResponseMsg(CmdCodeEnum.CON, Voices.WARN, cardNo, "刷卡太快请重刷");
+        Long end = System.currentTimeMillis();
+        if (end - start > timeout) {
+            msg = new ResponseMsg(CmdCodeEnum.CON, Voices.WARN, cardNo, "网络连接超时！");
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+        } else {
+            if (update && saveOrder) {
+                msg = new ResponseMsg(CmdCodeEnum.CON, Voices.SUCCESS, cardNo, lastBalance, money);
+                webSocket.update();
+            } else {
+                msg = new ResponseMsg(CmdCodeEnum.CON, Voices.WARN, cardNo, "刷卡太快请重刷");
+                TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            }
         }
         return msg;
     }

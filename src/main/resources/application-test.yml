@@ -16,6 +16,9 @@ netty:
   port: 3000
 websocket:
   port: 8032
+card:
+  timeout: 3000
+
 
 spring:
   application:
