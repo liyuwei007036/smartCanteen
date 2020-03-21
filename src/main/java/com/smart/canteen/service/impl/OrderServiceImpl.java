@@ -1,9 +1,11 @@
 package com.smart.canteen.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.lc.core.annotations.Cache;
 import com.lc.core.dto.Account;
 import com.lc.core.utils.DateUtils;
 import com.lc.core.utils.MathUtil;
@@ -91,6 +93,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         return new CommonList<>(voPage.hasNext(), voPage.getTotal(), voPage.getCurrent(), collect);
     }
 
+    @Cache(key = "SUMMARY_LINE", timeout = 199)
     @Override
     public Map<String, Long> getSummaryDay() {
         Calendar now = Calendar.getInstance();
@@ -115,8 +118,9 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         return res;
     }
 
+    @Cache(key = "SUMMARY_YEAR", timeout = 199)
     @Override
-    public SummaryDTO getYearSaleData() {
+    public String getYearSaleData() {
         Calendar now = Calendar.getInstance();
         now.set(Calendar.DAY_OF_MONTH, 1);
         now.add(Calendar.MONTH, 1);
@@ -143,17 +147,18 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
             total.set(MathUtil.add(total.get(), ObjectUtil.getDouble(money)));
             res.put(yearMonth, MathUtil.add(ObjectUtil.getDouble(res.get(yearMonth)), money));
         });
-
         now.setTime(end);
         now.set(Calendar.DAY_OF_YEAR, 1);
         Date start = now.getTime();
         Double saleSummary = getSaleSummary(start, end);
-        return new SummaryDTO(res, total.get(), saleSummary);
+        SummaryDTO summaryDTO =  new SummaryDTO(res, total.get(), saleSummary);
+        return JSONObject.toJSONString(summaryDTO);
     }
 
 
+    @Cache(key = "SUMMARY_MONTH", timeout = 199)
     @Override
-    public SummaryDTO getMonthSaleData() {
+    public String getMonthSaleData() {
         Calendar now = Calendar.getInstance();
         now.add(Calendar.DAY_OF_MONTH, 1);
         now.set(Calendar.HOUR_OF_DAY, 0);
@@ -183,11 +188,13 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         now.set(Calendar.DAY_OF_MONTH, 1);
         Date start = now.getTime();
         Double avg = getSaleSummary(start, end);
-        return new SummaryDTO(res, total.get(), avg);
+        SummaryDTO summaryDTO = new SummaryDTO(res, total.get(), avg);
+        return JSONObject.toJSONString(summaryDTO);
     }
 
+    @Cache(key = "SUMMARY_DAY", timeout = 199)
     @Override
-    public SummaryDTO getDaySaleData() {
+    public String getDaySaleData() {
         Calendar now = Calendar.getInstance();
         now.add(Calendar.HOUR_OF_DAY, 1);
         now.set(Calendar.MINUTE, 0);
@@ -216,7 +223,8 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         now.set(Calendar.HOUR_OF_DAY, 0);
         Date start = now.getTime();
         Double avg = getSaleSummary(start, end);
-        return new SummaryDTO(res, total.get(), avg);
+        SummaryDTO summaryDTO = new SummaryDTO(res, total.get(), avg);
+        return JSONObject.toJSONString(summaryDTO);
     }
 
 
