@@ -15,10 +15,11 @@ import org.springframework.data.redis.listener.adapter.MessageListenerAdapter;
 public class RedisMsgConfig {
 
     @Bean
-    RedisMessageListenerContainer container(RedisConnectionFactory connectionFactory, MessageListenerAdapter listenerAdapter) {
+    RedisMessageListenerContainer container(RedisConnectionFactory connectionFactory, MessageListenerAdapter readCard, MessageListenerAdapter updateMsg) {
         RedisMessageListenerContainer container = new RedisMessageListenerContainer();
         container.setConnectionFactory(connectionFactory);
-        container.addMessageListener(listenerAdapter, new PatternTopic("readCard"));
+        container.addMessageListener(readCard, new PatternTopic("readCard"));
+        container.addMessageListener(updateMsg, new PatternTopic("update"));
         return container;
     }
 
@@ -29,10 +30,14 @@ public class RedisMsgConfig {
      * @return
      */
     @Bean
-    MessageListenerAdapter listenerAdapter(MsgReceiver receiver) {
-        return new MessageListenerAdapter(receiver, "receiveMessage");
+    MessageListenerAdapter readCard(MsgReceiver receiver) {
+        return new MessageListenerAdapter(receiver, "readCard");
     }
 
+    @Bean
+    MessageListenerAdapter updateMsg(MsgReceiver receiver) {
+        return new MessageListenerAdapter(receiver, "updateMessage");
+    }
 
 
 }

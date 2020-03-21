@@ -1,5 +1,6 @@
 package com.smart.canteen.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
@@ -93,7 +94,6 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         return new CommonList<>(voPage.hasNext(), voPage.getTotal(), voPage.getCurrent(), collect);
     }
 
-    @Cache(key = "SUMMARY_LINE", timeout = 2)
     @Override
     public Map<String, Long> getSummaryDay() {
         Calendar now = Calendar.getInstance();
@@ -118,9 +118,9 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         return res;
     }
 
-    @Cache(key = "SUMMARY_YEAR", timeout = 2)
+    @Cache(key = "summary_year", timeout = 2)
     @Override
-    public String getYearSaleData() {
+    public SummaryDTO getYearSaleData() {
         Calendar now = Calendar.getInstance();
         now.set(Calendar.DAY_OF_MONTH, 1);
         now.add(Calendar.MONTH, 1);
@@ -131,7 +131,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         Date end = now.getTime();
         now.add(Calendar.YEAR, -1);
         Date begin = now.getTime();
-        Map<String, Double> res = new LinkedHashMap<>(16);
+        JSONObject res = new JSONObject(true);
         AtomicReference<Double> total = new AtomicReference<>(0d);
         List<Map<String, Object>> maps = getBaseMapper().summaryYearSale(begin, end);
         while (end.after(begin)) {
@@ -147,18 +147,18 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
             total.set(MathUtil.add(total.get(), ObjectUtil.getDouble(money)));
             res.put(yearMonth, MathUtil.add(ObjectUtil.getDouble(res.get(yearMonth)), money));
         });
+
         now.setTime(end);
         now.set(Calendar.DAY_OF_YEAR, 1);
         Date start = now.getTime();
         Double saleSummary = getSaleSummary(start, end);
-        SummaryDTO summaryDTO = new SummaryDTO(res, total.get(), saleSummary);
-        return JSONObject.toJSONString(summaryDTO);
+        return new SummaryDTO(res, total.get(), saleSummary);
     }
 
 
-    @Cache(key = "SUMMARY_MONTH", timeout = 2)
+    @Cache(key = "summary_month", timeout = 2)
     @Override
-    public String getMonthSaleData() {
+    public SummaryDTO getMonthSaleData() {
         Calendar now = Calendar.getInstance();
         now.add(Calendar.DAY_OF_MONTH, 1);
         now.set(Calendar.HOUR_OF_DAY, 0);
@@ -168,7 +168,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         Date end = now.getTime();
         now.add(Calendar.DAY_OF_MONTH, -12);
         Date begin = now.getTime();
-        Map<String, Double> res = new LinkedHashMap<>(16);
+        JSONObject res = new JSONObject(true);
         AtomicReference<Double> total = new AtomicReference<>(0d);
         List<Map<String, Object>> maps = getBaseMapper().summaryMonthSale(begin, end);
         while (end.after(begin)) {
@@ -188,13 +188,12 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         now.set(Calendar.DAY_OF_MONTH, 1);
         Date start = now.getTime();
         Double avg = getSaleSummary(start, end);
-        SummaryDTO summaryDTO = new SummaryDTO(res, total.get(), avg);
-        return JSONObject.toJSONString(summaryDTO);
+        return new SummaryDTO(res, total.get(), avg);
     }
 
-    @Cache(key = "SUMMARY_DAY", timeout = 2)
+    @Cache(key = "summary_day", timeout = 2)
     @Override
-    public String getDaySaleData() {
+    public SummaryDTO getDaySaleData() {
         Calendar now = Calendar.getInstance();
         now.add(Calendar.HOUR_OF_DAY, 1);
         now.set(Calendar.MINUTE, 0);
@@ -203,7 +202,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         Date end = now.getTime();
         now.add(Calendar.HOUR_OF_DAY, -12);
         Date begin = now.getTime();
-        Map<String, Double> res = new LinkedHashMap<>(16);
+        JSONObject res = new JSONObject(true);
         AtomicReference<Double> total = new AtomicReference<>(0d);
         List<Map<String, Object>> maps = getBaseMapper().summaryDaySale(begin, end);
         while (end.after(begin)) {
@@ -223,8 +222,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         now.set(Calendar.HOUR_OF_DAY, 0);
         Date start = now.getTime();
         Double avg = getSaleSummary(start, end);
-        SummaryDTO summaryDTO = new SummaryDTO(res, total.get(), avg);
-        return JSONObject.toJSONString(summaryDTO);
+        return new SummaryDTO(res, total.get(), avg);
     }
 
 

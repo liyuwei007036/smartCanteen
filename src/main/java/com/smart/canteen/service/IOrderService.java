@@ -70,14 +70,14 @@ public interface IOrderService extends IService<Order> {
      *
      * @return
      */
-    String getYearSaleData();
+    SummaryDTO getYearSaleData();
 
     /**
      * 柱状图月
      *
      * @return
      */
-    String getMonthSaleData();
+    SummaryDTO getMonthSaleData();
 
 
     /**
@@ -85,7 +85,7 @@ public interface IOrderService extends IService<Order> {
      *
      * @return
      */
-    String getDaySaleData();
+    SummaryDTO getDaySaleData();
 
     /**
      * 计算2个时间段内的金额

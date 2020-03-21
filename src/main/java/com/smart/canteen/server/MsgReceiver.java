@@ -13,7 +13,11 @@ public class MsgReceiver {
     @Autowired
     private WebSocket webSocket;
 
-    public void receiveMessage(String message) {
+    public void readCard(String message) {
         webSocket.sendMsg(message);
+    }
+
+    public void updateMessage(String message) {
+        webSocket.update();
     }
 }

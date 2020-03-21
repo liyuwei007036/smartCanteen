@@ -167,9 +167,6 @@ public class IcCardServiceImpl extends ServiceImpl<IcCardMapper, IcCard> impleme
     @Autowired
     private IOrderService iOrderService;
 
-    @Autowired
-    private WebSocket webSocket;
-
     @Value("${card.timeout}")
     private Long timeout;
 
@@ -207,7 +204,7 @@ public class IcCardServiceImpl extends ServiceImpl<IcCardMapper, IcCard> impleme
         } else {
             if (update && saveOrder) {
                 msg = new ResponseMsg(CmdCodeEnum.CON, Voices.SUCCESS, cardNo, lastBalance, money);
-                webSocket.update();
+                template.convertAndSend("update", cardNo);
             } else {
                 msg = new ResponseMsg(CmdCodeEnum.CON, Voices.WARN, cardNo, "刷卡太快请重刷");
                 TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();

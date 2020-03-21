@@ -55,19 +55,19 @@ public class OrderController extends BaseController {
     @ApiOperation(value = "年消费统计", notes = "年消费统计")
     @RequestMapping(value = "/summary/year", method = RequestMethod.GET)
     public ResponseInfo<SummaryDTO> summaryYear() {
-        return new ResponseInfo<>(JSON.parseObject(iOrderService.getYearSaleData(), SummaryDTO.class));
+        return new ResponseInfo<>(iOrderService.getYearSaleData());
     }
 
     @ApiOperation(value = "月消费统计", notes = "月消费统计")
     @RequestMapping(value = "/summary/month", method = RequestMethod.GET)
     public ResponseInfo<SummaryDTO> summaryMonth() {
-        return new ResponseInfo<>(JSON.parseObject(iOrderService.getMonthSaleData(), SummaryDTO.class));
+        return new ResponseInfo<>(iOrderService.getMonthSaleData());
     }
 
     @ApiOperation(value = "天消费统计", notes = "天消费统计")
     @RequestMapping(value = "/summary/day", method = RequestMethod.GET)
     public ResponseInfo<SummaryDTO> summaryDay() {
-        return new ResponseInfo<>(JSON.parseObject(iOrderService.getDaySaleData(), SummaryDTO.class));
+        return new ResponseInfo<>(iOrderService.getDaySaleData());
     }
 }
 

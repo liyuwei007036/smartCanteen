@@ -1,10 +1,10 @@
 package com.smart.canteen.dto;
 
+import com.alibaba.fastjson.JSONObject;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.util.Map;
 
 /**
  * @author lc
@@ -14,7 +14,7 @@ import java.util.Map;
 @Data
 public class SummaryDTO implements Serializable {
 
-    private Map<String, Double> data;
+    private JSONObject data;
 
     private Double total;
 
