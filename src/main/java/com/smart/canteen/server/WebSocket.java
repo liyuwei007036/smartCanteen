@@ -128,7 +128,6 @@ public class WebSocket {
 
     public void update() {
         Map<String, Session> summaryMap = map.get(SUMMARY);
-        log.info("发送消息更新数据: {}", map.size());
         if (summaryMap != null) {
             summaryMap.forEach((key, value) -> value.sendText("update"));
         }
