@@ -1,6 +1,7 @@
 package com.smart.canteen.controller;
 
 
+import com.lc.core.annotations.Cache;
 import com.lc.core.annotations.Valid;
 import com.lc.core.controller.BaseController;
 import com.lc.core.dto.ResponseInfo;
@@ -43,25 +44,28 @@ public class OrderController extends BaseController {
         return new ResponseInfo<>(iOrderService.listLogs(params));
     }
 
+    @Cache(key = "SUMMARY_LINE", timeout = 1999)
     @ApiOperation(value = "消费统计", notes = "消费统计")
     @RequestMapping(value = "summary", method = RequestMethod.GET)
     public ResponseInfo summary() {
         return new ResponseInfo<>((Serializable) iOrderService.getSummaryDay());
     }
 
+    @Cache(key = "SUMMARY_YEAR", timeout = 1999)
     @ApiOperation(value = "年消费统计", notes = "年消费统计")
     @RequestMapping(value = "/summary/year", method = RequestMethod.GET)
     public ResponseInfo summaryYear() {
         return new ResponseInfo<>((Serializable) iOrderService.getYearSaleData());
     }
 
-
+    @Cache(key = "SUMMARY_YEAR", timeout = 1999)
     @ApiOperation(value = "月消费统计", notes = "月消费统计")
     @RequestMapping(value = "/summary/month", method = RequestMethod.GET)
     public ResponseInfo summaryMonth() {
         return new ResponseInfo<>((Serializable) iOrderService.getMonthSaleData());
     }
 
+    @Cache(key = "SUMMARY_YEAR", timeout = 1999)
     @ApiOperation(value = "天消费统计", notes = "天消费统计")
     @RequestMapping(value = "/summary/day", method = RequestMethod.GET)
     public ResponseInfo summaryDay() {
