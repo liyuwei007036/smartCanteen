@@ -93,7 +93,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         return new CommonList<>(voPage.hasNext(), voPage.getTotal(), voPage.getCurrent(), collect);
     }
 
-    @Cache(key = "SUMMARY_LINE", timeout = 199)
+    @Cache(key = "SUMMARY_LINE", timeout = 2)
     @Override
     public Map<String, Long> getSummaryDay() {
         Calendar now = Calendar.getInstance();
@@ -118,7 +118,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         return res;
     }
 
-    @Cache(key = "SUMMARY_YEAR", timeout = 199)
+    @Cache(key = "SUMMARY_YEAR", timeout = 2)
     @Override
     public String getYearSaleData() {
         Calendar now = Calendar.getInstance();
@@ -151,12 +151,12 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         now.set(Calendar.DAY_OF_YEAR, 1);
         Date start = now.getTime();
         Double saleSummary = getSaleSummary(start, end);
-        SummaryDTO summaryDTO =  new SummaryDTO(res, total.get(), saleSummary);
+        SummaryDTO summaryDTO = new SummaryDTO(res, total.get(), saleSummary);
         return JSONObject.toJSONString(summaryDTO);
     }
 
 
-    @Cache(key = "SUMMARY_MONTH", timeout = 199)
+    @Cache(key = "SUMMARY_MONTH", timeout = 2)
     @Override
     public String getMonthSaleData() {
         Calendar now = Calendar.getInstance();
@@ -192,7 +192,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         return JSONObject.toJSONString(summaryDTO);
     }
 
-    @Cache(key = "SUMMARY_DAY", timeout = 199)
+    @Cache(key = "SUMMARY_DAY", timeout = 2)
     @Override
     public String getDaySaleData() {
         Calendar now = Calendar.getInstance();
