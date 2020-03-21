@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lc.core.annotations.Cache;
+import com.lc.core.aspect.CacheAspect;
 import com.lc.core.dto.Account;
 import com.lc.core.utils.DateUtils;
 import com.lc.core.utils.MathUtil;
@@ -14,6 +15,7 @@ import com.lc.core.utils.ModelMapperUtils;
 import com.lc.core.utils.ObjectUtil;
 import com.smart.canteen.dto.CommonList;
 import com.smart.canteen.dto.SummaryDTO;
+import com.smart.canteen.dto.SummaryData;
 import com.smart.canteen.dto.order.OrderSearch;
 import com.smart.canteen.entity.IcCard;
 import com.smart.canteen.entity.Order;
@@ -131,7 +133,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         Date end = now.getTime();
         now.add(Calendar.YEAR, -1);
         Date begin = now.getTime();
-        JSONObject res = new JSONObject(true);
+        Map<String, Double> res = new LinkedHashMap<>(16);
         AtomicReference<Double> total = new AtomicReference<>(0d);
         List<Map<String, Object>> maps = getBaseMapper().summaryYearSale(begin, end);
         while (end.after(begin)) {
@@ -151,8 +153,10 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         now.setTime(end);
         now.set(Calendar.DAY_OF_YEAR, 1);
         Date start = now.getTime();
-        Double saleSummary = getSaleSummary(start, end);
-        return new SummaryDTO(res, total.get(), saleSummary);
+        Double avg = getSaleSummary(start, end);
+        List<SummaryData> data = new LinkedList<>();
+        res.forEach((key, value) -> data.add(new SummaryData(key, value)));
+        return new SummaryDTO(data, total.get(), avg);
     }
 
 
@@ -168,7 +172,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         Date end = now.getTime();
         now.add(Calendar.DAY_OF_MONTH, -12);
         Date begin = now.getTime();
-        JSONObject res = new JSONObject(true);
+        Map<String, Double> res = new LinkedHashMap<>(16);
         AtomicReference<Double> total = new AtomicReference<>(0d);
         List<Map<String, Object>> maps = getBaseMapper().summaryMonthSale(begin, end);
         while (end.after(begin)) {
@@ -188,7 +192,10 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         now.set(Calendar.DAY_OF_MONTH, 1);
         Date start = now.getTime();
         Double avg = getSaleSummary(start, end);
-        return new SummaryDTO(res, total.get(), avg);
+        List<SummaryData> data = new LinkedList<>();
+        res.forEach((key, value) -> data.add(new SummaryData(key, value)));
+
+        return new SummaryDTO(data, total.get(), avg);
     }
 
     @Cache(key = "summary_day", timeout = 2)
@@ -202,7 +209,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         Date end = now.getTime();
         now.add(Calendar.HOUR_OF_DAY, -12);
         Date begin = now.getTime();
-        JSONObject res = new JSONObject(true);
+        Map<String, Double> res = new LinkedHashMap<>(16);
         AtomicReference<Double> total = new AtomicReference<>(0d);
         List<Map<String, Object>> maps = getBaseMapper().summaryDaySale(begin, end);
         while (end.after(begin)) {
@@ -222,7 +229,9 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         now.set(Calendar.HOUR_OF_DAY, 0);
         Date start = now.getTime();
         Double avg = getSaleSummary(start, end);
-        return new SummaryDTO(res, total.get(), avg);
+        List<SummaryData> data = new ArrayList<>();
+        res.forEach((key, value) -> data.add(new SummaryData(key, value)));
+        return new SummaryDTO(data, total.get(), avg);
     }
 
 

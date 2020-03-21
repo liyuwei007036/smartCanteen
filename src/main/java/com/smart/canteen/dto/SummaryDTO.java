@@ -1,20 +1,22 @@
 package com.smart.canteen.dto;
 
-import com.alibaba.fastjson.JSONObject;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * @author lc
  * @date 2020/3/18下午 9:02
  */
+@EqualsAndHashCode(callSuper = false)
 @AllArgsConstructor
 @Data
 public class SummaryDTO implements Serializable {
 
-    private JSONObject data;
+    private List<SummaryData> data;
 
     private Double total;
 

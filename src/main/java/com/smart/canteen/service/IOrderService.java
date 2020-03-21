@@ -89,7 +89,8 @@ public interface IOrderService extends IService<Order> {
 
     /**
      * 计算2个时间段内的金额
-     *
+     * @param start
+     * @param end
      * @return
      */
     Double getSaleSummary(Date start, Date end);
