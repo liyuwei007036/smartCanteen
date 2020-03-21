@@ -3,11 +3,13 @@ package com.smart.canteen.server;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.lc.core.service.RedisService;
+import com.lc.core.utils.ObjectUtil;
 import io.netty.handler.codec.http.HttpHeaders;
 import io.netty.handler.timeout.IdleStateEvent;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.MultiValueMap;
+import org.springframework.util.StringUtils;
 import org.yeauty.annotation.*;
 import org.yeauty.pojo.Session;
 
@@ -23,7 +25,9 @@ import java.util.Map;
 @ServerEndpoint(path = "/ws/{arg}", port = "${websocket.port}")
 public class WebSocket {
 
-    private static Map<String, Session> map = new HashMap<>();
+    private static Map<String, Map<String, Session>> map = new HashMap<>();
+    private static final String READ_CARD = "readCard";
+    private static final String SUMMARY = "summary";
 
     @Autowired
     private RedisService redisService;
@@ -35,14 +39,20 @@ public class WebSocket {
 
     @OnOpen
     public void onOpen(Session session, HttpHeaders headers, @RequestParam String req, @RequestParam MultiValueMap reqMap, @PathVariable String arg, @PathVariable Map pathMap) {
-
+        System.out.println("one connection onOpen");
     }
 
     @OnClose
     public void onClose(Session session) throws IOException {
         System.out.println("one connection closed");
-        Object arg = session.getAttribute("session");
-        map.remove(arg.toString(), session);
+        String token = ObjectUtil.getString(session.getAttribute("token"));
+        String type = ObjectUtil.getString(session.getAttribute("type"));
+        if (!StringUtils.isEmpty(type)) {
+            Map<String, Session> stringSessionMap = map.get(type);
+            if (stringSessionMap != null) {
+                stringSessionMap.remove(token);
+            }
+        }
     }
 
     @OnError
@@ -55,19 +65,39 @@ public class WebSocket {
         log.info("webSocket 接收到消息{}", message);
         JSONObject msg = JSON.parseObject(message);
         Boolean start = msg.getBoolean("start");
+        String type = msg.getString("type");
         String token = msg.getString("token");
-        if (start) {
-            redisService.put("GET_CARD_NO", token, 9, 30);
-        } else {
-            redisService.remove("GET_CARD_NO", 9);
+        if (!StringUtils.isEmpty(type) && !StringUtils.isEmpty(token) && start) {
+            Map<String, Session> stringSessionMap = map.computeIfAbsent(type, k -> new HashMap<>(16));
+            session.setAttribute("type", type);
+            session.setAttribute("token", token);
+            stringSessionMap.put(token, session);
         }
-        map.put(token, session);
+        if (READ_CARD.equals(type)) {
+            if (start) {
+                redisService.put("GET_CARD_NO", true, 9, 30);
+            } else {
+                Map<String, Session> map2 = map.get(type);
+                if (map2 != null) {
+                    map2.remove(token);
+                }
+                redisService.remove("GET_CARD_NO", 9);
+            }
+        } else if (SUMMARY.equals(type)) {
+            if (!start) {
+                Map<String, Session> map2 = map.get(type);
+                if (map2 != null) {
+                    map2.remove(token);
+                }
+            }
+        }
     }
 
     @OnBinary
     public void onBinary(Session session, byte[] bytes) {
         session.sendBinary(bytes);
     }
+
 
     @OnEvent
     public void onEvent(Session session, Object evt) {
@@ -90,6 +120,18 @@ public class WebSocket {
     }
 
     public void sendMsg(String msg) {
-        map.forEach((key, value) -> value.sendText(msg));
+        Map<String, Session> readCard = map.get(READ_CARD);
+        if (readCard != null) {
+            readCard.forEach((key, value) -> value.sendText(msg));
+        }
+    }
+
+    public void update() {
+        Map<String, Session> summaryMap = map.get(SUMMARY);
+        log.info("发送消息更新数据: {}", map.size());
+        if (summaryMap != null) {
+            summaryMap.forEach((key, value) -> value.sendText("update"));
+        }
+
     }
 }

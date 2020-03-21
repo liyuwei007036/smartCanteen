@@ -21,6 +21,7 @@ import com.smart.canteen.entity.IcCard;
 import com.smart.canteen.entity.RechargeLog;
 import com.smart.canteen.enums.*;
 import com.smart.canteen.mapper.IcCardMapper;
+import com.smart.canteen.server.WebSocket;
 import com.smart.canteen.service.*;
 import com.smart.canteen.utils.EntityLogUtil;
 import com.smart.canteen.vo.CardUserVo;
@@ -165,6 +166,10 @@ public class IcCardServiceImpl extends ServiceImpl<IcCardMapper, IcCard> impleme
     @Autowired
     private IOrderService iOrderService;
 
+    @Autowired
+    private WebSocket webSocket;
+
+
     @Override
     public ResponseMsg deductions(String cardNo, Integer money, String machineNo) {
         IcCard card = getOne(Wrappers.<IcCard>lambdaQuery()
@@ -193,6 +198,7 @@ public class IcCardServiceImpl extends ServiceImpl<IcCardMapper, IcCard> impleme
         ResponseMsg msg;
         if (update && saveOrder) {
             msg = new ResponseMsg(CmdCodeEnum.CON, Voices.SUCCESS, cardNo, lastBalance, money);
+            webSocket.update();
         } else {
             msg = new ResponseMsg(CmdCodeEnum.CON, Voices.WARN, cardNo, "刷卡太快请重刷");
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
@@ -202,6 +208,7 @@ public class IcCardServiceImpl extends ServiceImpl<IcCardMapper, IcCard> impleme
 
     @Autowired
     private RedisService redisService;
+
     @Autowired
     private StringRedisTemplate template;
 
