@@ -27,9 +27,9 @@ public class ServerHandler extends SimpleChannelInboundHandler<DatagramPacket> {
         buf.readBytes(req);
         Packet recObj = new Packet(req);
         byte cmdCode = recObj.getCmdCode();
-        ResponseMsg search;
+        ResponseMsg msg;
         DatagramPacket responseData;
-        if (cmdCode == (byte) CmdCodeEnum.CON.getCode()) {
+        if (CmdCodeEnum.CON == CmdCodeEnum.getByCode(cmdCode)) {
             IIcCardService iIcCardService = SpringUtil.getBean(IIcCardService.class);
             int cardNoi = ByteArrayUtils.byteArrayToInt(recObj.getCardNumber());
             String cardNo;
@@ -40,23 +40,36 @@ public class ServerHandler extends SimpleChannelInboundHandler<DatagramPacket> {
             }
             switch (ConEventEnum.getByCode(recObj.getEvent())) {
                 case QUERY_BALANCE:
-                    search = iIcCardService.search(cardNo);
-                    responseData = SendMsgUtil.sendMsg(search, packet.sender(), recObj);
+                    msg = iIcCardService.search(cardNo);
+                    responseData = SendMsgUtil.sendMsg(msg, packet.sender(), recObj);
                     ctx.writeAndFlush(responseData);
                     break;
                 case NORMAL_REBATES:
                     byte[] machineAddrCode = recObj.getMachineAddrCode();
                     int money = ByteArrayUtils.byteArrayToInt(recObj.getRealData());
-                    search = iIcCardService.deductions(cardNo, money, String.valueOf(ByteArrayUtils.byteArrayToShort(machineAddrCode)));
-                    responseData = SendMsgUtil.sendMsg(search, packet.sender(), recObj);
+                    msg = iIcCardService.deductions(cardNo, money, String.valueOf(ByteArrayUtils.byteArrayToShort(machineAddrCode)));
+                    responseData = SendMsgUtil.sendMsg(msg, packet.sender(), recObj);
                     ctx.writeAndFlush(responseData);
                     break;
                 default:
                     break;
             }
+        } else if (CmdCodeEnum.HART_BIT == CmdCodeEnum.getByCode(cmdCode)) {
+            msg = ResponseMsg.normal();
+            responseData = SendMsgUtil.sendMsg(msg, packet.sender(), recObj);
+            ctx.writeAndFlush(responseData);
+
+            try {
+                Thread.sleep(5000);
+                msg = ResponseMsg.setTitle();
+                responseData = SendMsgUtil.sendMsg(msg, packet.sender(), recObj);
+                ctx.writeAndFlush(responseData);
+            } catch (InterruptedException ignored) {
+
+            }
         } else {
-            search = new ResponseMsg(CmdCodeEnum.SEARCH);
-            responseData = SendMsgUtil.sendMsg(search, packet.sender(), recObj);
+            msg = new ResponseMsg(CmdCodeEnum.SEARCH);
+            responseData = SendMsgUtil.sendMsg(msg, packet.sender(), recObj);
             ctx.writeAndFlush(responseData);
         }
     }

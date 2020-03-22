@@ -20,6 +20,21 @@ public enum CmdCodeEnum {
      * 查询按键 （0X00:消费的笔数和金额 0X01:加款的笔数和金额，0X02：退全部余额的笔数和金额)
      */
     SEARCH(0x70),
+    /**
+     * 心跳包
+     */
+    HART_BIT(0x74),
+
+    /**
+     * 设置机器时间
+     */
+    TIME(0x30),
+
+    /**
+     * 设置TITLE
+     */
+    TITLE(0x48),
+    NORMAL(0x81),
 
 
     ;

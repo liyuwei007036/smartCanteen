@@ -4,6 +4,7 @@ import com.lc.core.utils.MathUtil;
 import com.smart.canteen.enums.CmdCodeEnum;
 import com.smart.canteen.enums.Voices;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StringUtils;
 
@@ -17,6 +18,7 @@ import java.util.List;
  */
 @Slf4j
 @Data
+@NoArgsConstructor
 public class ResponseMsg {
 
     /**
@@ -132,6 +134,25 @@ public class ResponseMsg {
             log.error("转换失败", e);
         }
         this.msg = data;
+    }
+
+    public static ResponseMsg setTitle() {
+        ResponseMsg res = new ResponseMsg();
+        res.setCode(CmdCodeEnum.TITLE.getCode());
+        byte[] data = new byte[16];
+        try {
+            data = "通服信息管理系统".getBytes("GB2312");
+        } catch (UnsupportedEncodingException e) {
+            log.error("转换失败", e);
+        }
+        res.setMsg(data);
+        return res;
+    }
+
+    public static ResponseMsg normal() {
+        ResponseMsg res = new ResponseMsg();
+        res.setCode(CmdCodeEnum.NORMAL.getCode());
+        return res;
     }
 
 }

@@ -24,8 +24,11 @@ public class SendMsgUtil {
         nSendFlag += 1;
         System.arraycopy(receiveObj.getMachineAddrCode(), 0, sendData, 2, 2);
         nSendFlag += 2;
-        int nLen = msgBytes.length;
-        nLen += 1 + 3;
+        int nLen = msgBytes == null ? 0 : msgBytes.length;
+        nLen += 1;
+        if (msg.getVoice() != null) {
+            nLen += 3;
+        }
         byte[] blen = new byte[2];
         blen[0] = (byte) (nLen / 256);
         blen[1] = (byte) (nLen % 256);
@@ -35,11 +38,15 @@ public class SendMsgUtil {
         //cmd
         sendData[nSendFlag] = (byte) msg.getCode();
         nSendFlag += 1;
-        System.arraycopy(msgBytes, 0, sendData, nSendFlag, msgBytes.length);
-        nSendFlag += msgBytes.length;
+        if (msgBytes != null) {
+            System.arraycopy(msgBytes, 0, sendData, nSendFlag, msgBytes.length);
+        }
+        nSendFlag += msgBytes == null ? 0 : msgBytes.length;
         byte[] voice = msg.getVoice();
-        System.arraycopy(voice, 0, sendData, nSendFlag, 3);
-        nSendFlag += 3;
+        if (voice != null) {
+            System.arraycopy(voice, 0, sendData, nSendFlag, 3);
+            nSendFlag += 3;
+        }
         byte[] crcCode = CrcUtil.calcCrc16(sendData, 2, nLen + 4);
         System.arraycopy(crcCode, 0, sendData, nSendFlag, 2);
         return new DatagramPacket(Unpooled.copiedBuffer(sendData), address);
