@@ -12,6 +12,7 @@ import com.smart.canteen.entity.Order;
 import com.smart.canteen.vo.OrderVo;
 import com.smart.canteen.vo.RechargeLogVO;
 import com.smart.canteen.vo.SummaryTotal;
+import com.smart.canteen.vo.SummaryVO;
 
 import javax.xml.crypto.Data;
 import java.util.Date;
@@ -90,9 +91,17 @@ public interface IOrderService extends IService<Order> {
 
     /**
      * 计算2个时间段内的金额
+     *
      * @param start
      * @param end
      * @return
      */
     SummaryTotal getSaleSummary(Date start, Date end);
+
+    /**
+     * 统计数据
+     *
+     * @return
+     */
+    SummaryVO getUpdateData() ;
 }

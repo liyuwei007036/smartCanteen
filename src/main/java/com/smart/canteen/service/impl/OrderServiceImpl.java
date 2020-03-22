@@ -1,13 +1,10 @@
 package com.smart.canteen.service.impl;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lc.core.annotations.Cache;
-import com.lc.core.aspect.CacheAspect;
 import com.lc.core.dto.Account;
 import com.lc.core.utils.DateUtils;
 import com.lc.core.utils.MathUtil;
@@ -25,11 +22,11 @@ import com.smart.canteen.mapper.OrderMapper;
 import com.smart.canteen.service.IOrderService;
 import com.smart.canteen.vo.OrderVo;
 import com.smart.canteen.vo.SummaryTotal;
+import com.smart.canteen.vo.SummaryVO;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 /**
@@ -121,7 +118,6 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         return res;
     }
 
-    @Cache(key = "summary_year", timeout = 2)
     @Override
     public SummaryDTO getYearSaleData() {
         Calendar now = Calendar.getInstance();
@@ -165,7 +161,6 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
     }
 
 
-    @Cache(key = "summary_month", timeout = 2)
     @Override
     public SummaryDTO getMonthSaleData() {
         Calendar now = Calendar.getInstance();
@@ -196,12 +191,10 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         Date start = now.getTime();
         List<SummaryData> data = new LinkedList<>();
         res.forEach((key, value) -> data.add(new SummaryData(key, value)));
-
         SummaryTotal summaryTotal = getSaleSummary(start, end);
         return new SummaryDTO(data, summaryTotal.getTotal(), summaryTotal.getAvg());
     }
 
-    @Cache(key = "summary_day", timeout = 2)
     @Override
     public SummaryDTO getDaySaleData() {
         Calendar now = Calendar.getInstance();
@@ -242,5 +235,15 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         Double summary = getBaseMapper().getSummary(start, end);
         Double avg = MathUtil.div(ObjectUtil.getDouble(summary), dayDiff, 2);
         return new SummaryTotal(summary, avg);
+    }
+
+    @Override
+    public SummaryVO getUpdateData(){
+        SummaryVO summaryVO = new SummaryVO();
+        summaryVO.setLine(getSummaryDay());
+        summaryVO.setYear(getDaySaleData());
+        summaryVO.setMonth(getMonthSaleData());
+        summaryVO.setDay(getDaySaleData());
+        return summaryVO;
     }
 }

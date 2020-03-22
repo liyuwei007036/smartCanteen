@@ -4,6 +4,8 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.lc.core.service.RedisService;
 import com.lc.core.utils.ObjectUtil;
+import com.smart.canteen.service.IOrderService;
+import com.smart.canteen.vo.SummaryVO;
 import io.netty.handler.codec.http.HttpHeaders;
 import io.netty.handler.timeout.IdleStateEvent;
 import lombok.extern.slf4j.Slf4j;
@@ -126,10 +128,18 @@ public class WebSocket {
         }
     }
 
+    @Autowired
+    private IOrderService iOrderService;
+
     public void update() {
         Map<String, Session> summaryMap = map.get(SUMMARY);
         if (summaryMap != null) {
-            summaryMap.forEach((key, value) -> value.sendText("update"));
+            try {
+                Thread.sleep(2000);
+                SummaryVO updateData = iOrderService.getUpdateData();
+                summaryMap.forEach((key, value) -> value.sendText(JSONObject.toJSONString(updateData)));
+            } catch (InterruptedException ignored) {
+            }
         }
 
     }
