@@ -98,13 +98,15 @@ public class IcCardServiceImpl extends ServiceImpl<IcCardMapper, IcCard> impleme
     }
 
     @Override
-    public void update(CardForm form, Account create) {
+    public void update(CardForm form, Employee employee, Account create) {
         ValidatorUtil.validator(form, CardForm.Update.class);
         IcCard card = getById(form.getId());
         if (card == null) {
             throw new BaseException(CanteenExceptionEnum.CARD_NO_EXIST);
         }
         BeanUtils.copyProperties(form, card, "id", "no");
+        card.setEmployeeName(employee.getName());
+        card.setEmployeeNo(employee.getNo());
         boolean b = updateById(card);
         if (!b) {
             throw new BaseException(CanteenExceptionEnum.UPDATE_FAIL);

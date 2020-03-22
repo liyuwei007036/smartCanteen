@@ -141,7 +141,7 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
         byId.setNo(employee.getNo());
         BeanUtils.copyProperties(employee, byId, "id", "password", "no");
         Password password = createPassword(employee.getPassword(), employee.getConfirmPassword());
-        if (password != null) {
+        if (!StringUtils.isEmpty(employee.getPassword())) {
             byId.setSalt(password.getSalt());
             byId.setPassword(password.getPassword());
         }
@@ -151,11 +151,11 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
             throw new BaseException(CanteenExceptionEnum.UPDATE_FAIL);
         }
         iEmployeeRoleService.batchAdd(employee.getRoles(), employee.getId(), updater);
-        CardForm strict = ModelMapperUtils.strict(employee, CardForm.class);
-        strict.setNo(employee.getCardNo());
-        strict.setValidityTime(employee.getValidityTime());
-        strict.setId(employee.getCardId());
-        iIcCardService.update(strict, updater);
+        CardForm cardForm = ModelMapperUtils.strict(employee, CardForm.class);
+        cardForm.setNo(employee.getCardNo());
+        cardForm.setValidityTime(employee.getValidityTime());
+        cardForm.setId(employee.getCardId());
+        iIcCardService.update(cardForm, byId, updater);
     }
 
     @Override

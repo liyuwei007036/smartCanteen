@@ -54,9 +54,10 @@ public interface IIcCardService extends IService<IcCard> {
      * 更新
      *
      * @param form
+     * @param employee
      * @param create
      */
-    void update(CardForm form, Account create);
+    void update(CardForm form, Employee employee, Account create);
 
 
     /**

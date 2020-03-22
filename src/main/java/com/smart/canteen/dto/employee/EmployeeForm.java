@@ -83,7 +83,7 @@ public class EmployeeForm implements Serializable {
     @ApiModelProperty(value = "卡号")
     private String cardNo;
 
-    @JSONField(serialzeFeatures= SerializerFeature.WriteEnumUsingToString)
+    @JSONField(serialzeFeatures = SerializerFeature.WriteEnumUsingToString)
     @NotNull(groups = {Insert.class, Update.class})
     @ApiModelProperty(value = "卡类型")
     private CardTypeEnum type;
