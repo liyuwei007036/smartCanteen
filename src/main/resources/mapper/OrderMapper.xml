@@ -4,25 +4,25 @@
 
     <select id="summaryOrderNum" resultType="java.lang.String">
         SELECT DATE_FORMAT(concat( date( create_time ), ' ', HOUR ( create_time ), ':', floor( MINUTE ( create_time ) / #{min} ) *  #{min} ),'%Y-%m-%d %H:%i') AS time
-		FROM c_order WHERE deleted = 0 and  create_time <![CDATA[ <= ]]> #{end} and create_time <![CDATA[ >= ]]> #{begin}
+		FROM c_order WHERE deleted = 0 and type = 1  and  create_time <![CDATA[ <= ]]> #{end} and create_time <![CDATA[ >= ]]> #{begin}
     </select>
 
     <select id="summaryYearSale" resultType="java.util.Map">
          SELECT DATE_FORMAT(create_time,'%Y-%m') AS yearMonth, sum(money) as money
-		FROM c_order WHERE deleted = 0 and  create_time <![CDATA[ <= ]]> #{end} and create_time <![CDATA[ >= ]]> #{begin} group by yearMonth
+		FROM c_order WHERE deleted = 0 and type = 1  and  create_time <![CDATA[ <= ]]> #{end} and create_time <![CDATA[ >= ]]> #{begin} group by yearMonth
     </select>
 
     <select id="summaryMonthSale" resultType="java.util.Map">
          SELECT DATE_FORMAT(create_time,'%Y-%m-%d') AS yearMonth, sum(money) as money
-		FROM c_order WHERE deleted = 0 and  create_time <![CDATA[ <= ]]> #{end} and create_time <![CDATA[ >= ]]> #{begin} group by yearMonth
+		FROM c_order WHERE deleted = 0 and type = 1  and  create_time <![CDATA[ <= ]]> #{end} and create_time <![CDATA[ >= ]]> #{begin} group by yearMonth
     </select>
     <select id="summaryDaySale" resultType="java.util.Map">
             SELECT DATE_FORMAT(create_time,'%Y-%m-%d-%H') AS yearMonth, sum(money) as money
-		FROM c_order WHERE deleted = 0 and  create_time <![CDATA[ <= ]]> #{end} and create_time <![CDATA[ >= ]]> #{begin} group by yearMonth
+		FROM c_order WHERE deleted = 0 and type = 1  and  create_time <![CDATA[ <= ]]> #{end} and create_time <![CDATA[ >= ]]> #{begin} group by yearMonth
     </select>
     <select id="getSummary" resultType="java.lang.Double">
          SELECT sum(money)
-		FROM c_order WHERE deleted = 0 and  create_time <![CDATA[ <= ]]> #{end} and create_time <![CDATA[ >= ]]> #{begin}
+		FROM c_order WHERE deleted = 0 and type = 1  and  create_time <![CDATA[ <= ]]> #{end} and create_time <![CDATA[ >= ]]> #{begin}
     </select>
 
 </mapper>
