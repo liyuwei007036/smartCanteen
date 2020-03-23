@@ -243,7 +243,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
     public SummaryVO getUpdateData() {
         SummaryVO summaryVO = new SummaryVO();
         summaryVO.setLine(getSummaryDay());
-        summaryVO.setYear(getDaySaleData());
+        summaryVO.setYear(getYearSaleData());
         summaryVO.setMonth(getMonthSaleData());
         summaryVO.setDay(getDaySaleData());
         return summaryVO;

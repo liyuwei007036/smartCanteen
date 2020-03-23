@@ -24,13 +24,8 @@ public class UpdateSummaryTask {
     @Scheduled(cron = "0 0,30 * * * ? ")
     public void update() {
         try {
-            boolean f = redisService.putIfAbsent("UPDATE_SUMMARY", 1, 9, 60);
-            if (f) {
-                webSocket.update();
-                redisService.remove("UPDATE_SUMMARY", 9);
-            }
-        } catch (Exception e) {
-            redisService.remove("UPDATE_SUMMARY", 9);
+            webSocket.update();
+        } catch (Exception ignored) {
         }
     }
 }
