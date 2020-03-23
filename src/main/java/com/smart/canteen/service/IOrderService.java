@@ -36,9 +36,11 @@ public interface IOrderService extends IService<Order> {
      * @param money
      * @param machineNo
      * @param balance
+     * @param no
+     * @param name
      * @return
      */
-    boolean addOrderForMachine(IcCard card, Double money, String machineNo, Double balance);
+    boolean addOrderForMachine(IcCard card, Double money, String machineNo, Double balance, String no, String name);
 
     /**
      * 添加消费订单(补扣)
@@ -103,5 +105,5 @@ public interface IOrderService extends IService<Order> {
      *
      * @return
      */
-    SummaryVO getUpdateData() ;
+    SummaryVO getUpdateData();
 }

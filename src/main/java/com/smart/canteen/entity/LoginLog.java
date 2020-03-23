@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
+import com.smart.canteen.enums.LoginEnum;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -50,6 +51,10 @@ public class LoginLog extends Model<LoginLog> {
     @ApiModelProperty(value = "登录ip")
     @TableField("ip")
     private String ip;
+
+    @ApiModelProperty(value = "类型")
+    @TableField("type")
+    private LoginEnum type;
 
 
     @Override

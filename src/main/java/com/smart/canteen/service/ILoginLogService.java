@@ -5,6 +5,7 @@ import com.smart.canteen.dto.CommonList;
 import com.smart.canteen.dto.log.LoginSearch;
 import com.smart.canteen.entity.LoginLog;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.smart.canteen.enums.LoginEnum;
 
 /**
  * <p>
@@ -21,8 +22,9 @@ public interface ILoginLogService extends IService<LoginLog> {
      *
      * @param account
      * @param ip
+     * @param type
      */
-    void addLog(Account account, String ip);
+    void addLog(Account account, String ip, LoginEnum type);
 
     /**
      * 登录查询

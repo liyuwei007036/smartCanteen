@@ -6,6 +6,7 @@ import com.lc.core.controller.BaseController;
 import com.lc.core.dto.Account;
 import com.lc.core.dto.ResponseInfo;
 import com.lc.core.utils.ObjectUtil;
+import com.lc.core.utils.RequestUtils;
 import com.smart.canteen.annotations.Log;
 import com.smart.canteen.annotations.Permission;
 import com.smart.canteen.dto.CommonList;
@@ -13,7 +14,9 @@ import com.smart.canteen.dto.employee.EmployeeForm;
 import com.smart.canteen.dto.employee.EmployeeSearch;
 import com.smart.canteen.dto.user.ChangePasswordForm;
 import com.smart.canteen.dto.user.LoginForm;
+import com.smart.canteen.enums.LoginEnum;
 import com.smart.canteen.service.IEmployeeService;
+import com.smart.canteen.service.ILoginLogService;
 import com.smart.canteen.vo.EmployeeVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -38,6 +41,9 @@ public class EmployeeController extends BaseController {
     @Autowired
     private IEmployeeService iEmployeeService;
 
+    @Autowired
+    private ILoginLogService iLoginLogService;
+
     @Valid
     @ApiOperation(value = "登录", notes = "登录")
     @RequestMapping(value = "login", method = RequestMethod.POST)
@@ -48,6 +54,7 @@ public class EmployeeController extends BaseController {
     @ApiOperation(value = "登出", notes = "登出")
     @RequestMapping(value = "loginout", method = RequestMethod.DELETE)
     public ResponseInfo<Account> loginOut() {
+        iLoginLogService.addLog(getCurrentUser(), RequestUtils.getIpAddress(this.getRequest()), LoginEnum.LOGIN_OUT);
         removeSession();
         return new ResponseInfo<>();
     }

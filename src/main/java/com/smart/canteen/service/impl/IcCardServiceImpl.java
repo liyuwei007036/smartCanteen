@@ -21,7 +21,6 @@ import com.smart.canteen.entity.IcCard;
 import com.smart.canteen.entity.RechargeLog;
 import com.smart.canteen.enums.*;
 import com.smart.canteen.mapper.IcCardMapper;
-import com.smart.canteen.server.WebSocket;
 import com.smart.canteen.service.*;
 import com.smart.canteen.utils.EntityLogUtil;
 import com.smart.canteen.vo.CardUserVo;
@@ -197,7 +196,7 @@ public class IcCardServiceImpl extends ServiceImpl<IcCardMapper, IcCard> impleme
         boolean update = update(Wrappers.<IcCard>lambdaUpdate()
                 .set(IcCard::getCurrentBalance, lastBalance)
                 .eq(IcCard::getId, card.getId()));
-        boolean saveOrder = iOrderService.addOrderForMachine(card, MathUtil.div(money, 100, 2), machineNo, lastBalance);
+        boolean saveOrder = iOrderService.addOrderForMachine(card, MathUtil.div(money, 100, 2), machineNo, lastBalance, card.getEmployeeNo(), card.getEmployeeName());
         ResponseMsg msg;
         Long end = System.currentTimeMillis();
         if (end - start > timeout) {

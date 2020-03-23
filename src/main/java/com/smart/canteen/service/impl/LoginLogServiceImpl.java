@@ -7,6 +7,7 @@ import com.lc.core.dto.Account;
 import com.smart.canteen.dto.CommonList;
 import com.smart.canteen.dto.log.LoginSearch;
 import com.smart.canteen.entity.LoginLog;
+import com.smart.canteen.enums.LoginEnum;
 import com.smart.canteen.mapper.LoginLogMapper;
 import com.smart.canteen.service.ILoginLogService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -31,12 +32,13 @@ public class LoginLogServiceImpl extends ServiceImpl<LoginLogMapper, LoginLog> i
 
     @Async
     @Override
-    public void addLog(Account account, String ip) {
+    public void addLog(Account account, String ip, LoginEnum type) {
         LoginLog loginLog = new LoginLog();
         loginLog.setEmpName(account.getName());
         loginLog.setEmpNo(account.getAccount());
         loginLog.setLoginTime(new Date());
-        loginLog.setIp(ip);
+        loginLog.setType(type);
+        loginLog.setIp(ip.split(",")[0]);
         save(loginLog);
     }
 
