@@ -1,6 +1,5 @@
 package com.smart.canteen.task;
 
-import com.lc.core.service.RedisService;
 import com.smart.canteen.server.WebSocket;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.EnableScheduling;
