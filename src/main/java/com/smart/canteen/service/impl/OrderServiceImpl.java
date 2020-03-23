@@ -42,7 +42,7 @@ import java.util.stream.Collectors;
 public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements IOrderService {
 
     @Override
-    public boolean addOrderForMachine(IcCard card, Double money, String machineNo, Double balance, String no, String name) {
+    public boolean addOrderForMachine(IcCard card, Double money, String machineNo, Double balance) {
         Order order = new Order();
         order.setCardId(card.getId());
         order.setBalance(balance);
@@ -54,8 +54,8 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         order.setChannel(OrderChannelEnum.MACHINE);
         order.setMachineNo(machineNo);
         order.setType(OrderTypeEnum.NORMAL);
-        order.setEmployeeName(name);
-        order.setEmployeeNo(no);
+        order.setCreatorAccount(card.getEmployeeName());
+        order.setCreatorName(card.getEmployeeNo());
         return save(order);
     }
 

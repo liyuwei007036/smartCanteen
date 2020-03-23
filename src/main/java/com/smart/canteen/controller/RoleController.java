@@ -78,7 +78,6 @@ public class RoleController extends BaseController {
         return new ResponseInfo<>(iRoleService.getById(ObjectUtil.getLong(id)));
     }
 
-    @Permission(code = "role:list")
     @ApiOperation(value = "获取所有角色", notes = "获取角色")
     @RequestMapping(value = "/listAll", method = RequestMethod.GET)
     public ResponseInfo listAll() {

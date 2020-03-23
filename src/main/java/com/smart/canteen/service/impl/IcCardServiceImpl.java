@@ -196,7 +196,7 @@ public class IcCardServiceImpl extends ServiceImpl<IcCardMapper, IcCard> impleme
         boolean update = update(Wrappers.<IcCard>lambdaUpdate()
                 .set(IcCard::getCurrentBalance, lastBalance)
                 .eq(IcCard::getId, card.getId()));
-        boolean saveOrder = iOrderService.addOrderForMachine(card, MathUtil.div(money, 100, 2), machineNo, lastBalance, card.getEmployeeNo(), card.getEmployeeName());
+        boolean saveOrder = iOrderService.addOrderForMachine(card, MathUtil.div(money, 100, 2), machineNo, lastBalance);
         ResponseMsg msg;
         Long end = System.currentTimeMillis();
         if (end - start > timeout) {
