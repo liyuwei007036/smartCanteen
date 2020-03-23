@@ -18,9 +18,6 @@ public class UpdateSummaryTask {
     @Autowired
     private WebSocket webSocket;
 
-    @Autowired
-    private RedisService redisService;
-
     @Scheduled(cron = "0 0,30 * * * ? ")
     public void update() {
         try {
