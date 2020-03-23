@@ -54,8 +54,8 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         order.setChannel(OrderChannelEnum.MACHINE);
         order.setMachineNo(machineNo);
         order.setType(OrderTypeEnum.NORMAL);
-        order.setCreatorAccount(card.getEmployeeName());
-        order.setCreatorName(card.getEmployeeNo());
+        order.setCreatorAccount(card.getEmployeeNo());
+        order.setCreatorName(card.getEmployeeName());
         return save(order);
     }
 
