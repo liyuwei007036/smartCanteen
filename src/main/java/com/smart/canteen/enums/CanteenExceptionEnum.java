@@ -39,6 +39,7 @@ public enum CanteenExceptionEnum implements IErrorInterface {
     ORG_HAS_EMP(2024, "组织下存在人员无法删除"),
     ROLE_HAS_EMP(2024, "角色下存在人员无法删除"),
     NUM_ERROR(2025, "扣款金额错误，不能大于余额"),
+    LOGIN_ERROR(2025, "用户名或密码不正确"),
     UPDATE_FA2IL(99999, "update  fail");
 
     private Integer code;

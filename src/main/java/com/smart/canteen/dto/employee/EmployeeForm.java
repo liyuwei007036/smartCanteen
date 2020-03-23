@@ -80,6 +80,7 @@ public class EmployeeForm implements Serializable {
     private Long cardId;
 
     @NotNull(groups = Insert.class)
+    @Length(min = 6, max = 12, groups = {Insert.class, Update.class})
     @ApiModelProperty(value = "卡号")
     private String cardNo;
 

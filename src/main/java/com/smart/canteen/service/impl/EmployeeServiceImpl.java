@@ -79,7 +79,7 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
             iLoginLogService.addLog(account, RequestUtils.getIpAddress(controller.getRequest()), LoginEnum.LOGIN);
             return account;
         } else {
-            throw new BaseException(CanteenExceptionEnum.USER_NOT_EXIST);
+            throw new BaseException(CanteenExceptionEnum.LOGIN_ERROR);
         }
 
     }
