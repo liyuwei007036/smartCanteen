@@ -248,7 +248,6 @@ public class IcCardServiceImpl extends ServiceImpl<IcCardMapper, IcCard> impleme
             }
 
         }
-
     }
 
     @Override
@@ -262,6 +261,27 @@ public class IcCardServiceImpl extends ServiceImpl<IcCardMapper, IcCard> impleme
         }
         byId.setStatus(CardStatusEnum.DISABLE);
         byId.setAccountStatus(CardAccountEnum.LOSS);
+        EntityLogUtil.addNormalUser(byId, account);
+        boolean b = updateById(byId);
+        if (!b) {
+            throw new BaseException(CanteenExceptionEnum.UPDATE_FAIL);
+        }
+    }
+
+    @Override
+    public void unLoss(Long id, Account account) {
+        IcCard byId = getById(id);
+        if (byId == null) {
+            throw new BaseException(CanteenExceptionEnum.CARD_NOT_EXIST);
+        }
+        if (byId.getStatus() != CardStatusEnum.DISABLE) {
+            throw new BaseException(CanteenExceptionEnum.CARD_TYPE_ERROR);
+        }
+        if (byId.getAccountStatus() != CardAccountEnum.LOSS) {
+            throw new BaseException(CanteenExceptionEnum.CARD_TYPE_ERROR);
+        }
+        byId.setStatus(CardStatusEnum.ENABLE);
+        byId.setAccountStatus(CardAccountEnum.UN_LOSS);
         EntityLogUtil.addNormalUser(byId, account);
         boolean b = updateById(byId);
         if (!b) {

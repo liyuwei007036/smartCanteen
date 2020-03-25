@@ -30,7 +30,7 @@ CREATE TABLE `permission`  (
   `level` bigint(255) NULL DEFAULT NULL COMMENT '级别',
   `has_children` bit(1) NULL DEFAULT NULL COMMENT '是否拥有子节点',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 43 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '组织' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 44 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '组织' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of permission
@@ -70,5 +70,7 @@ INSERT INTO `permission` VALUES (43, '卡机管理', 0, 'machine:view', '-', 1, 
 INSERT INTO `permission` VALUES (44, '新增', 43, 'machine:add', '43-', 2, b'0');
 INSERT INTO `permission` VALUES (45, '删除', 43, 'machine:delete', '43-', 2, b'0');
 INSERT INTO `permission` VALUES (46, '编辑', 43, 'machine:update', '43-', 2, b'0');
+INSERT INTO `permission` VALUES (47, '挂失', 39, 'icCard:unloss', '20-39-', 3, b'0');
+
 
 SET FOREIGN_KEY_CHECKS = 1;

@@ -58,6 +58,16 @@ public class IcCardController extends BaseController {
         return new ResponseInfo<>();
     }
 
+    @Log(module = "卡片管理", action = "解挂", dataDesc = "卡片id")
+    @Permission(code = "icCard:unloss")
+    @ApiOperation(value = "解挂", notes = "解挂")
+    @RequestMapping(value = "report/unloss/{id}", method = RequestMethod.PUT)
+    public ResponseInfo unLoss(@PathVariable(name = "id") Long id) {
+        iIcCardService.unLoss(id, getCurrentUser());
+        return new ResponseInfo<>();
+    }
+
+
     @Log(module = "卡片管理", action = "补卡", clazz = PatchCardForm.class)
     @Permission(code = "icCard:patch")
     @ApiOperation(value = "补卡", notes = "补卡")

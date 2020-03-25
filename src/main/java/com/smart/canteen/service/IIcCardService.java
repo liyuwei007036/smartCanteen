@@ -112,6 +112,15 @@ public interface IIcCardService extends IService<IcCard> {
     void reportLoss(Long id, Account account);
 
     /**
+     * 解挂
+     *
+     * @param id
+     * @param account
+     */
+    void unLoss(Long id, Account account);
+
+
+    /**
      * 补卡
      *
      * @param form
