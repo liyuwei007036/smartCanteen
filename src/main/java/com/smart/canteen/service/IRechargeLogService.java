@@ -2,10 +2,12 @@ package com.smart.canteen.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.smart.canteen.dto.CommonList;
+import com.smart.canteen.dto.RechargeSummaryDTO;
 import com.smart.canteen.dto.recharge.RechargeLogSearch;
 import com.smart.canteen.entity.RechargeLog;
 import com.smart.canteen.vo.RechargeLogVO;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -32,5 +34,15 @@ public interface IRechargeLogService extends IService<RechargeLog> {
      * @return
      */
     CommonList<RechargeLogVO> listLogs(RechargeLogSearch search);
+
+
+    /**
+     * 获取某个时间段内的充值金额
+     *
+     * @param start
+     * @param end
+     * @return
+     */
+    RechargeSummaryDTO getRechargeTotal(Date start, Date end);
 
 }

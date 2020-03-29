@@ -51,6 +51,12 @@ public class EmployeeController extends BaseController {
         return new ResponseInfo<>(iEmployeeService.login(params, this));
     }
 
+    @ApiOperation(value = "获取当前用户", notes = "获取当前用户")
+    @RequestMapping(value = "detail", method = RequestMethod.GET)
+    public ResponseInfo<Account> detail() {
+        return new ResponseInfo<>(getCurrentUser());
+    }
+
     @ApiOperation(value = "登出", notes = "登出")
     @RequestMapping(value = "loginout", method = RequestMethod.DELETE)
     public ResponseInfo<Account> loginOut() {

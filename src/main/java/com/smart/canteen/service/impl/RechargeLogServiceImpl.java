@@ -5,17 +5,22 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lc.core.error.BaseException;
+import com.lc.core.utils.MathUtil;
 import com.lc.core.utils.ModelMapperUtils;
+import com.lc.core.utils.ObjectUtil;
 import com.smart.canteen.dto.CommonList;
+import com.smart.canteen.dto.RechargeSummaryDTO;
 import com.smart.canteen.dto.recharge.RechargeLogSearch;
 import com.smart.canteen.entity.RechargeLog;
 import com.smart.canteen.enums.CanteenExceptionEnum;
+import com.smart.canteen.enums.RechargeTypeEnum;
 import com.smart.canteen.mapper.RechargeLogMapper;
 import com.smart.canteen.service.IRechargeLogService;
 import com.smart.canteen.vo.RechargeLogVO;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -55,5 +60,27 @@ public class RechargeLogServiceImpl extends ServiceImpl<RechargeLogMapper, Recha
         );
         List<RechargeLogVO> collect = voPage.getRecords().stream().map(x -> ModelMapperUtils.strict(x, RechargeLogVO.class)).collect(Collectors.toList());
         return new CommonList<>(voPage.hasNext(), voPage.getTotal(), voPage.getCurrent(), collect);
+    }
+
+    @Override
+    public RechargeSummaryDTO getRechargeTotal(Date start, Date end) {
+        List<RechargeLog> list = list(Wrappers.<RechargeLog>lambdaQuery()
+                .select(RechargeLog::getMoney, RechargeLog::getType)
+                .ge(RechargeLog::getCreateTime, start)
+                .lt(RechargeLog::getCreateTime, end));
+
+        Double normal = list.parallelStream()
+                .filter(x -> x.getType().equals(RechargeTypeEnum.NORMAL))
+                .map(RechargeLog::getMoney)
+                .reduce((x, y) -> MathUtil.add(ObjectUtil.getDouble(x), ObjectUtil.getDouble(y)))
+                .orElse(0d);
+
+        Double refund = list.parallelStream()
+                .filter(x -> x.getType().equals(RechargeTypeEnum.REFUND))
+                .map(RechargeLog::getMoney)
+                .reduce((x, y) -> MathUtil.add(ObjectUtil.getDouble(x), ObjectUtil.getDouble(y)))
+                .orElse(0d);
+
+        return new RechargeSummaryDTO(normal, refund);
     }
 }

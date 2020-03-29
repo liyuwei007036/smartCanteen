@@ -14,5 +14,6 @@ import java.io.Serializable;
 public class SummaryData implements Serializable {
 
     private String key;
+
     private Double value;
 }

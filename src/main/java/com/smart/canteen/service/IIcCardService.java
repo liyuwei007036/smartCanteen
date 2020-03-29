@@ -14,6 +14,8 @@ import com.smart.canteen.vo.CardUserVo;
 import com.smart.canteen.vo.CardVo;
 import com.smart.canteen.vo.ResponseMsg;
 
+import java.util.Date;
+
 /**
  * <p>
  * iC卡 服务类
@@ -102,6 +104,7 @@ public interface IIcCardService extends IService<IcCard> {
      * @param account
      */
     void recharge(RechargeForm form, Account account);
+
 
     /**
      * 挂失

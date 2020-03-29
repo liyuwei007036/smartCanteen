@@ -20,6 +20,12 @@ public class SummaryDTO implements Serializable {
 
     private Double total;
 
+    private Double recharge;
+
+    private Double fillBuckle;
+
+    private Double refund;
+
     private Double avg;
 
 }

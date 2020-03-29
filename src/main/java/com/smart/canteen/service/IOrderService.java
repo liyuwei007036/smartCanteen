@@ -3,6 +3,7 @@ package com.smart.canteen.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.lc.core.dto.Account;
 import com.smart.canteen.dto.CommonList;
+import com.smart.canteen.dto.OrderSummaryDTO;
 import com.smart.canteen.dto.SummaryDTO;
 import com.smart.canteen.dto.order.OrderCountSummary;
 import com.smart.canteen.dto.order.OrderSearch;
@@ -90,18 +91,17 @@ public interface IOrderService extends IService<Order> {
     SummaryDTO getDaySaleData();
 
     /**
-     * 计算2个时间段内的金额
-     *
-     * @param start
-     * @param end
-     * @return
-     */
-    SummaryTotal getSaleSummary(Date start, Date end);
-
-    /**
      * 统计数据
      *
      * @return
      */
     SummaryVO getUpdateData();
+
+    /**
+     * 获取莫个时间段内的消费记录
+     *
+     * @param start
+     * @param end
+     */
+    OrderSummaryDTO getOrderTotal(Date start, Date end);
 }

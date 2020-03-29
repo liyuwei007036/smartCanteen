@@ -10,19 +10,21 @@ import com.lc.core.utils.DateUtils;
 import com.lc.core.utils.MathUtil;
 import com.lc.core.utils.ModelMapperUtils;
 import com.lc.core.utils.ObjectUtil;
-import com.smart.canteen.dto.CommonList;
-import com.smart.canteen.dto.SummaryDTO;
-import com.smart.canteen.dto.SummaryData;
+import com.smart.canteen.dto.*;
 import com.smart.canteen.dto.order.OrderSearch;
 import com.smart.canteen.entity.IcCard;
 import com.smart.canteen.entity.Order;
+import com.smart.canteen.entity.RechargeLog;
 import com.smart.canteen.enums.OrderChannelEnum;
 import com.smart.canteen.enums.OrderTypeEnum;
 import com.smart.canteen.mapper.OrderMapper;
 import com.smart.canteen.service.IOrderService;
+import com.smart.canteen.service.IRechargeLogService;
+import com.smart.canteen.utils.DateUtil;
 import com.smart.canteen.vo.OrderVo;
 import com.smart.canteen.vo.SummaryTotal;
 import com.smart.canteen.vo.SummaryVO;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -40,6 +42,9 @@ import java.util.stream.Collectors;
 @Transactional(rollbackFor = Exception.class)
 @Service
 public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements IOrderService {
+
+    @Autowired
+    private IRechargeLogService iRechargeLogService;
 
     @Override
     public boolean addOrderForMachine(IcCard card, Double money, String machineNo, Double balance) {
@@ -59,7 +64,6 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         return save(order);
     }
 
-
     @Override
     public boolean addOrderForDeduction(IcCard card, Double money, Account account, Double balance, String desc) {
         Order order = new Order();
@@ -77,7 +81,6 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         order.setDescription(desc);
         return save(order);
     }
-
 
     @Override
     public CommonList<OrderVo> listLogs(OrderSearch search) {
@@ -98,42 +101,34 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
 
     @Override
     public Map<String, Long> getSummaryDay() {
-        Calendar now = Calendar.getInstance();
-        Date end = now.getTime();
-        now.add(Calendar.HOUR, -11);
-        now.add(Calendar.MINUTE, -30);
-        Date begin = now.getTime();
-        List<String> strings = getBaseMapper().summaryOrderNum(begin, end, 30);
+        DateDTO dateDTO = DateUtil.getDay();
+        Date begin = dateDTO.getStart();
+        Date end = dateDTO.getEnd();
         Map<String, Long> res = new LinkedHashMap<>(16);
-
+        OrderSummaryDTO orderTotal = getOrderTotal(begin, end);
+        Calendar now = Calendar.getInstance();
         while (end.after(begin)) {
             now.setTime(begin);
-            int min = now.get(Calendar.MINUTE) / 30 * 30;
-            now.set(Calendar.MINUTE, min);
-            String key = DateUtils.dateToStr(now.getTime(), "yyyy-MM-dd HH:mm");
+            String key = DateUtils.dateToStr(now.getTime(), "yyyy-MM-dd HH:00");
             res.put(key, 0L);
-            now.add(Calendar.MINUTE, 30);
+            now.add(Calendar.HOUR_OF_DAY, 1);
             begin = now.getTime();
         }
-
-        strings.forEach(x -> res.put(x, ObjectUtil.getLong(res.get(x)) + 1));
+        orderTotal.getOrders().forEach(x -> {
+            String yearMonth = ObjectUtil.getString(DateUtils.dateToStr(x.getCreateTime(), "yyyy-MM-dd HH:00"));
+            res.put(yearMonth, ObjectUtil.getLong(res.get(yearMonth) + 1L));
+        });
         return res;
     }
 
     @Override
     public SummaryDTO getYearSaleData() {
-        Calendar now = Calendar.getInstance();
-        Date end = now.getTime();
-        now.add(Calendar.YEAR, -1);
-        now.add(Calendar.MONTH, 1);
-        now.set(Calendar.DAY_OF_MONTH, 1);
-        now.set(Calendar.HOUR_OF_DAY, 0);
-        now.set(Calendar.MINUTE, 0);
-        now.set(Calendar.SECOND, 0);
-        now.set(Calendar.MILLISECOND, 0);
-        Date begin = now.getTime();
+        DateDTO dateDTO = DateUtil.getYear();
+        Date begin = dateDTO.getStart();
+        Date end = dateDTO.getEnd();
         Map<String, Double> res = new LinkedHashMap<>(16);
-        List<Map<String, Object>> maps = getBaseMapper().summaryYearSale(begin, end);
+        OrderSummaryDTO orderTotal = getOrderTotal(begin, end);
+        Calendar now = Calendar.getInstance();
         while (end.after(begin)) {
             now.setTime(begin);
             String key = DateUtils.dateToStr(now.getTime(), "yyyy-MM");
@@ -141,41 +136,29 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
             now.add(Calendar.MONTH, 1);
             begin = now.getTime();
         }
-        maps.forEach(x -> {
-            String yearMonth = ObjectUtil.getString(x.get("yearMonth"));
-            double money = ObjectUtil.getDouble(x.get("money"));
+        orderTotal.getOrders().forEach(x -> {
+            String yearMonth = ObjectUtil.getString(DateUtils.dateToStr(x.getCreateTime(), "yyyy-MM"));
+            double money = ObjectUtil.getDouble(x.getMoney());
             res.put(yearMonth, MathUtil.add(ObjectUtil.getDouble(res.get(yearMonth)), money));
         });
-
-        end = Calendar.getInstance().getTime();
-        now.setTime(DateUtils.clearMilliTime(end));
-        now.set(Calendar.MONTH, 0);
-        now.set(Calendar.DAY_OF_MONTH, 1);
-        now.set(Calendar.HOUR_OF_DAY, 0);
-        now.set(Calendar.MINUTE, 0);
-        now.set(Calendar.SECOND, 0);
-        now.set(Calendar.MILLISECOND, 0);
-        Date start = now.getTime();
+        dateDTO = DateUtil.getYear();
+        begin = dateDTO.getStart();
+        end = dateDTO.getEnd();
         List<SummaryData> data = new LinkedList<>();
         res.forEach((key, value) -> data.add(new SummaryData(key, value)));
-        SummaryTotal summaryTotal = getSaleSummary(start, end);
-        return new SummaryDTO(data, summaryTotal.getTotal(), summaryTotal.getAvg());
+        RechargeSummaryDTO rechargeTotal = iRechargeLogService.getRechargeTotal(begin, end);
+        return new SummaryDTO(data, orderTotal.getTotal(), rechargeTotal.getNormal(), orderTotal.getFillBuckle(), rechargeTotal.getRefund(), orderTotal.getAvg());
     }
-
 
     @Override
     public SummaryDTO getMonthSaleData() {
-        Calendar now = Calendar.getInstance();
-        now.add(Calendar.DAY_OF_MONTH, 1);
-        now.set(Calendar.HOUR_OF_DAY, 0);
-        now.set(Calendar.MINUTE, 0);
-        now.set(Calendar.SECOND, 0);
-        now.set(Calendar.MILLISECOND, 0);
-        Date end = now.getTime();
-        now.add(Calendar.DAY_OF_MONTH, -12);
-        Date begin = now.getTime();
+        DateDTO dateDTO = DateUtil.getMonth();
+        Date begin = dateDTO.getStart();
+        Date end = dateDTO.getEnd();
         Map<String, Double> res = new LinkedHashMap<>(16);
+        OrderSummaryDTO orderTotal = getOrderTotal(begin, end);
         List<Map<String, Object>> maps = getBaseMapper().summaryMonthSale(begin, end);
+        Calendar now = Calendar.getInstance();
         while (end.after(begin)) {
             now.setTime(begin);
             String key = DateUtils.dateToStr(now.getTime(), "yyyy-MM-dd");
@@ -183,32 +166,29 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
             now.add(Calendar.DAY_OF_MONTH, 1);
             begin = now.getTime();
         }
-        maps.forEach(x -> {
-            String yearMonth = ObjectUtil.getString(x.get("yearMonth"));
-            double money = ObjectUtil.getDouble(x.get("money"));
+        orderTotal.getOrders().forEach(x -> {
+            String yearMonth = ObjectUtil.getString(DateUtils.dateToStr(x.getCreateTime(), "yyyy-MM-dd"));
+            double money = ObjectUtil.getDouble(x.getMoney());
             res.put(yearMonth, MathUtil.add(ObjectUtil.getDouble(res.get(yearMonth)), money));
         });
-        now.setTime(end);
-        now.set(Calendar.DAY_OF_MONTH, 1);
-        Date start = now.getTime();
+        dateDTO = DateUtil.getMonth();
+        begin = dateDTO.getStart();
+        end = dateDTO.getEnd();
         List<SummaryData> data = new LinkedList<>();
         res.forEach((key, value) -> data.add(new SummaryData(key, value)));
-        SummaryTotal summaryTotal = getSaleSummary(start, end);
-        return new SummaryDTO(data, summaryTotal.getTotal(), summaryTotal.getAvg());
+        RechargeSummaryDTO rechargeTotal = iRechargeLogService.getRechargeTotal(begin, end);
+        return new SummaryDTO(data, orderTotal.getTotal(), rechargeTotal.getNormal(), orderTotal.getFillBuckle(), rechargeTotal.getRefund(), orderTotal.getAvg());
     }
 
     @Override
     public SummaryDTO getDaySaleData() {
-        Calendar now = Calendar.getInstance();
-        now.add(Calendar.HOUR_OF_DAY, 1);
-        now.set(Calendar.MINUTE, 0);
-        now.set(Calendar.SECOND, 0);
-        now.set(Calendar.MILLISECOND, 0);
-        Date end = now.getTime();
-        now.add(Calendar.HOUR_OF_DAY, -12);
-        Date begin = now.getTime();
+        DateDTO dateDTO = DateUtil.getDay();
+        Date begin = dateDTO.getStart();
+        Date end = dateDTO.getEnd();
         Map<String, Double> res = new LinkedHashMap<>(16);
-        List<Map<String, Object>> maps = getBaseMapper().summaryDaySale(begin, end);
+        OrderSummaryDTO orderTotal = getOrderTotal(begin, end);
+        List<Map<String, Object>> maps = getBaseMapper().summaryMonthSale(begin, end);
+        Calendar now = Calendar.getInstance();
         while (end.after(begin)) {
             now.setTime(begin);
             String key = DateUtils.dateToStr(now.getTime(), "yyyy-MM-dd-HH");
@@ -216,27 +196,18 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
             now.add(Calendar.HOUR_OF_DAY, 1);
             begin = now.getTime();
         }
-        maps.forEach(x -> {
-            String yearMonth = ObjectUtil.getString(x.get("yearMonth"));
-            double money = ObjectUtil.getDouble(x.get("money"));
+        orderTotal.getOrders().forEach(x -> {
+            String yearMonth = ObjectUtil.getString(DateUtils.dateToStr(x.getCreateTime(), "yyyy-MM-dd-HH"));
+            double money = ObjectUtil.getDouble(x.getMoney());
             res.put(yearMonth, MathUtil.add(ObjectUtil.getDouble(res.get(yearMonth)), money));
         });
-        now.setTime(end);
-        now.set(Calendar.HOUR_OF_DAY, 0);
-        Date start = now.getTime();
-        List<SummaryData> data = new ArrayList<>();
+        dateDTO = DateUtil.getDay();
+        begin = dateDTO.getStart();
+        end = dateDTO.getEnd();
+        List<SummaryData> data = new LinkedList<>();
         res.forEach((key, value) -> data.add(new SummaryData(key, value)));
-        SummaryTotal summaryTotal = getSaleSummary(start, end);
-        return new SummaryDTO(data, summaryTotal.getTotal(), summaryTotal.getAvg());
-    }
-
-
-    @Override
-    public SummaryTotal getSaleSummary(Date start, Date end) {
-        int dayDiff = Math.max(DateUtils.getDayDiff(end, start), 1);
-        Double summary = getBaseMapper().getSummary(start, end);
-        Double avg = MathUtil.div(ObjectUtil.getDouble(summary), dayDiff, 2);
-        return new SummaryTotal(summary, avg);
+        RechargeSummaryDTO rechargeTotal = iRechargeLogService.getRechargeTotal(begin, end);
+        return new SummaryDTO(data, orderTotal.getTotal(), rechargeTotal.getNormal(), orderTotal.getFillBuckle(), rechargeTotal.getRefund(), orderTotal.getAvg());
     }
 
     @Override
@@ -247,5 +218,27 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         summaryVO.setMonth(getMonthSaleData());
         summaryVO.setDay(getDaySaleData());
         return summaryVO;
+    }
+
+    @Override
+    public OrderSummaryDTO getOrderTotal(Date start, Date end) {
+        List<Order> orders = list(Wrappers.<Order>lambdaQuery()
+                .select(Order::getCreateTime, Order::getType, Order::getMoney)
+                .ge(Order::getCreateTime, start)
+                .le(Order::getCreateTime, end));
+        Double fillBuckle = orders.parallelStream()
+                .filter(x -> OrderTypeEnum.FILL_BUCKLE.equals(x.getType()))
+                .map(Order::getMoney)
+                .reduce((x, y) -> MathUtil.add(ObjectUtil.getDouble(x), ObjectUtil.getDouble(y)))
+                .orElse(0d);
+        Double normal = orders.parallelStream()
+                .filter(x -> OrderTypeEnum.NORMAL.equals(x.getType()))
+                .map(Order::getMoney)
+                .reduce((x, y) -> MathUtil.add(ObjectUtil.getDouble(x), ObjectUtil.getDouble(y)))
+                .orElse(0d);
+        orders = orders.parallelStream().filter(x -> OrderTypeEnum.NORMAL.equals(x.getType())).collect(Collectors.toList());
+        int dayDiff = Math.max(DateUtils.getDayDiff(end, start), 1);
+        Double avg = MathUtil.div(ObjectUtil.getDouble(normal), dayDiff, 2);
+        return new OrderSummaryDTO(normal, fillBuckle, orders, avg);
     }
 }
