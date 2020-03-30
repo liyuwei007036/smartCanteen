@@ -17,7 +17,7 @@ public class UpdateSummaryTask {
     @Autowired
     private WebSocket webSocket;
 
-    @Scheduled(cron = "0 0/1 0/1 * * ? ")
+    @Scheduled(cron = "0 0 0/1 * * ? *")
     public void update() {
         try {
             webSocket.update();
