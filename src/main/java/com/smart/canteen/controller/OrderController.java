@@ -1,14 +1,15 @@
 package com.smart.canteen.controller;
 
 
-import com.alibaba.fastjson.JSON;
-import com.lc.core.annotations.Cache;
+import com.alibaba.fastjson.JSONObject;
 import com.lc.core.annotations.Valid;
 import com.lc.core.controller.BaseController;
 import com.lc.core.dto.ResponseInfo;
+import com.lc.core.utils.ObjectUtil;
 import com.smart.canteen.annotations.Permission;
 import com.smart.canteen.dto.CommonList;
 import com.smart.canteen.dto.SummaryDTO;
+import com.smart.canteen.dto.SummarySearchDTO;
 import com.smart.canteen.dto.order.OrderSearch;
 import com.smart.canteen.service.IOrderService;
 import com.smart.canteen.vo.OrderVo;
@@ -20,7 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.io.Serializable;
+import java.util.Calendar;
 
 /**
  * <p>
@@ -46,10 +47,16 @@ public class OrderController extends BaseController {
         return new ResponseInfo<>(iOrderService.listLogs(params));
     }
 
-    @ApiOperation(value = "消费统计", notes = "消费统计")
-    @RequestMapping(value = "summary", method = RequestMethod.GET)
-    public ResponseInfo summary() {
-        return new ResponseInfo<>((Serializable) iOrderService.getSummaryDay());
+    @ApiOperation(value = "查询2个时间段之间的统计", notes = "查询2个时间段之间的统计")
+    @RequestMapping(value = "/summary/other", method = RequestMethod.POST)
+    public ResponseInfo<SummaryDTO> other(@RequestBody JSONObject params) {
+        SummarySearchDTO data = new SummarySearchDTO();
+        data.setStart(ObjectUtil.getDate(params.get("start")));
+        Calendar end = Calendar.getInstance();
+        end.setTime(ObjectUtil.getDate(params.get("end")));
+        end.add(Calendar.MONTH, 1);
+        data.setEnd(end.getTime());
+        return new ResponseInfo<>(iOrderService.getOtherSaleData(data));
     }
 
     @ApiOperation(value = "年消费统计", notes = "年消费统计")

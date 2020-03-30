@@ -18,6 +18,4 @@ public class SummaryVO implements Serializable {
     private SummaryDTO month;
 
     private SummaryDTO day;
-
-    private Map<String, Long> line;
 }

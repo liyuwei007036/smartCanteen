@@ -6,6 +6,7 @@ import lombok.EqualsAndHashCode;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author lc
@@ -27,5 +28,7 @@ public class SummaryDTO implements Serializable {
     private Double refund;
 
     private Double avg;
+
+    private Map<String, Long> lineChat;
 
 }

@@ -5,20 +5,14 @@ import com.lc.core.dto.Account;
 import com.smart.canteen.dto.CommonList;
 import com.smart.canteen.dto.OrderSummaryDTO;
 import com.smart.canteen.dto.SummaryDTO;
-import com.smart.canteen.dto.order.OrderCountSummary;
+import com.smart.canteen.dto.SummarySearchDTO;
 import com.smart.canteen.dto.order.OrderSearch;
-import com.smart.canteen.dto.recharge.RechargeLogSearch;
 import com.smart.canteen.entity.IcCard;
 import com.smart.canteen.entity.Order;
 import com.smart.canteen.vo.OrderVo;
-import com.smart.canteen.vo.RechargeLogVO;
-import com.smart.canteen.vo.SummaryTotal;
 import com.smart.canteen.vo.SummaryVO;
 
-import javax.xml.crypto.Data;
 import java.util.Date;
-import java.util.List;
-import java.util.Map;
 
 /**
  * <p>
@@ -61,12 +55,6 @@ public interface IOrderService extends IService<Order> {
      */
     CommonList<OrderVo> listLogs(OrderSearch search);
 
-    /**
-     * 折线图数据
-     *
-     * @return
-     */
-    Map<String, Long> getSummaryDay();
 
     /**
      * 柱状图年
@@ -96,6 +84,14 @@ public interface IOrderService extends IService<Order> {
      * @return
      */
     SummaryVO getUpdateData();
+
+    /**
+     * 统计2个时间段内的柱状图数据
+     *
+     * @param params
+     * @return
+     */
+    SummaryDTO getOtherSaleData(SummarySearchDTO params);
 
     /**
      * 获取莫个时间段内的消费记录

@@ -47,7 +47,7 @@
         <if test="search.end != null ">
             and emp.create_time <![CDATA[ <= ]]> #{search.end}
         </if>
-        order by card.status,card.create_time desc
+        order by card.create_time desc
     </select>
 
 

@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.lc.core.annotations.Cache;
 import com.lc.core.dto.Account;
 import com.lc.core.utils.DateUtils;
 import com.lc.core.utils.MathUtil;
@@ -14,7 +13,6 @@ import com.smart.canteen.dto.*;
 import com.smart.canteen.dto.order.OrderSearch;
 import com.smart.canteen.entity.IcCard;
 import com.smart.canteen.entity.Order;
-import com.smart.canteen.entity.RechargeLog;
 import com.smart.canteen.enums.OrderChannelEnum;
 import com.smart.canteen.enums.OrderTypeEnum;
 import com.smart.canteen.mapper.OrderMapper;
@@ -22,7 +20,6 @@ import com.smart.canteen.service.IOrderService;
 import com.smart.canteen.service.IRechargeLogService;
 import com.smart.canteen.utils.DateUtil;
 import com.smart.canteen.vo.OrderVo;
-import com.smart.canteen.vo.SummaryTotal;
 import com.smart.canteen.vo.SummaryVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -99,121 +96,60 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         return new CommonList<>(voPage.hasNext(), voPage.getTotal(), voPage.getCurrent(), collect);
     }
 
-    @Override
-    public Map<String, Long> getSummaryDay() {
-        DateDTO dateDTO = DateUtil.getDay();
-        Date begin = dateDTO.getStart();
-        Date end = dateDTO.getEnd();
-        Map<String, Long> res = new LinkedHashMap<>(16);
+    public SummaryDTO getData(Integer num, String fmt, Date begin, Date end) {
+        RechargeSummaryDTO rechargeTotal = iRechargeLogService.getRechargeTotal(begin, end);
+        Map<String, Double> res = new LinkedHashMap<>(16);
         OrderSummaryDTO orderTotal = getOrderTotal(begin, end);
+        Map<String, Long> line = new LinkedHashMap<>(16);
         Calendar now = Calendar.getInstance();
+        String lineFmt = num == Calendar.HOUR_OF_DAY ? "yyyy-MM-dd HH:00" : fmt;
         while (end.after(begin)) {
             now.setTime(begin);
-            String key = DateUtils.dateToStr(now.getTime(), "yyyy-MM-dd HH:00");
-            res.put(key, 0L);
-            now.add(Calendar.HOUR_OF_DAY, 1);
+            String key = DateUtils.dateToStr(now.getTime(), fmt);
+            String lineKey = DateUtils.dateToStr(now.getTime(), lineFmt);
+            res.put(key, 0d);
+            line.put(lineKey, 0L);
+            now.add(num, 1);
             begin = now.getTime();
         }
         orderTotal.getOrders().forEach(x -> {
-            String yearMonth = ObjectUtil.getString(DateUtils.dateToStr(x.getCreateTime(), "yyyy-MM-dd HH:00"));
-            res.put(yearMonth, ObjectUtil.getLong(res.get(yearMonth) + 1L));
+            String lineKey = ObjectUtil.getString(DateUtils.dateToStr(x.getCreateTime(), lineFmt));
+            String yearMonth = ObjectUtil.getString(DateUtils.dateToStr(x.getCreateTime(), fmt));
+            double money = ObjectUtil.getDouble(x.getMoney());
+            res.put(yearMonth, MathUtil.add(ObjectUtil.getDouble(res.get(yearMonth)), money));
+            line.put(yearMonth, ObjectUtil.getLong(line.get(lineKey) + 1L));
         });
-        return res;
+        List<SummaryData> data = new LinkedList<>();
+        res.forEach((key, value) -> data.add(new SummaryData(key, value)));
+        return new SummaryDTO(data, orderTotal.getTotal(), rechargeTotal.getNormal(), orderTotal.getFillBuckle(), rechargeTotal.getRefund(), orderTotal.getAvg(), line);
     }
 
     @Override
     public SummaryDTO getYearSaleData() {
-        DateDTO dateDTO = DateUtil.getYear();
-        Date begin = dateDTO.getStart();
-        Date end = dateDTO.getEnd();
-        Map<String, Double> res = new LinkedHashMap<>(16);
-        OrderSummaryDTO orderTotal = getOrderTotal(begin, end);
-        Calendar now = Calendar.getInstance();
-        while (end.after(begin)) {
-            now.setTime(begin);
-            String key = DateUtils.dateToStr(now.getTime(), "yyyy-MM");
-            res.put(key, 0d);
-            now.add(Calendar.MONTH, 1);
-            begin = now.getTime();
-        }
-        orderTotal.getOrders().forEach(x -> {
-            String yearMonth = ObjectUtil.getString(DateUtils.dateToStr(x.getCreateTime(), "yyyy-MM"));
-            double money = ObjectUtil.getDouble(x.getMoney());
-            res.put(yearMonth, MathUtil.add(ObjectUtil.getDouble(res.get(yearMonth)), money));
-        });
-        dateDTO = DateUtil.getYear();
-        begin = dateDTO.getStart();
-        end = dateDTO.getEnd();
-        List<SummaryData> data = new LinkedList<>();
-        res.forEach((key, value) -> data.add(new SummaryData(key, value)));
-        RechargeSummaryDTO rechargeTotal = iRechargeLogService.getRechargeTotal(begin, end);
-        return new SummaryDTO(data, orderTotal.getTotal(), rechargeTotal.getNormal(), orderTotal.getFillBuckle(), rechargeTotal.getRefund(), orderTotal.getAvg());
+        DateDTO year = DateUtil.getYear();
+        return getData(Calendar.MONTH, "yyyy-MM", year.getStart(), year.getEnd());
     }
 
     @Override
     public SummaryDTO getMonthSaleData() {
-        DateDTO dateDTO = DateUtil.getMonth();
-        Date begin = dateDTO.getStart();
-        Date end = dateDTO.getEnd();
-        Map<String, Double> res = new LinkedHashMap<>(16);
-        OrderSummaryDTO orderTotal = getOrderTotal(begin, end);
-        List<Map<String, Object>> maps = getBaseMapper().summaryMonthSale(begin, end);
-        Calendar now = Calendar.getInstance();
-        while (end.after(begin)) {
-            now.setTime(begin);
-            String key = DateUtils.dateToStr(now.getTime(), "yyyy-MM-dd");
-            res.put(key, 0d);
-            now.add(Calendar.DAY_OF_MONTH, 1);
-            begin = now.getTime();
-        }
-        orderTotal.getOrders().forEach(x -> {
-            String yearMonth = ObjectUtil.getString(DateUtils.dateToStr(x.getCreateTime(), "yyyy-MM-dd"));
-            double money = ObjectUtil.getDouble(x.getMoney());
-            res.put(yearMonth, MathUtil.add(ObjectUtil.getDouble(res.get(yearMonth)), money));
-        });
-        dateDTO = DateUtil.getMonth();
-        begin = dateDTO.getStart();
-        end = dateDTO.getEnd();
-        List<SummaryData> data = new LinkedList<>();
-        res.forEach((key, value) -> data.add(new SummaryData(key, value)));
-        RechargeSummaryDTO rechargeTotal = iRechargeLogService.getRechargeTotal(begin, end);
-        return new SummaryDTO(data, orderTotal.getTotal(), rechargeTotal.getNormal(), orderTotal.getFillBuckle(), rechargeTotal.getRefund(), orderTotal.getAvg());
+        DateDTO month = DateUtil.getMonth();
+        return getData(Calendar.DAY_OF_MONTH, "yyyy-MM-dd", month.getStart(), month.getEnd());
     }
 
     @Override
     public SummaryDTO getDaySaleData() {
-        DateDTO dateDTO = DateUtil.getDay();
-        Date begin = dateDTO.getStart();
-        Date end = dateDTO.getEnd();
-        Map<String, Double> res = new LinkedHashMap<>(16);
-        OrderSummaryDTO orderTotal = getOrderTotal(begin, end);
-        List<Map<String, Object>> maps = getBaseMapper().summaryMonthSale(begin, end);
-        Calendar now = Calendar.getInstance();
-        while (end.after(begin)) {
-            now.setTime(begin);
-            String key = DateUtils.dateToStr(now.getTime(), "yyyy-MM-dd-HH");
-            res.put(key, 0d);
-            now.add(Calendar.HOUR_OF_DAY, 1);
-            begin = now.getTime();
-        }
-        orderTotal.getOrders().forEach(x -> {
-            String yearMonth = ObjectUtil.getString(DateUtils.dateToStr(x.getCreateTime(), "yyyy-MM-dd-HH"));
-            double money = ObjectUtil.getDouble(x.getMoney());
-            res.put(yearMonth, MathUtil.add(ObjectUtil.getDouble(res.get(yearMonth)), money));
-        });
-        dateDTO = DateUtil.getDay();
-        begin = dateDTO.getStart();
-        end = dateDTO.getEnd();
-        List<SummaryData> data = new LinkedList<>();
-        res.forEach((key, value) -> data.add(new SummaryData(key, value)));
-        RechargeSummaryDTO rechargeTotal = iRechargeLogService.getRechargeTotal(begin, end);
-        return new SummaryDTO(data, orderTotal.getTotal(), rechargeTotal.getNormal(), orderTotal.getFillBuckle(), rechargeTotal.getRefund(), orderTotal.getAvg());
+        DateDTO day = DateUtil.getDay();
+        return getData(Calendar.HOUR_OF_DAY, "yyyy-MM-dd-HH", day.getStart(), day.getEnd());
+    }
+
+    @Override
+    public SummaryDTO getOtherSaleData(SummarySearchDTO params) {
+        return getData(Calendar.MONTH, "yyyy-MM", params.getStart(), params.getEnd());
     }
 
     @Override
     public SummaryVO getUpdateData() {
         SummaryVO summaryVO = new SummaryVO();
-        summaryVO.setLine(getSummaryDay());
         summaryVO.setYear(getYearSaleData());
         summaryVO.setMonth(getMonthSaleData());
         summaryVO.setDay(getDaySaleData());
