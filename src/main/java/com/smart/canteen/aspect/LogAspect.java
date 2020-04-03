@@ -31,6 +31,7 @@ public class LogAspect {
     @Order(-1)
     @Around(value = "logCut()")
     public Object around(ProceedingJoinPoint joinPoint) throws Throwable {
+        Object proceed = joinPoint.proceed();
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
         Method method = signature.getMethod();
         Log log = method.getAnnotation(Log.class);
@@ -40,6 +41,6 @@ public class LogAspect {
             BaseController controller = (BaseController) o;
             SpringUtil.getBean(IOperationLogService.class).addLog(joinPoint.getArgs(), log, controller.getCurrentUser());
         }
-        return joinPoint.proceed();
+        return proceed;
     }
 }
