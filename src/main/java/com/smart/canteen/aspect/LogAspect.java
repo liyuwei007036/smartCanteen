@@ -11,6 +11,7 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.lang.reflect.Method;
 
@@ -18,6 +19,7 @@ import java.lang.reflect.Method;
  * @author lc
  * @date 2020/3/11下午 7:18
  */
+@Transactional(rollbackFor = Exception.class)
 @Component
 @Aspect
 public class LogAspect {
