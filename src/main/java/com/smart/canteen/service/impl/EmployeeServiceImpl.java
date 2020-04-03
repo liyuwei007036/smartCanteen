@@ -178,7 +178,7 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
     public Employee matchAny(String idCard, String mobile, String no) {
         return getOne(Wrappers.<Employee>lambdaQuery()
                         .eq(Employee::getStatus, EmployeeStatusEnum.ENABLE)
-                        .or().eq(!StringUtils.isEmpty(no), Employee::getNo, no)
+                        .eq(!StringUtils.isEmpty(no), Employee::getNo, no)
                         .or().eq(!StringUtils.isEmpty(mobile), Employee::getMobile, mobile)
                         .or().eq(!StringUtils.isEmpty(idCard), Employee::getIdCard, idCard),
                 false);
