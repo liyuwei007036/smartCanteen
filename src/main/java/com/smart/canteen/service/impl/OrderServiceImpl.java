@@ -16,6 +16,7 @@ import com.smart.canteen.entity.Order;
 import com.smart.canteen.enums.OrderChannelEnum;
 import com.smart.canteen.enums.OrderTypeEnum;
 import com.smart.canteen.mapper.OrderMapper;
+import com.smart.canteen.service.IMachineService;
 import com.smart.canteen.service.IOrderService;
 import com.smart.canteen.service.IRechargeLogService;
 import com.smart.canteen.utils.DateUtil;
@@ -42,6 +43,9 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
 
     @Autowired
     private IRechargeLogService iRechargeLogService;
+
+    @Autowired
+    private IMachineService iMachineService;
 
     @Override
     public boolean addOrderForMachine(IcCard card, Double money, String machineNo, Double balance) {
@@ -92,7 +96,14 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
                 .lt(search.getEnd() != null, Order::getCreateTime, search.getEnd())
                 .orderByDesc(Order::getCreateTime)
         );
-        List<OrderVo> collect = voPage.getRecords().stream().map(x -> ModelMapperUtils.strict(x, OrderVo.class)).collect(Collectors.toList());
+        List<String> collect1 = voPage.getRecords().parallelStream().map(Order::getMachineNo).collect(Collectors.toList());
+        Map<String, String> map = iMachineService.mapByNo(collect1);
+        List<OrderVo> collect = voPage.getRecords().stream().map(x -> {
+            OrderVo vo = ModelMapperUtils.strict(x, OrderVo.class);
+            vo.setMachineNo(map.get(vo.getMachineNo()));
+            return vo;
+        }).collect(Collectors.toList());
+
         return new CommonList<>(voPage.hasNext(), voPage.getTotal(), voPage.getCurrent(), collect);
     }
 

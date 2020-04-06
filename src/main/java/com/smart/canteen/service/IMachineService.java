@@ -8,6 +8,9 @@ import com.smart.canteen.entity.Machine;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.smart.canteen.vo.MachineVO;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * <p>
  * 卡机 服务类
@@ -50,6 +53,14 @@ public interface IMachineService extends IService<Machine> {
     Machine getById(Long id);
 
     /**
+     * 通过code查询
+     *
+     * @param code
+     * @return
+     */
+    Machine getByCode(String code);
+
+    /**
      * 查询
      *
      * @param name
@@ -65,4 +76,12 @@ public interface IMachineService extends IService<Machine> {
      * @return
      */
     CommonList<MachineVO> page(MachineSearch search);
+
+    /**
+     * map映射
+     *
+     * @param nos
+     * @return
+     */
+    Map<String, String> mapByNo(List<String> nos);
 }

@@ -18,6 +18,7 @@ import com.smart.canteen.dto.card.PatchCardForm;
 import com.smart.canteen.dto.recharge.RechargeForm;
 import com.smart.canteen.entity.Employee;
 import com.smart.canteen.entity.IcCard;
+import com.smart.canteen.entity.Machine;
 import com.smart.canteen.entity.RechargeLog;
 import com.smart.canteen.enums.*;
 import com.smart.canteen.mapper.IcCardMapper;
@@ -174,6 +175,10 @@ public class IcCardServiceImpl extends ServiceImpl<IcCardMapper, IcCard> impleme
     @Override
     public ResponseMsg deductions(String cardNo, Integer money, String machineNo) {
         Long start = System.currentTimeMillis();
+        Machine machine = iMachineService.getByCode(cardNo);
+        if (machine == null) {
+            return new ResponseMsg(CmdCodeEnum.CON, Voices.WELCOME, cardNo, "机器未注册");
+        }
         IcCard card = getOne(Wrappers.<IcCard>lambdaQuery()
                         .select(IcCard::getCurrentBalance, IcCard::getStatus, IcCard::getId, IcCard::getNo, IcCard::getEmployeeName, IcCard::getEmployeeNo)
                         .eq(IcCard::getNo, cardNo),
@@ -220,8 +225,15 @@ public class IcCardServiceImpl extends ServiceImpl<IcCardMapper, IcCard> impleme
     @Autowired
     private StringRedisTemplate template;
 
+    @Autowired
+    private IMachineService iMachineService;
+
     @Override
     public ResponseMsg search(String cardNo) {
+        Machine machine = iMachineService.getByCode(cardNo);
+        if (machine == null) {
+            return new ResponseMsg(CmdCodeEnum.CON, Voices.WELCOME, cardNo, "机器未注册");
+        }
         IcCard card = getOne(Wrappers.<IcCard>lambdaQuery()
                         .eq(IcCard::getNo, cardNo),
                 false);

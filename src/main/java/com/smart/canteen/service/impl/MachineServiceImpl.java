@@ -20,6 +20,9 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -77,6 +80,11 @@ public class MachineServiceImpl extends ServiceImpl<MachineMapper, Machine> impl
     }
 
     @Override
+    public Machine getByCode(String code) {
+        return getOne(Wrappers.<Machine>lambdaQuery().eq(Machine::getCode, code), false);
+    }
+
+    @Override
     public Machine getByNameOrCode(String name, String code) {
         return getOne(Wrappers.<Machine>lambdaQuery().or().eq(Machine::getCode, code)
                 .or().eq(Machine::getName, name), false);
@@ -90,5 +98,16 @@ public class MachineServiceImpl extends ServiceImpl<MachineMapper, Machine> impl
         );
         return new CommonList<>(page.hasNext(), page.getTotal(), page.getCurrent(),
                 page.getRecords().stream().map(x -> ModelMapperUtils.strict(x, MachineVO.class)).collect(Collectors.toList()));
+    }
+
+    @Override
+    public Map<String, String> mapByNo(List<String> nos) {
+        if (nos == null || nos.isEmpty()) {
+            return new HashMap<>(1);
+        }
+        return list(Wrappers.<Machine>lambdaQuery()
+                .select(Machine::getName, Machine::getCode)
+                .in(Machine::getCode, nos)
+        ).parallelStream().collect(Collectors.toMap(Machine::getCode, Machine::getName));
     }
 }
