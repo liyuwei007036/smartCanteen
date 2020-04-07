@@ -24,19 +24,19 @@
             and card.status = 1
         </if>
         <if test="search.empName != null and search.empName != '' ">
-            and emp.name = #{search.empName}
+            and emp.name like CONCAT('%',#{search.empName} ,'%')
         </if>
         <if test="search.empNo != null and search.empNo != '' ">
-            and emp.no = #{search.empNo}
+            and emp.no like CONCAT('%', #{search.empNo} ,'%')
         </if>
         <if test="search.mobile != null and search.mobile != '' ">
-            and emp.mobile = #{search.mobile}
+            and emp.mobile like CONCAT('%', #{search.mobile} ,'%')
         </if>
         <if test="search.cardStatus != null and search.cardStatus != '' ">
             and card.status = #{search.cardStatus}
         </if>
         <if test="search.cardNo != null and search.cardNo != '' ">
-            and card.no = #{search.cardNo}
+            and card.no like CONCAT('%', #{search.cardNo} ,'%')
         </if>
         <if test="search.accountStatus != null and search.accountStatus != '' ">
             and card.account_status = #{search.accountStatus}
