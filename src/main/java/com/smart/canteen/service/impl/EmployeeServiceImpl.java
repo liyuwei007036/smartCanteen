@@ -87,9 +87,17 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
     @Override
     public void add(EmployeeForm dto, Account creator) {
         ValidatorUtil.validator(dto, EmployeeForm.Insert.class);
-        Employee employee = matchAny(dto.getIdCard(), dto.getMobile(), dto.getNo());
+        Employee employee = getByAccount(dto.getNo());
         if (employee != null) {
             throw new BaseException(CanteenExceptionEnum.ACCOUNT_REPEAT);
+        }
+        employee = getByIdCard(dto.getIdCard());
+        if (employee != null) {
+            throw new BaseException(CanteenExceptionEnum.ID_CARD_REPEAT);
+        }
+        employee = getByMobile(dto.getIdCard());
+        if (employee != null) {
+            throw new BaseException(CanteenExceptionEnum.MOBILE_REPEAT);
         }
         employee = ModelMapperUtils.strict(dto, Employee.class);
         employee.setStatus(EmployeeStatusEnum.ENABLE);
@@ -134,9 +142,17 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
         if (byId.getStatus() != EmployeeStatusEnum.ENABLE) {
             throw new BaseException(CanteenExceptionEnum.USER_IS_QUIT);
         }
-        Employee other = matchAny(employee.getIdCard(), employee.getMobile(), employee.getNo());
+        Employee other = getByAccount(employee.getNo());
         if (other != null && !other.getId().equals(id)) {
             throw new BaseException(CanteenExceptionEnum.ACCOUNT_REPEAT);
+        }
+        other = getByIdCard(employee.getIdCard());
+        if (other != null && !other.getId().equals(id)) {
+            throw new BaseException(CanteenExceptionEnum.ID_CARD_REPEAT);
+        }
+        other = getByMobile(employee.getMobile());
+        if (other != null && !other.getId().equals(id)) {
+            throw new BaseException(CanteenExceptionEnum.MOBILE_REPEAT);
         }
         byId.setName(employee.getName());
         byId.setNo(employee.getNo());
@@ -175,12 +191,26 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
 
 
     @Override
-    public Employee matchAny(String idCard, String mobile, String no) {
+    public Employee getByNo(String no) {
         return getOne(Wrappers.<Employee>lambdaQuery()
                         .eq(Employee::getStatus, EmployeeStatusEnum.ENABLE)
-                        .eq(!StringUtils.isEmpty(no), Employee::getNo, no)
-                        .or().eq(!StringUtils.isEmpty(mobile), Employee::getMobile, mobile)
-                        .or().eq(!StringUtils.isEmpty(idCard), Employee::getIdCard, idCard),
+                        .eq(Employee::getNo, no),
+                false);
+    }
+
+    @Override
+    public Employee getByIdCard(String idCard) {
+        return getOne(Wrappers.<Employee>lambdaQuery()
+                        .eq(Employee::getStatus, EmployeeStatusEnum.ENABLE)
+                        .eq(Employee::getIdCard, idCard),
+                false);
+    }
+
+    @Override
+    public Employee getByMobile(String mobile) {
+        return getOne(Wrappers.<Employee>lambdaQuery()
+                        .eq(Employee::getStatus, EmployeeStatusEnum.ENABLE)
+                        .eq(Employee::getMobile, mobile),
                 false);
     }
 

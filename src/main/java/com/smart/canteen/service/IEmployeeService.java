@@ -73,14 +73,29 @@ public interface IEmployeeService extends IService<Employee> {
     CommonList<EmployeeVO> listByConditional(EmployeeSearch form);
 
     /**
-     * 通过idCard mobile no 查询
+     * 通过 no 查询
      *
-     * @param idCard
-     * @param mobile
      * @param no
      * @return
      */
-    Employee matchAny(String idCard, String mobile, String no);
+    Employee getByNo(String no);
+
+    /**
+     * 通过idCard查询
+     *
+     * @param idCard
+     * @return
+     */
+    Employee getByIdCard(String idCard);
+
+
+    /**
+     * 通过mobile查询
+     *
+     * @param mobile
+     * @return
+     */
+    Employee getByMobile(String mobile);
 
     /**
      * 通过Id查询
