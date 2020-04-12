@@ -128,7 +128,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
             String yearMonth = ObjectUtil.getString(DateUtils.dateToStr(x.getCreateTime(), fmt));
             double money = ObjectUtil.getDouble(x.getMoney());
             res.put(yearMonth, MathUtil.add(ObjectUtil.getDouble(res.get(yearMonth)), money));
-            line.put(yearMonth, ObjectUtil.getLong(line.get(lineKey) + 1L));
+            line.put(lineKey, ObjectUtil.getLong(line.get(lineKey) + 1L));
         });
         List<SummaryData> data = new LinkedList<>();
         res.forEach((key, value) -> data.add(new SummaryData(key, value)));
