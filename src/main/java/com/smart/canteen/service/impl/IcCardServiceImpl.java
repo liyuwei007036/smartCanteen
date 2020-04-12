@@ -175,7 +175,7 @@ public class IcCardServiceImpl extends ServiceImpl<IcCardMapper, IcCard> impleme
     @Override
     public ResponseMsg deductions(String cardNo, Integer money, String machineNo) {
         Long start = System.currentTimeMillis();
-        Machine machine = iMachineService.getByCode(cardNo);
+        Machine machine = iMachineService.getByCode(machineNo);
         if (machine == null) {
             return new ResponseMsg(CmdCodeEnum.CON, Voices.WELCOME, cardNo, "机器未注册");
         }
