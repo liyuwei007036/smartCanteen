@@ -78,7 +78,9 @@ public class IcCardServiceImpl extends ServiceImpl<IcCardMapper, IcCard> impleme
         }
         if (ObjectUtil.getDouble(card.getOpenCardAmount()) > 0) {
             RechargeForm form1 = new RechargeForm();
-            form1.setCardIds(Collections.singletonList(card.getId()));
+            ArrayList<Long> objects = new ArrayList<>();
+            objects.add(card.getId());
+            form1.setCardIds(objects);
             form1.setMoney(ObjectUtil.getDouble(card.getOpenCardAmount()));
             form1.setRechargeType(RechargeTypeEnum.NORMAL.getValue());
             form1.setDescription("开户金额");
