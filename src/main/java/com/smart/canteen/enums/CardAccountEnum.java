@@ -12,26 +12,35 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum CardAccountEnum implements IEnum<Integer> {
     /**
-     * 卡账户状态
+     * 正常
      */
     NORMAL(1, "正常"),
+    /**
+     * 挂失
+     */
     LOSS(2, "挂失"),
+    /**
+     * 解挂
+     */
     UN_LOSS(3, "解挂"),
+    /**
+     * 已退卡
+     */
     QUIT(4, "已退卡"),
+    /**
+     * 已补卡
+     */
     REISSUE(5, "已补卡");
 
-    private Integer value;
+    private final Integer value;
 
     @Getter
     @JsonValue
-    private String disPlay;
+    private final String disPlay;
 
     @Override
     public Integer getValue() {
         return value;
     }
-
-    // 正常， 挂失 解卦 已退卡 已补卡
-
 
 }

@@ -54,6 +54,9 @@ public class IcCardServiceImpl extends ServiceImpl<IcCardMapper, IcCard> impleme
     @Autowired
     private IEmployeeRoleService iEmployeeRoleService;
 
+    @Autowired
+    private IRechargeLogService iRechargeLogService;
+
     @Override
     public Long addCard(CardForm form, Employee employee, Account create) {
         ValidatorUtil.validator(form, CardForm.Insert.class);
@@ -72,6 +75,14 @@ public class IcCardServiceImpl extends ServiceImpl<IcCardMapper, IcCard> impleme
         boolean save = save(card);
         if (!save) {
             throw new BaseException(CanteenExceptionEnum.CREATE_FAIL);
+        }
+        if (ObjectUtil.getDouble(card.getOpenCardAmount()) > 0) {
+            RechargeForm form1 = new RechargeForm();
+            form1.setCardIds(Collections.singletonList(card.getId()));
+            form1.setMoney(ObjectUtil.getDouble(card.getOpenCardAmount()));
+            form1.setRechargeType(RechargeTypeEnum.NORMAL.getValue());
+            form1.setDescription("开户金额");
+            recharge(form1, create);
         }
         return card.getId();
     }
@@ -128,8 +139,6 @@ public class IcCardServiceImpl extends ServiceImpl<IcCardMapper, IcCard> impleme
         return new CommonList<>(page.hasNext(), page.getTotal(), page.getCurrent(), page.getRecords());
     }
 
-    @Autowired
-    private IRechargeLogService iRechargeLogService;
 
     @Override
     public void recharge(RechargeForm form, Account account) {

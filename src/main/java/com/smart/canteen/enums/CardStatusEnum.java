@@ -14,17 +14,20 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum CardStatusEnum implements IEnum<Integer> {
     /**
-     *
+     * 激活
      */
     ENABLE(1, "激活"),
 
+    /**
+     * 禁止
+     */
     DISABLE(2, "禁止");
 
-    private Integer value;
+    private final Integer value;
 
     @JsonValue
     @Getter
-    private String disPlay;
+    private final String disPlay;
 
 
     @Override
