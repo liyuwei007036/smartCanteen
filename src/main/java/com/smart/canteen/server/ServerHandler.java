@@ -38,14 +38,14 @@ public class ServerHandler extends SimpleChannelInboundHandler<DatagramPacket> {
             } else {
                 cardNo = "1" + Math.abs(cardNoi);
             }
+            byte[] machineAddrCode = recObj.getMachineAddrCode();
             switch (ConEventEnum.getByCode(recObj.getEvent())) {
                 case QUERY_BALANCE:
-                    msg = iIcCardService.search(cardNo);
+                    msg = iIcCardService.search(cardNo, String.valueOf(ByteArrayUtils.byteArrayToShort(machineAddrCode)));
                     responseData = SendMsgUtil.sendMsg(msg, packet.sender(), recObj);
                     ctx.writeAndFlush(responseData);
                     break;
                 case NORMAL_REBATES:
-                    byte[] machineAddrCode = recObj.getMachineAddrCode();
                     int money = ByteArrayUtils.byteArrayToInt(recObj.getRealData());
                     msg = iIcCardService.deductions(cardNo, money, String.valueOf(ByteArrayUtils.byteArrayToShort(machineAddrCode)));
                     responseData = SendMsgUtil.sendMsg(msg, packet.sender(), recObj);

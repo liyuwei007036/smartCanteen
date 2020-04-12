@@ -177,7 +177,7 @@ public class IcCardServiceImpl extends ServiceImpl<IcCardMapper, IcCard> impleme
         Long start = System.currentTimeMillis();
         Machine machine = iMachineService.getByCode(machineNo);
         if (machine == null) {
-            return new ResponseMsg(CmdCodeEnum.CON, Voices.WELCOME, cardNo, "机器未注册");
+            return new ResponseMsg(CmdCodeEnum.CON, Voices.WARN, cardNo, "机器未注册");
         }
         IcCard card = getOne(Wrappers.<IcCard>lambdaQuery()
                         .select(IcCard::getCurrentBalance, IcCard::getStatus, IcCard::getId, IcCard::getNo, IcCard::getEmployeeName, IcCard::getEmployeeNo)
@@ -229,10 +229,10 @@ public class IcCardServiceImpl extends ServiceImpl<IcCardMapper, IcCard> impleme
     private IMachineService iMachineService;
 
     @Override
-    public ResponseMsg search(String cardNo) {
-        Machine machine = iMachineService.getByCode(cardNo);
+    public ResponseMsg search(String cardNo, String machineNo) {
+        Machine machine = iMachineService.getByCode(machineNo);
         if (machine == null) {
-            return new ResponseMsg(CmdCodeEnum.CON, Voices.WELCOME, cardNo, "机器未注册");
+            return new ResponseMsg(CmdCodeEnum.CON, Voices.WARN, cardNo, "机器未注册");
         }
         IcCard card = getOne(Wrappers.<IcCard>lambdaQuery()
                         .eq(IcCard::getNo, cardNo),

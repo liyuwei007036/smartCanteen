@@ -93,9 +93,10 @@ public interface IIcCardService extends IService<IcCard> {
      * 刷卡查询
      *
      * @param cardNo
+     * @param machineNo
      * @return
      */
-    ResponseMsg search(String cardNo);
+    ResponseMsg search(String cardNo, String machineNo);
 
     /**
      * 充值
