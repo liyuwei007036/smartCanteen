@@ -10,7 +10,7 @@ pipeline {
         stage('拉取代码') {
             steps {
                 //
-		        sh 'git@github.com:liyuwei007036/smartCanteen.git'
+		        sh 'git clone git@github.com:liyuwei007036/smartCanteen.git'
             }
         }
         stage('构建镜像') {
