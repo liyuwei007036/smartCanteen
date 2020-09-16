@@ -1,30 +1,23 @@
 pipeline {
     agent any
     stages {
-       stage('初始化环境') {
+        stage('构建jar包') {
             steps {
                 //
-		        sh 'rm -rf smartCanteen_deploy/*'
+                sh 'mvn package'
+                sh 'cp target/*.jar docker/ && chmod 777 docker/update.sh'
+
             }
         }
-        stage('拉取代码') {
+        stage('构建docker镜像') {
             steps {
-                //
-		        sh 'git clone git@github.com:liyuwei007036/smartCanteen.git'
-            }
-        }
-        stage('构建镜像') {
-            steps {
-                //
-		        sh 'cd smartCanteen/ && mvn package'
-		        sh 'cd smartCanteen/ && cp *.jar smartCanteen/docker/ && chmod 777 smartCanteen/docker/update.sh'
-		        sh 'smartCanteen/docker/update.sh'
+                sh 'docker/update.sh'
             }
         }
         stage('清理文件') {
                 steps {
                     //
-                    sh 'rm -rf smartCanteen_deploy/*'
+                    sh 'rm -rf *'
                 }
             }
         }
