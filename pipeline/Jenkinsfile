@@ -6,7 +6,6 @@ pipeline {
                 //
                 sh 'mvn package'
                 sh 'cp target/*.jar docker/ && chmod 777 docker/update.sh'
-
             }
         }
         stage('构建docker镜像') {
@@ -14,10 +13,10 @@ pipeline {
                 sh 'docker/update.sh'
             }
         }
-        stage('清理文件') {
+        stage('清理代码') {
                 steps {
                     //
-                    sh 'rm -rf *'
+                    sh 'rm -rf * &&  rm -rf .git*'
                 }
             }
         }
