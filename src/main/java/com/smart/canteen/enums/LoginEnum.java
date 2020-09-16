@@ -18,11 +18,11 @@ public enum LoginEnum implements IEnum<Integer> {
 
     LOGIN_OUT(1, "登出");
 
-    private Integer value;
+    private final Integer value;
 
     @JsonValue
     @Getter
-    private String disPlay;
+    private final String disPlay;
 
 
     @Override

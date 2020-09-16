@@ -26,9 +26,9 @@ spring:
     active: dev
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://lumia.live:3306/smartcanteen?useUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT%2B8&useSSL=false&allowMultiQueries=true&allowPublicKeyRetrieval=true
+    url: jdbc:mysql://192.168.3.38:6306/smartcanteen?useUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT%2B8&useSSL=false&allowMultiQueries=true&allowPublicKeyRetrieval=true
     username: root
-    password: 123456
+    password: 1qaz@WSX
     type: com.zaxxer.hikari.HikariDataSource
     hikari:
       minimum-idle: 5
@@ -53,7 +53,7 @@ spring:
         max-wait: 10000
         min-idle: 1
         time-between-eviction-runs: 3000
-    host: lumia.live
+    host: 192.168.3.38
     port: 16379
   jackson:
     time-zone: GMT+8
@@ -76,4 +76,4 @@ mybatis-plus:
   mapper-locations: classpath:/mapper/*.xml
 
 logging:
-  path: ./logs
+  path:  /usr/local/logs

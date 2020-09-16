@@ -18,11 +18,11 @@ public enum EmployeeStatusEnum implements IEnum<Integer> {
 
     DISABLE(2, "离职");
 
-    private Integer value;
+    private final Integer value;
 
     @JsonValue
     @Getter
-    private String disPlay;
+    private final String disPlay;
 
 
     @Override
