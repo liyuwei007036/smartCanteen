@@ -228,8 +228,6 @@
     <springProfile name="wj">
         <root level="all">
             <appender-ref ref="LOGSTASH"/>
-        </root>
-        <root level="info">
             <appender-ref ref="warn"/>
             <appender-ref ref="info"/>
             <appender-ref ref="warn"/>

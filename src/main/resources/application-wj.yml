@@ -17,6 +17,8 @@ netty:
   port: 3000
 websocket:
   port: 8032
+card:
+  timeout: 3000
 
 spring:
   application:
@@ -25,7 +27,7 @@ spring:
     active: wj
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://mysql:6306/smartcanteen?useUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT%2B8&useSSL=false&allowMultiQueries=true&allowPublicKeyRetrieval=true
+    url: jdbc:mysql://192.168.3.38:6306/smartcanteen?useUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT%2B8&useSSL=false&allowMultiQueries=true&allowPublicKeyRetrieval=true
     username: root
     password: Mcptt.123
     type: com.zaxxer.hikari.HikariDataSource
@@ -52,7 +54,7 @@ spring:
         max-wait: 10000
         min-idle: 1
         time-between-eviction-runs: 3000
-    host: redis
+    host: 192.168.3.38
     port: 16379
   jackson:
     time-zone: GMT+8
