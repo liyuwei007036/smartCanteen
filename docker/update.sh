@@ -1,5 +1,7 @@
 #!/bin/bash
 
+cd /data/jenkins/workspace/smartCanteen_deploy/docker
+
 docker stop smartcanteen && docker rm smartcanteen
 
 docker rmi smartcanteen:v1
