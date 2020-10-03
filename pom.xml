@@ -21,6 +21,12 @@
 
     <dependencies>
 
+        <dependency>
+            <groupId>net.logstash.logback</groupId>
+            <artifactId>logstash-logback-encoder</artifactId>
+            <version>6.2</version>
+        </dependency>
+
 
         <dependency>
             <groupId>org.yeauty</groupId>

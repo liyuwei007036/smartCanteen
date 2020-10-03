@@ -11,7 +11,8 @@ server:
     buffer-size: 1024
     # 是否分配的直接内存
     direct-buffers: true
-
+logstash:
+  address: 192.168.3.38:9600
 netty:
   port: 3000
 websocket:
