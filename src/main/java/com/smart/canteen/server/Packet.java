@@ -35,12 +35,12 @@ public class Packet {
     /**
      * 	机器地址码：	2 byte= 1 – 999（0xFFFF为广播地址，0x00为系统保留） data[2] data[3]
      */
-    private byte[] machineAddrCode = new byte[2];
+    private final byte[] machineAddrCode = new byte[2];
 
     /**
      * 	数据包长度：	2 byte= 0 – 0x07FF，表示紧跟数据包长度；data[4], data[5]
      */
-    private byte[] dataLen = new byte[2];
+    private final byte[] dataLen = new byte[2];
 
     /**
      * 	数据包：	(变长)长度可变，由数据包长度指定；
@@ -54,19 +54,19 @@ public class Packet {
     /**
      * 	校验码：	2 byte= 计算从地址码开始到数据包最后一个字节的CRC16码。
      */
-    private byte[] crcCode = new byte[2];
+    private final byte[] crcCode = new byte[2];
 
     /**
      * 指令码  data[6]
      */
     private byte cmdCode = 0;
 
-    private int nDataLen = 0;
+    private final int nDataLen = 0;
 
     /**
      * 卡号
      */
-    private byte[] cardNumber = new byte[4];
+    private final byte[] cardNumber = new byte[4];
 
     /**
      * 事件码

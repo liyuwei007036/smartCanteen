@@ -1,6 +1,5 @@
 package com.smart.canteen.vo;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.lc.core.utils.ObjectUtil;
 import com.smart.canteen.enums.CardAccountEnum;
 import com.smart.canteen.enums.CardStatusEnum;
