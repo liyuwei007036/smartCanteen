@@ -226,7 +226,7 @@
 
     <!--测试-->
     <springProfile name="wj">
-        <root level="all">
+        <root level="debug">
             <appender-ref ref="LOGSTASH"/>
             <appender-ref ref="warn"/>
             <appender-ref ref="info"/>
