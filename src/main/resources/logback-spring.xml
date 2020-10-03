@@ -36,7 +36,7 @@
                 <pattern>
                     <pattern>
                         {
-                        "app": "smartCenteen",
+                        "app": "smart_canteen",
                         "level": "%level",
                         "thread": "%thread",
                         "logger": "%logger{50} %M %L ",
