@@ -29,6 +29,30 @@
         <!--可以访问的logstash日志收集端口-->
         <destination>${LOGSTASH_ADDRESS}</destination>
         <encoder class="net.logstash.logback.encoder.LogstashEncoder">
+            <providers>
+                <timestamp>
+                    <timeZone>Asia/Shanghai</timeZone>
+                </timestamp>
+                <pattern>
+                    <pattern>
+                        {
+                        "app": "smart_canteen",
+                        "level": "%level",
+                        "thread": "%thread",
+                        "logger": "%logger{50} %M %L ",
+                        "message": "%msg",
+                        "logger_name":"%logger_name"
+                        }
+                    </pattern>
+                </pattern>
+                <stackTrace>
+                    <throwableConverter class="net.logstash.logback.stacktrace.ShortenedThrowableConverter">
+                        <maxDepthPerThrowable>100</maxDepthPerThrowable>
+                        <rootCauseFirst>true</rootCauseFirst>
+                        <inlineHash>true</inlineHash>
+                    </throwableConverter>
+                </stackTrace>
+            </providers>
         </encoder>
     </appender>
 
