@@ -1,7 +1,7 @@
 pipeline {
     agent any
     stages {
-        stage('构建jar包') {
+        stage('编译代码') {
             steps {
                 //
                 sh 'mvn package'
