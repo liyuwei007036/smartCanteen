@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cd /root/.jenkins/workspace/smartCanteen_deploy/docker
+cd /data/.jenkins/workspace/smartCanteen_deploy/docker
 
 docker stop smartcanteen && docker rm smartcanteen
 
