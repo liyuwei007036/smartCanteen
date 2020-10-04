@@ -22,12 +22,12 @@
               value="${CONSOLE_LOG_PATTERN:-%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(${LOG_LEVEL_PATTERN:-%5p}) %clr(${PID:- }){magenta} %clr(---){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}}"/>
 
     <!--logstash地址，从application.properties中获取-->
-    <springProperty scope="context" name="LOGSTASH_ADDRESS" source="logstash.address"/>
+    <springProperty scope="context" name="logstash_address" source="logstash.address"/>
 
     <!--输出到logstash的appender-->
-    <appender name="LOGSTASH" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
+    <appender name="logstash" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
         <!--可以访问的logstash日志收集端口-->
-        <destination>${LOGSTASH_ADDRESS}</destination>
+        <destination>${logstash_address}</destination>
         <encoder class="net.logstash.logback.encoder.LogstashEncoder">
             <providers>
                 <timestamp>
@@ -39,9 +39,10 @@
                         "app": "smart_canteen",
                         "level": "%level",
                         "thread": "%thread",
-                        "logger": "%logger{50} %M %L ",
-                        "message": "%msg",
-                        "logger_name":"%logger_name"
+                        "logger": "%logger",
+                        "class": "%message",
+                        "logger_name":"%logger_name",
+                        "stack_trace": "%exception{5}"
                         }
                     </pattern>
                 </pattern>
@@ -228,7 +229,8 @@
     <!--测试-->
     <springProfile name="wj">
         <root level="info">
-            <appender-ref ref="LOGSTASH"/>
+            <appender-ref ref="console"/>
+            <appender-ref ref="logstash"/>
             <appender-ref ref="warn"/>
             <appender-ref ref="info"/>
             <appender-ref ref="warn"/>
