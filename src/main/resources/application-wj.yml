@@ -19,7 +19,10 @@ websocket:
   port: 8032
 card:
   timeout: 3000
-
+sys:
+  session:
+    name: x-smart-canteen
+    timeout: 1800
 spring:
   application:
     name: smart-centeen

@@ -11,13 +11,18 @@ server:
     buffer-size: 1024
     # 是否分配的直接内存
     direct-buffers: true
-
+sys:
+  session:
+    name: x-smart-canteen
+    timeout: 1800
 netty:
   port: 3000
 websocket:
   port: 8032
 card:
   timeout: 3000
+logstash:
+  address: 192.168.3.38:9600
 
 spring:
   application:
@@ -102,4 +107,4 @@ mybatis-plus:
   mapper-locations: classpath:/mapper/*.xml
 
 logging:
-  path: /usr/local/logs
+  path: ./logs
