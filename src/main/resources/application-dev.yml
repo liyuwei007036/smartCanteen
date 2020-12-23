@@ -82,7 +82,7 @@ spring:
     throw-exception-if-no-handler-found: true
   redis:
     redisson:
-      file: classpath:redission.yml
+      file: classpath:redisson.yml
     host: 192.168.3.38
     port: 16379
     database: 0
