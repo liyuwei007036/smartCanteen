@@ -4,6 +4,7 @@ pipeline {
         stage('编译代码') {
             steps {
                 //
+                sh 'mvn clean'
                 sh 'mvn package'
                 sh 'cp target/*.jar docker/ && chmod 777 docker/update.sh'
             }
