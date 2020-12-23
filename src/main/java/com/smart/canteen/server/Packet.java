@@ -1,6 +1,6 @@
 package com.smart.canteen.server;
 
-import com.lc.core.error.BaseException;
+import live.lumia.error.BaseException;
 import com.smart.canteen.enums.CanteenExceptionEnum;
 import com.smart.canteen.enums.CmdCodeEnum;
 import com.smart.canteen.utils.CrcUtil;

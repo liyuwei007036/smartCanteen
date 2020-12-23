@@ -2,10 +2,10 @@ package com.smart.canteen.controller;
 
 
 import com.alibaba.fastjson.JSONObject;
-import com.lc.core.annotations.Valid;
-import com.lc.core.controller.BaseController;
-import com.lc.core.dto.ResponseInfo;
-import com.lc.core.utils.ObjectUtil;
+import live.lumia.annotations.Valid;
+import live.lumia.controller.BaseController;
+import live.lumia.dto.ResponseInfo;
+import live.lumia.utils.ObjectUtil;
 import com.smart.canteen.annotations.Permission;
 import com.smart.canteen.dto.CommonList;
 import com.smart.canteen.dto.SummaryDTO;

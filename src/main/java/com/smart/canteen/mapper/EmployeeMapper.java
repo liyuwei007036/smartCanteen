@@ -3,7 +3,7 @@ package com.smart.canteen.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.lc.core.dto.Account;
+import live.lumia.dto.Account;
 import com.smart.canteen.dto.employee.EmployeeSearch;
 import com.smart.canteen.entity.Employee;
 import com.smart.canteen.vo.EmployeeVO;

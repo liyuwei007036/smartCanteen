@@ -1,6 +1,6 @@
 package com.smart.canteen.enums;
 
-import com.lc.core.error.IErrorInterface;
+import live.lumia.error.IErrorInterface;
 import lombok.AllArgsConstructor;
 
 /**

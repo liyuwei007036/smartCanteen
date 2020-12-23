@@ -3,7 +3,7 @@ package com.smart.canteen.service.impl;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.lc.core.dto.Account;
+import live.lumia.dto.Account;
 import com.smart.canteen.dto.CommonList;
 import com.smart.canteen.dto.log.LoginSearch;
 import com.smart.canteen.entity.LoginLog;

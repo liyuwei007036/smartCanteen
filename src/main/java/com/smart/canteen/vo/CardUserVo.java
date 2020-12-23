@@ -1,7 +1,7 @@
 package com.smart.canteen.vo;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.lc.core.utils.ObjectUtil;
+import live.lumia.utils.ObjectUtil;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;

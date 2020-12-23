@@ -2,8 +2,8 @@ package com.smart.canteen.service.impl;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.lc.core.dto.Account;
-import com.lc.core.utils.ValidatorUtil;
+import live.lumia.dto.Account;
+import live.lumia.utils.ValidatorUtil;
 import com.smart.canteen.dto.role.PermissionForm;
 import com.smart.canteen.entity.RolePermission;
 import com.smart.canteen.mapper.RolePermissionMapper;

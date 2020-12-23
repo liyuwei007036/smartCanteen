@@ -1,6 +1,6 @@
 package com.smart.canteen.service;
 
-import com.lc.core.dto.Account;
+import live.lumia.dto.Account;
 import com.smart.canteen.dto.role.PermissionForm;
 import com.smart.canteen.entity.Permission;
 import com.smart.canteen.entity.RolePermission;

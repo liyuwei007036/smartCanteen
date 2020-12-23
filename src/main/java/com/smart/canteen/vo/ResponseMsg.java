@@ -1,6 +1,6 @@
 package com.smart.canteen.vo;
 
-import com.lc.core.utils.MathUtil;
+import live.lumia.utils.MathUtil;
 import com.smart.canteen.enums.CmdCodeEnum;
 import com.smart.canteen.enums.Voices;
 import lombok.Data;

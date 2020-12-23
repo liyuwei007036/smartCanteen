@@ -1,12 +1,12 @@
 package com.smart.canteen.controller;
 
 
-import com.lc.core.annotations.Valid;
-import com.lc.core.controller.BaseController;
-import com.lc.core.dto.Account;
-import com.lc.core.dto.ResponseInfo;
-import com.lc.core.utils.ObjectUtil;
-import com.lc.core.utils.RequestUtils;
+import live.lumia.annotations.Valid;
+import live.lumia.controller.BaseController;
+import live.lumia.dto.Account;
+import live.lumia.dto.ResponseInfo;
+import live.lumia.utils.ObjectUtil;
+import live.lumia.utils.RequestUtils;
 import com.smart.canteen.annotations.Log;
 import com.smart.canteen.annotations.Permission;
 import com.smart.canteen.dto.CommonList;

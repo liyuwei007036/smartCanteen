@@ -1,7 +1,7 @@
 package com.smart.canteen.aspect;
 
-import com.lc.core.controller.BaseController;
-import com.lc.core.utils.SpringUtil;
+import live.lumia.controller.BaseController;
+import live.lumia.utils.SpringUtil;
 import com.smart.canteen.annotations.Log;
 import com.smart.canteen.service.IOperationLogService;
 import org.aspectj.lang.ProceedingJoinPoint;

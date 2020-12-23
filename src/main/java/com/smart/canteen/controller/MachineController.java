@@ -1,9 +1,9 @@
 package com.smart.canteen.controller;
 
 
-import com.lc.core.annotations.Valid;
-import com.lc.core.controller.BaseController;
-import com.lc.core.dto.ResponseInfo;
+import live.lumia.annotations.Valid;
+import live.lumia.controller.BaseController;
+import live.lumia.dto.ResponseInfo;
 import com.smart.canteen.annotations.Log;
 import com.smart.canteen.annotations.Permission;
 import com.smart.canteen.dto.CommonList;

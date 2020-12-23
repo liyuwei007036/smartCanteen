@@ -59,9 +59,9 @@
 
 
         <dependency>
-            <groupId>com.lc</groupId>
-            <artifactId>core</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <groupId>live.lumia</groupId>
+            <artifactId>base-starter</artifactId>
+            <version>1.0-RELEASE</version>
         </dependency>
 
         <dependency>

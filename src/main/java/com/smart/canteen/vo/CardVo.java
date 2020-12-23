@@ -1,6 +1,6 @@
 package com.smart.canteen.vo;
 
-import com.lc.core.utils.ObjectUtil;
+import live.lumia.utils.ObjectUtil;
 import com.smart.canteen.enums.CardAccountEnum;
 import com.smart.canteen.enums.CardStatusEnum;
 import com.smart.canteen.enums.CardTypeEnum;

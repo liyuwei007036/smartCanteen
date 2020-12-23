@@ -3,13 +3,9 @@ package com.smart.canteen.service.impl;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.lc.core.dto.Account;
-import com.lc.core.error.BaseException;
-import com.lc.core.service.RedisService;
-import com.lc.core.utils.MathUtil;
-import com.lc.core.utils.ModelMapperUtils;
-import com.lc.core.utils.ObjectUtil;
-import com.lc.core.utils.ValidatorUtil;
+import live.lumia.dto.Account;
+import live.lumia.error.BaseException;
+import live.lumia.utils.*;
 import com.smart.canteen.dto.CommonList;
 import com.smart.canteen.dto.card.CardForm;
 import com.smart.canteen.dto.card.CardSearch;
@@ -231,9 +227,6 @@ public class IcCardServiceImpl extends ServiceImpl<IcCardMapper, IcCard> impleme
     }
 
     @Autowired
-    private RedisService redisService;
-
-    @Autowired
     private StringRedisTemplate template;
 
     @Autowired
@@ -249,7 +242,7 @@ public class IcCardServiceImpl extends ServiceImpl<IcCardMapper, IcCard> impleme
                         .eq(IcCard::getNo, cardNo),
                 false);
         if (card == null) {
-            Object value = redisService.get("GET_CARD_NO", 9);
+            Object value = RedisUtil.get("GET_CARD_NO");
             if (value == null) {
                 return new ResponseMsg(CmdCodeEnum.CON, Voices.WELCOME, cardNo, "无效卡");
             } else {

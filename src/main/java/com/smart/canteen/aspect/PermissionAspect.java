@@ -1,10 +1,10 @@
 package com.smart.canteen.aspect;
 
-import com.lc.core.controller.BaseController;
-import com.lc.core.dto.Account;
-import com.lc.core.enums.BaseErrorEnums;
-import com.lc.core.error.BaseException;
-import com.lc.core.utils.SpringUtil;
+import live.lumia.controller.BaseController;
+import live.lumia.dto.Account;
+import live.lumia.enums.BaseErrorEnums;
+import live.lumia.error.BaseException;
+import live.lumia.utils.SpringUtil;
 import com.smart.canteen.annotations.Permission;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;

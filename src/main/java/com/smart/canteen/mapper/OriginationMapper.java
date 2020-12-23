@@ -1,7 +1,7 @@
 package com.smart.canteen.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.lc.core.dto.Account;
+import live.lumia.dto.Account;
 import com.smart.canteen.entity.Origination;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;

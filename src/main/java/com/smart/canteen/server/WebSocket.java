@@ -2,12 +2,12 @@ package com.smart.canteen.server;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.lc.core.service.RedisService;
-import com.lc.core.utils.ObjectUtil;
 import com.smart.canteen.service.IOrderService;
 import com.smart.canteen.vo.SummaryVO;
 import io.netty.handler.codec.http.HttpHeaders;
 import io.netty.handler.timeout.IdleStateEvent;
+import live.lumia.utils.ObjectUtil;
+import live.lumia.utils.RedisUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.MultiValueMap;
@@ -27,12 +27,9 @@ import java.util.Map;
 @ServerEndpoint(path = "/ws/{arg}", port = "${websocket.port}")
 public class WebSocket {
 
-    private static Map<String, Map<String, Session>> map = new HashMap<>();
+    private static final Map<String, Map<String, Session>> map = new HashMap<>();
     private static final String READ_CARD = "readCard";
     private static final String SUMMARY = "summary";
-
-    @Autowired
-    private RedisService redisService;
 
     @BeforeHandshake
     public void handshake(Session session, HttpHeaders headers, @RequestParam String req, @RequestParam MultiValueMap reqMap, @PathVariable String arg, @PathVariable Map pathMap) {
@@ -77,13 +74,13 @@ public class WebSocket {
         }
         if (READ_CARD.equals(type)) {
             if (start) {
-                redisService.put("GET_CARD_NO", true, 9, 30);
+                RedisUtil.put("GET_CARD_NO", true, 30);
             } else {
                 Map<String, Session> map2 = map.get(type);
                 if (map2 != null) {
                     map2.remove(token);
                 }
-                redisService.remove("GET_CARD_NO", 9);
+                RedisUtil.remove("GET_CARD_NO");
             }
         } else if (SUMMARY.equals(type)) {
             if (!start) {

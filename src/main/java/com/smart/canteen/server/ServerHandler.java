@@ -1,6 +1,6 @@
 package com.smart.canteen.server;
 
-import com.lc.core.utils.SpringUtil;
+import live.lumia.utils.SpringUtil;
 import com.smart.canteen.enums.CmdCodeEnum;
 import com.smart.canteen.enums.ConEventEnum;
 import com.smart.canteen.service.IIcCardService;

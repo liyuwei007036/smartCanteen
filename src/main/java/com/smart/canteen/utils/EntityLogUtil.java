@@ -1,8 +1,8 @@
 package com.smart.canteen.utils;
 
-import com.lc.core.dto.Account;
-import com.lc.core.enums.BaseErrorEnums;
-import com.lc.core.error.BaseException;
+import live.lumia.dto.Account;
+import live.lumia.enums.BaseErrorEnums;
+import live.lumia.error.BaseException;
 import com.smart.canteen.entity.BaseEntity;
 
 import java.util.Date;

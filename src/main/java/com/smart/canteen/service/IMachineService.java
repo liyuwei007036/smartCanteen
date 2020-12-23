@@ -1,6 +1,6 @@
 package com.smart.canteen.service;
 
-import com.lc.core.dto.Account;
+import live.lumia.dto.Account;
 import com.smart.canteen.dto.CommonList;
 import com.smart.canteen.dto.machine.MachineDTO;
 import com.smart.canteen.dto.machine.MachineSearch;

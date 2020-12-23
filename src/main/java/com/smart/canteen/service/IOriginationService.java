@@ -1,7 +1,7 @@
 package com.smart.canteen.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.lc.core.dto.Account;
+import live.lumia.dto.Account;
 import com.smart.canteen.dto.CommonList;
 import com.smart.canteen.dto.origination.OriginationForm;
 import com.smart.canteen.dto.origination.OriginationSearch;

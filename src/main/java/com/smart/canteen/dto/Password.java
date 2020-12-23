@@ -1,6 +1,6 @@
 package com.smart.canteen.dto;
 
-import com.lc.core.utils.EncryptionUtils;
+import live.lumia.utils.EncryptionUtils;
 import lombok.Data;
 
 import java.util.UUID;
