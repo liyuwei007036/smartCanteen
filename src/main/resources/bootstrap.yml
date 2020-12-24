@@ -41,7 +41,7 @@ spring:
       max-file-size: 1000MB
 sys:
   session:
-    name: x-smart-canteen
+    name: x-smart-token
     timeout: 1800
 netty:
   port: 3000
