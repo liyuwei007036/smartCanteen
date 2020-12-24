@@ -60,10 +60,6 @@ spring:
   redis:
     redisson:
       file: classpath:redisson.yml
-    host: ${dep.server.address}
-    port: 16379
-    database: 0
-
 
 logging:
   file:

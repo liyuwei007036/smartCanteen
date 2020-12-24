@@ -12,7 +12,7 @@ singleServerConfig:
   subscriptionConnectionPoolSize: 50
   connectionMinimumIdleSize: 32
   connectionPoolSize: 64
-  database: 0
+  database: 2
   dnsMonitoringInterval: 5000
 threads: 0
 nettyThreads: 0
