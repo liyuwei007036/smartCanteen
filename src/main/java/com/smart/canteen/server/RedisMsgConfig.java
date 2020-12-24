@@ -11,7 +11,6 @@ import org.springframework.data.redis.listener.adapter.MessageListenerAdapter;
  * @author lc
  * @date 2020/3/15下午 7:04
  */
-@Configuration
 public class RedisMsgConfig {
 
     @Bean

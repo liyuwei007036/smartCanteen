@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component;
  * @author lc
  * @date 2020/3/15下午 7:04
  */
-@Component
 public class MsgReceiver {
 
     @Autowired

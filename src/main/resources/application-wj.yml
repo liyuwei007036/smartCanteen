@@ -1,36 +1,14 @@
-server:
-  port: 5001
-  # 下面是配置undertow作为服务器的参数
-  undertow:
-    # 设置IO线程数, 它主要执行非阻塞的任务,它们会负责多个连接, 默认设置每个CPU核心一个线程
-    io-threads: 2
-    # 阻塞任务线程池, 当执行类似servlet请求阻塞操作, undertow会从这个线程池中取得线程,它的值设置取决于系统的负载
-    worker-threads: 20
-    # 以下的配置会影响buffer,这些buffer会用于服务器连接的IO操作,有点类似netty的池化内存管理
-    # 每块buffer的空间大小,越小的空间被利用越充分
-    buffer-size: 1024
-    # 是否分配的直接内存
-    direct-buffers: true
+dep.server.address: 192.168.3.38
+
 logstash:
-  address: 192.168.3.38:9600
-netty:
-  port: 3000
-websocket:
-  port: 8032
-card:
-  timeout: 3000
-sys:
-  session:
-    name: x-smart-canteen
-    timeout: 1800
+  address: ${dep.server.address}:9600
+
 spring:
-  application:
-    name: smart-centeen
   profiles:
-    active: dev
+    active: wj
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://192.168.3.38:6306/smartcanteen?useUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT%2B8&useSSL=false&allowMultiQueries=true&allowPublicKeyRetrieval=true
+    url: jdbc:mysql://${dep.server.address}:6306/smartcanteen?useUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT%2B8&useSSL=false&allowMultiQueries=true&allowPublicKeyRetrieval=true
     username: root
     password: 1qaz@WSX
     type: com.alibaba.druid.pool.DruidDataSource
@@ -66,7 +44,7 @@ spring:
       stat-view-servlet:
         url-pattern: /druid/*
         # IP 白名单，没有配置或者为空，则允许所有访问
-        allow:
+        #        allow: 127.0.0.1
         # IP 黑名单，若白名单也存在，则优先使用
         # 禁用 HTML 中 Reset All 按钮
         reset-enable: false
@@ -82,26 +60,12 @@ spring:
   redis:
     redisson:
       file: classpath:redisson.yml
-    host: 192.168.3.38
+    host: ${dep.server.address}
     port: 16379
     database: 0
-  jackson:
-    time-zone: GMT+8
-    date-format: yyyy-MM-dd HH:mm:ss
 
-
-mybatis-plus:
-  configuration:
-    log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
-    map-underscore-to-camel-case: false
-    defaultEnumTypeHandler: com.baomidou.mybatisplus.extension.handlers.MybatisEnumTypeHandler
-  check-config-location: true
-  global-config:
-    db-config:
-      logicDeleteValue: 1
-      logic-not-delete-value: 0
-    banner: false
-  mapper-locations: classpath:/mapper/*.xml
 
 logging:
-  path: /usr/local/logs
+  file:
+    path: ./logs
+  config: classpath:logback-log.xml

@@ -3,9 +3,6 @@ package com.smart.canteen.service.impl;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import live.lumia.dto.Account;
-import live.lumia.error.BaseException;
-import live.lumia.utils.*;
 import com.smart.canteen.dto.CommonList;
 import com.smart.canteen.dto.card.CardForm;
 import com.smart.canteen.dto.card.CardSearch;
@@ -23,11 +20,13 @@ import com.smart.canteen.utils.EntityLogUtil;
 import com.smart.canteen.vo.CardUserVo;
 import com.smart.canteen.vo.CardVo;
 import com.smart.canteen.vo.ResponseMsg;
+import live.lumia.dto.Account;
+import live.lumia.error.BaseException;
+import live.lumia.utils.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
@@ -217,7 +216,7 @@ public class IcCardServiceImpl extends ServiceImpl<IcCardMapper, IcCard> impleme
         } else {
             if (update && saveOrder) {
                 msg = new ResponseMsg(CmdCodeEnum.CON, Voices.SUCCESS, cardNo, lastBalance, money);
-                template.convertAndSend("update", cardNo);
+                RedisUtil.getClient().getTopic("update").publish(cardNo);
             } else {
                 msg = new ResponseMsg(CmdCodeEnum.CON, Voices.WARN, cardNo, "刷卡太快请重刷");
                 TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
@@ -225,9 +224,6 @@ public class IcCardServiceImpl extends ServiceImpl<IcCardMapper, IcCard> impleme
         }
         return msg;
     }
-
-    @Autowired
-    private StringRedisTemplate template;
 
     @Autowired
     private IMachineService iMachineService;
@@ -247,7 +243,7 @@ public class IcCardServiceImpl extends ServiceImpl<IcCardMapper, IcCard> impleme
                 return new ResponseMsg(CmdCodeEnum.CON, Voices.WELCOME, cardNo, "无效卡");
             } else {
                 log.info("发送卡号到前端");
-                template.convertAndSend("readCard", cardNo);
+                RedisUtil.getClient().getTopic("readCard").publish(cardNo);
                 return new ResponseMsg(CmdCodeEnum.CON, Voices.WELCOME, cardNo, "读卡中...");
             }
         }

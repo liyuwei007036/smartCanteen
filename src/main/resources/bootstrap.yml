@@ -1,0 +1,52 @@
+server:
+  port: 5001
+  # 下面是配置undertow作为服务器的参数
+  undertow:
+    # 设置IO线程数, 它主要执行非阻塞的任务,它们会负责多个连接, 默认设置每个CPU核心一个线程
+    # 阻塞任务线程池, 当执行类似servlet请求阻塞操作, undertow会从这个线程池中取得线程,它的值设置取决于系统的负载
+    threads:
+      io: 2
+      worker: 20
+    # 以下的配置会影响buffer,这些buffer会用于服务器连接的IO操作,有点类似netty的池化内存管理
+    # 每块buffer的空间大小,越小的空间被利用越充分
+    buffer-size: 1024
+    # 是否分配的直接内存
+    direct-buffers: true
+
+
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    map-underscore-to-camel-case: false
+    defaultEnumTypeHandler: com.baomidou.mybatisplus.extension.handlers.MybatisEnumTypeHandler
+  check-config-location: true
+  global-config:
+    db-config:
+      logicDeleteValue: 1
+      logic-not-delete-value: 0
+    banner: false
+  mapper-locations: classpath:/mapper/*.xml
+
+
+spring:
+  application:
+    name: smart-centeen
+  jackson:
+    time-zone: GMT+8
+    date-format: yyyy-MM-dd HH:mm:ss
+  mvc:
+    throw-exception-if-no-handler-found: true
+  servlet:
+    multipart:
+      max-file-size: 1000MB
+sys:
+  session:
+    name: x-smart-canteen
+    timeout: 1800
+netty:
+  port: 3000
+websocket:
+  port: 8032
+card:
+  timeout: 3000
+
