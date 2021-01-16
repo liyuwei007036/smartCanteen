@@ -115,9 +115,9 @@ public class Packet {
             this.realData = new byte[data.length - 5];
             System.arraycopy(this.data, 5, this.realData, 0, data.length - 5);
         } else if (CmdCodeEnum.HART_BIT == cmd) {
-            log.warn("心跳包:" + Arrays.toString(this.data) + String.format("%x", this.cmdCode));
+            log.debug("心跳包:" + Arrays.toString(this.data) + String.format("%x", this.cmdCode));
         } else {
-            log.warn("数据包:" + Arrays.toString(this.data) + String.format("%x", this.cmdCode));
+            log.debug("数据包:" + Arrays.toString(this.data) + String.format("%x", this.cmdCode));
         }
     }
 }

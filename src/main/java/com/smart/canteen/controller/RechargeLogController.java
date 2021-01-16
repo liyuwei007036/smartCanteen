@@ -1,6 +1,7 @@
 package com.smart.canteen.controller;
 
 
+import live.lumia.annotations.Secret;
 import live.lumia.annotations.Valid;
 import live.lumia.controller.BaseController;
 import live.lumia.dto.ResponseInfo;
@@ -28,6 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author lc
  * @since 2020-03-08
  */
+@Secret
 @Api(tags = "充值管理")
 @Valid(needLogin = true)
 @RestController

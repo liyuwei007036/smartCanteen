@@ -2,6 +2,7 @@ package com.smart.canteen.controller;
 
 
 import com.alibaba.fastjson.JSONObject;
+import live.lumia.annotations.Secret;
 import live.lumia.annotations.Valid;
 import live.lumia.controller.BaseController;
 import live.lumia.dto.ResponseInfo;
@@ -31,6 +32,7 @@ import java.util.Calendar;
  * @author lc
  * @since 2020-03-08
  */
+@Secret
 @Api(tags = "消费管理")
 @Valid(needLogin = true)
 @RestController

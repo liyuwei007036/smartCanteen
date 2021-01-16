@@ -1,6 +1,7 @@
 package com.smart.canteen.controller;
 
 
+import live.lumia.annotations.Secret;
 import live.lumia.annotations.Valid;
 import live.lumia.controller.BaseController;
 import live.lumia.dto.ResponseInfo;
@@ -28,6 +29,7 @@ import java.io.Serializable;
  * @author lc
  * @since 2020-03-02
  */
+@Secret
 @Valid(needLogin = true)
 @Api(tags = {"组织管理"})
 @RestController

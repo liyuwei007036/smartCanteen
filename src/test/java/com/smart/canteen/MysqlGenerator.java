@@ -23,7 +23,7 @@ public class MysqlGenerator {
 
         // 全局配置
         GlobalConfig gc = new GlobalConfig();
-        gc.setOutputDir("d:\\code\\java\\smartCanteen\\src\\main\\java");
+        gc.setOutputDir("/Users/liyuwei/code/self/smartCanteen/src/main/java");
         gc.setSwagger2(true);
         gc.setFileOverride(true);
         gc.setOpen(false);
@@ -31,8 +31,8 @@ public class MysqlGenerator {
         gc.setActiveRecord(true);
         gc.setEnableCache(false);// XML 二级缓存
 
-        String entry_name = "Machine";
-        String table_name = "Machine";
+        String entry_name = "Tenant";
+        String table_name = "tenant";
 
 
         gc.setServiceImplName(entry_name + "ServiceImpl");
@@ -45,11 +45,11 @@ public class MysqlGenerator {
 
         // 数据源配置
         DataSourceConfig dsc = new DataSourceConfig();
-        dsc.setUrl("jdbc:mysql://lumia.live:3306/smartcanteen?useUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT%2B8&useSSL=false&allowMultiQueries=true");
+        dsc.setUrl("jdbc:mysql://nexus.51mypc.cn:6306/smartcanteen?useUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT%2B8&useSSL=false&allowMultiQueries=true");
         // dsc.setSchemaName("public");
         dsc.setDriverName("com.mysql.cj.jdbc.Driver");
         dsc.setUsername("root");
-        dsc.setPassword("123456");
+        dsc.setPassword("1qaz@WSX");
         dsc.setDbType(DbType.MYSQL);
 
         mpg.setDataSource(dsc);

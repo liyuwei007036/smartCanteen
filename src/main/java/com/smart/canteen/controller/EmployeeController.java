@@ -1,12 +1,6 @@
 package com.smart.canteen.controller;
 
 
-import live.lumia.annotations.Valid;
-import live.lumia.controller.BaseController;
-import live.lumia.dto.Account;
-import live.lumia.dto.ResponseInfo;
-import live.lumia.utils.ObjectUtil;
-import live.lumia.utils.RequestUtils;
 import com.smart.canteen.annotations.Log;
 import com.smart.canteen.annotations.Permission;
 import com.smart.canteen.dto.CommonList;
@@ -20,6 +14,13 @@ import com.smart.canteen.service.ILoginLogService;
 import com.smart.canteen.vo.EmployeeVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import live.lumia.annotations.Secret;
+import live.lumia.annotations.Valid;
+import live.lumia.controller.BaseController;
+import live.lumia.dto.Account;
+import live.lumia.dto.ResponseInfo;
+import live.lumia.utils.ObjectUtil;
+import live.lumia.utils.RequestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,11 +33,13 @@ import org.springframework.web.bind.annotation.*;
  * @author lc
  * @since 2020-03-01
  */
+@Secret
 @Valid(needLogin = true)
 @Api(value = "EmployeeController", tags = "员工中心")
 @RestController
 @RequestMapping("/employee")
 public class EmployeeController extends BaseController {
+
 
     @Autowired
     private IEmployeeService iEmployeeService;

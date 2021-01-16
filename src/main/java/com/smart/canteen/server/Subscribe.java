@@ -24,7 +24,6 @@ public class Subscribe {
         // 接受订阅的消息
         rTopic.addListener(String.class, (charSequence, message) -> {
             log.info("接受到消息主题={}，内容={}", charSequence, message);
-            System.out.println("传输的数据为=" + message);
             webSocket.sendMsg(message);
         });
 
@@ -32,7 +31,6 @@ public class Subscribe {
         // 接受订阅的消息
         updateTopic.addListener(String.class, (charSequence, message) -> {
             log.info("接受到消息主题={}，内容={}", charSequence, message);
-            System.out.println("传输的数据为=" + message);
             webSocket.update();
         });
     }

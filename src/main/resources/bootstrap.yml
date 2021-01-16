@@ -30,7 +30,7 @@ mybatis-plus:
 
 spring:
   application:
-    name: smart-centeen
+    name: smart-canteen
   jackson:
     time-zone: GMT+8
     date-format: yyyy-MM-dd HH:mm:ss
@@ -43,6 +43,12 @@ sys:
   session:
     name: x-smart-token
     timeout: 1800
+  pool:
+    core-size: 5
+    capacity: 10
+    max-size: 20
+    keep-alive-seconds: 200
+    thread-name-prefix: smart-canteen-async-thread-
 netty:
   port: 3000
 websocket:

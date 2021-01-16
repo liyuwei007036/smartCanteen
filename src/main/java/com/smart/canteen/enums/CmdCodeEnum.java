@@ -40,7 +40,7 @@ public enum CmdCodeEnum {
     ;
 
     @Getter
-    private int code;
+    private final int code;
 
     public static CmdCodeEnum getByCode(byte code) {
         return Arrays.stream(CmdCodeEnum.values()).filter(x -> x.code == code).findFirst().orElse(null);

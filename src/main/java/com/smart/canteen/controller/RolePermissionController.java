@@ -1,9 +1,6 @@
 package com.smart.canteen.controller;
 
 
-import live.lumia.annotations.Valid;
-import live.lumia.controller.BaseController;
-import live.lumia.dto.ResponseInfo;
 import com.smart.canteen.annotations.Log;
 import com.smart.canteen.annotations.Permission;
 import com.smart.canteen.dto.role.PermissionForm;
@@ -11,6 +8,10 @@ import com.smart.canteen.service.IPermissionService;
 import com.smart.canteen.service.IRolePermissionService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import live.lumia.annotations.Secret;
+import live.lumia.annotations.Valid;
+import live.lumia.controller.BaseController;
+import live.lumia.dto.ResponseInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,6 +25,7 @@ import java.io.Serializable;
  * @author lc
  * @since 2020-03-11
  */
+@Secret
 @Valid(needLogin = true)
 @Api(tags = {"权限管理"})
 @RestController

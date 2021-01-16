@@ -1,22 +1,11 @@
 dep.server.address: nexus.51mypc.cn
 
-
-sys:
-  sign:
-    aes-decrypt-impl: com.smart.canteen.config.DecryptImpl
-
-
-canteen:
-  telent:
-    name: 99982
-      -
-
 logstash:
   address: ${dep.server.address}:9600
 
 spring:
   profiles:
-    active: dev
+    active: remote
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://${dep.server.address}:6306/smartcanteen?useUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT%2B8&useSSL=false&allowMultiQueries=true&allowPublicKeyRetrieval=true
@@ -70,19 +59,12 @@ spring:
     throw-exception-if-no-handler-found: true
   redis:
     redisson:
-      file: classpath:redisson-remote.yml
+      file: classpath:redisson.yml
+    host: ${dep.server.address}
+    port: 16379
+    database: 0
 
 
 logging:
-  config: classpath:logback-log.xml
   file:
     path: ./logs
-
-telnet:
-  config:
-    S098781:
-      key: s9_%k.iX]WkFu,1K
-      iv: +ira8Z*_xDp?9fY@
-    S098783:
-      key: s9_%k.iX]WkFu,1K
-      iv: +ira8Z*_xDp?9fY@

@@ -18,6 +18,7 @@ import org.yeauty.pojo.Session;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author lc
@@ -27,7 +28,7 @@ import java.util.Map;
 @ServerEndpoint(path = "/ws/{arg}", port = "${websocket.port}")
 public class WebSocket {
 
-    private static final Map<String, Map<String, Session>> map = new HashMap<>();
+    private static final ConcurrentHashMap<String, Map<String, Session>> map = new ConcurrentHashMap<>();
     private static final String READ_CARD = "readCard";
     private static final String SUMMARY = "summary";
 
