@@ -49,6 +49,9 @@ sys:
     max-size: 20
     keep-alive-seconds: 200
     thread-name-prefix: smart-canteen-async-thread-
+  sign:
+    aes-decrypt-impl: com.smart.canteen.config.DecryptImpl
+
 netty:
   port: 3000
 websocket:

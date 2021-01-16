@@ -1,16 +1,5 @@
 dep.server.address: nexus.51mypc.cn
 
-
-sys:
-  sign:
-    aes-decrypt-impl: com.smart.canteen.config.DecryptImpl
-
-
-canteen:
-  telent:
-    name: 99982
-      -
-
 logstash:
   address: ${dep.server.address}:9600
 
@@ -77,12 +66,3 @@ logging:
   config: classpath:logback-log.xml
   file:
     path: ./logs
-
-telnet:
-  config:
-    S098781:
-      key: s9_%k.iX]WkFu,1K
-      iv: +ira8Z*_xDp?9fY@
-    S098783:
-      key: s9_%k.iX]WkFu,1K
-      iv: +ira8Z*_xDp?9fY@
