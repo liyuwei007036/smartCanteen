@@ -20,11 +20,11 @@ public enum CardTypeEnum implements IEnum<Integer> {
 
     DISABLE(1, "1");
 
-    private Integer value;
+    private final Integer value;
 
     @JsonValue
     @Getter
-    private String disPlay;
+    private final String disPlay;
 
 
     @Override

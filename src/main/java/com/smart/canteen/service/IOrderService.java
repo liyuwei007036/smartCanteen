@@ -98,6 +98,7 @@ public interface IOrderService extends IService<Order> {
      *
      * @param start
      * @param end
+     * @return
      */
     OrderSummaryDTO getOrderTotal(Date start, Date end);
 }

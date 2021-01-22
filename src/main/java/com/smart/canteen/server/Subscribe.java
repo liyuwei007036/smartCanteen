@@ -8,6 +8,9 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 
+/**
+ * @author liyuwei
+ */
 @Slf4j
 @Component
 public class Subscribe {

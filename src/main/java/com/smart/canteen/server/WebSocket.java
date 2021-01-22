@@ -28,7 +28,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @ServerEndpoint(path = "/ws/{arg}", port = "${websocket.port}")
 public class WebSocket {
 
-    private static final ConcurrentHashMap<String, Map<String, Session>> map = new ConcurrentHashMap<>();
+    private static final ConcurrentHashMap<String, Map<String, Session>> MAP = new ConcurrentHashMap<>();
     private static final String READ_CARD = "readCard";
     private static final String SUMMARY = "summary";
 
@@ -48,7 +48,7 @@ public class WebSocket {
         String token = ObjectUtil.getString(session.getAttribute("token"));
         String type = ObjectUtil.getString(session.getAttribute("type"));
         if (!StringUtils.isEmpty(type)) {
-            Map<String, Session> stringSessionMap = map.get(type);
+            Map<String, Session> stringSessionMap = MAP.get(type);
             if (stringSessionMap != null) {
                 stringSessionMap.remove(token);
             }
@@ -68,7 +68,7 @@ public class WebSocket {
         String type = msg.getString("type");
         String token = msg.getString("token");
         if (!StringUtils.isEmpty(type) && !StringUtils.isEmpty(token) && start) {
-            Map<String, Session> stringSessionMap = map.computeIfAbsent(type, k -> new HashMap<>(16));
+            Map<String, Session> stringSessionMap = MAP.computeIfAbsent(type, k -> new HashMap<>(16));
             session.setAttribute("type", type);
             session.setAttribute("token", token);
             stringSessionMap.put(token, session);
@@ -77,7 +77,7 @@ public class WebSocket {
             if (start) {
                 RedisUtil.put("GET_CARD_NO", true, 30);
             } else {
-                Map<String, Session> map2 = map.get(type);
+                Map<String, Session> map2 = MAP.get(type);
                 if (map2 != null) {
                     map2.remove(token);
                 }
@@ -85,7 +85,7 @@ public class WebSocket {
             }
         } else if (SUMMARY.equals(type)) {
             if (!start) {
-                Map<String, Session> map2 = map.get(type);
+                Map<String, Session> map2 = MAP.get(type);
                 if (map2 != null) {
                     map2.remove(token);
                 }
@@ -120,7 +120,7 @@ public class WebSocket {
     }
 
     public void sendMsg(String msg) {
-        Map<String, Session> readCard = map.get(READ_CARD);
+        Map<String, Session> readCard = MAP.get(READ_CARD);
         if (readCard != null) {
             readCard.forEach((key, value) -> value.sendText(msg));
         }
@@ -130,7 +130,7 @@ public class WebSocket {
     private IOrderService iOrderService;
 
     public void update() {
-        Map<String, Session> summaryMap = map.get(SUMMARY);
+        Map<String, Session> summaryMap = MAP.get(SUMMARY);
         if (summaryMap != null) {
             try {
                 Thread.sleep(2000);

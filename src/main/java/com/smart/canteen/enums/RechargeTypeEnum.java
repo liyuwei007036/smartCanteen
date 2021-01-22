@@ -19,11 +19,11 @@ public enum RechargeTypeEnum implements IEnum<Integer> {
     NORMAL(1, "正常"),
     REFUND(2, "退费");
 
-    private Integer value;
+    private final Integer value;
 
     @JsonValue
     @Getter
-    private String disPlay;
+    private final String disPlay;
 
     @Override
     public Integer getValue() {

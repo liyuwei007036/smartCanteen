@@ -32,6 +32,12 @@ public interface IcCardMapper extends BaseMapper<IcCard> {
     IPage<CardVo> selectPageVo(Page<?> page, CardSearch search, Boolean b);
 
 
+    /**
+     * 通过kaId查询出卡和用户信息
+     *
+     * @param cardId 卡片ID
+     * @return 卡
+     */
     CardUserVo getByCardId(@Param("cardId") Long cardId);
 
 

@@ -46,9 +46,9 @@ public enum CanteenExceptionEnum implements IErrorInterface {
     MACHINE_NOT_EXITS(2027, "机器不存在"),
     UPDATE_FA2IL(99999, "update  fail");
 
-    private Integer code;
+    private final Integer code;
 
-    private String msg;
+    private final String msg;
 
 
     @Override

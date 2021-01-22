@@ -1,7 +1,6 @@
 package com.smart.canteen.entity;
 
 import com.baomidou.mybatisplus.annotation.*;
-import com.baomidou.mybatisplus.extension.activerecord.Model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -25,7 +24,7 @@ import java.util.Date;
 @Accessors(chain = true)
 @TableName("operation_log")
 @ApiModel(value = "OperationLog对象", description = "操作日志")
-public class OperationLog extends Model<OperationLog> {
+public class OperationLog implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -68,11 +67,4 @@ public class OperationLog extends Model<OperationLog> {
     @TableField(value = "deleted", fill = FieldFill.INSERT)
     @TableLogic
     private Boolean deleted;
-
-
-    @Override
-    protected Serializable pkVal() {
-        return this.id;
-    }
-
 }

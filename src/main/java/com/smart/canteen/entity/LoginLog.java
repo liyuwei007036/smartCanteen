@@ -4,13 +4,15 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.baomidou.mybatisplus.extension.activerecord.Model;
 import com.smart.canteen.enums.LoginEnum;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import live.lumia.utils.IPV4Utils;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
+import org.springframework.context.annotation.Profile;
+import org.springframework.util.StringUtils;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -28,7 +30,7 @@ import java.util.Date;
 @Accessors(chain = true)
 @TableName("login_log")
 @ApiModel(value = "LoginLog对象", description = "用户登录记录")
-public class LoginLog extends Model<LoginLog> {
+public class LoginLog implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -56,10 +58,10 @@ public class LoginLog extends Model<LoginLog> {
     @TableField("type")
     private LoginEnum type;
 
-
-    @Override
-    protected Serializable pkVal() {
-        return this.id;
+    public String getIp() {
+        if (!StringUtils.isEmpty(ip)) {
+            return ip + "/" + IPV4Utils.getLocationAndOperator(ip);
+        }
+        return ip;
     }
-
 }

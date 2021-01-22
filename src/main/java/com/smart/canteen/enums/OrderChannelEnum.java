@@ -17,11 +17,11 @@ public enum OrderChannelEnum implements IEnum<Integer> {
     MACHINE(1, "刷卡机"),
     WANGYI(2, "网易严选"),
     DEDUCTION(3, "补扣");
-    private Integer value;
+    private final Integer value;
 
     @JsonValue
     @Getter
-    private String disPlay;
+    private final String disPlay;
 
     @Override
     public Integer getValue() {

@@ -17,11 +17,11 @@ public enum OrderTypeEnum implements IEnum<Integer> {
     NORMAL(1, "正常"),
     FILL_BUCKLE(2, "补扣");
 
-    private Integer value;
+    private final Integer value;
 
     @JsonValue
     @Getter
-    private String disPlay;
+    private final String disPlay;
 
     @Override
     public Integer getValue() {

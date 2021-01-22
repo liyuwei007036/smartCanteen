@@ -65,13 +65,14 @@ public class RolePermissionServiceImpl extends ServiceImpl<RolePermissionMapper,
                     .eq(RolePermission::getRoleId, form.getId())
                     .in(RolePermission::getPermissionCode, oldPermissions));
         }
-        Set<RolePermission> collect = permissions.stream().map(x -> {
-            RolePermission rp = new RolePermission();
-            rp.setRoleId(roleId);
-            rp.setPermissionCode(x);
-            EntityLogUtil.addNormalUser(rp, account);
-            return rp;
-        }).collect(Collectors.toSet());
+        Set<RolePermission> collect = permissions.stream()
+                .map(x -> {
+                    RolePermission rp = new RolePermission();
+                    rp.setRoleId(roleId);
+                    rp.setPermissionCode(x);
+                    EntityLogUtil.addNormalUser(rp, account);
+                    return rp;
+                }).collect(Collectors.toSet());
         if (collect.size() > 0) {
             saveBatch(collect);
         }
