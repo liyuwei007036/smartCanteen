@@ -1,5 +1,6 @@
 package com.smart.canteen.service;
 
+import com.smart.canteen.vo.LoginLogVO;
 import live.lumia.dto.Account;
 import com.smart.canteen.dto.CommonList;
 import com.smart.canteen.dto.log.LoginSearch;
@@ -32,5 +33,5 @@ public interface ILoginLogService extends IService<LoginLog> {
      * @param search
      * @return
      */
-    CommonList<LoginLog> listLogs(LoginSearch search);
+    CommonList<LoginLogVO> listLogs(LoginSearch search);
 }

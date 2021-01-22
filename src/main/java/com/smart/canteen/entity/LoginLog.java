@@ -57,11 +57,4 @@ public class LoginLog implements Serializable {
     @ApiModelProperty(value = "类型")
     @TableField("type")
     private LoginEnum type;
-
-    public String getIp() {
-        if (!StringUtils.isEmpty(ip)) {
-            return ip + "/" + IPV4Utils.getLocationAndOperator(ip);
-        }
-        return ip;
-    }
 }

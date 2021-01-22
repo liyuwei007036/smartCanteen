@@ -1,6 +1,7 @@
 package com.smart.canteen.controller;
 
 
+import com.smart.canteen.vo.LoginLogVO;
 import live.lumia.annotations.Secret;
 import live.lumia.annotations.Valid;
 import live.lumia.controller.BaseController;
@@ -42,7 +43,7 @@ public class LogController extends BaseController {
     @Permission(code = "log:login")
     @ApiModelProperty(value = "查询登录日志")
     @RequestMapping(value = "/list/login", method = RequestMethod.POST)
-    public ResponseInfo<CommonList<LoginLog>> listLogin(@RequestBody LoginSearch loginSearch) {
+    public ResponseInfo<CommonList<LoginLogVO>> listLogin(@RequestBody LoginSearch loginSearch) {
         return new ResponseInfo<>(iLoginLogService.listLogs(loginSearch));
     }
 
