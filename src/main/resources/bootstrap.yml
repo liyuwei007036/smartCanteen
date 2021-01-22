@@ -50,7 +50,7 @@ sys:
     keep-alive-seconds: 200
     thread-name-prefix: smart-canteen-async-thread-
   sign:
-    aes-decrypt-impl: com.smart.canteen.config.DecryptImpl
+    aes-decrypt-impl: com.smart.canteen.config.DefaultAesDecryptImpl
 
 netty:
   port: 3000

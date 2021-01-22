@@ -8,14 +8,18 @@ import live.lumia.config.DefaultAesDecrypt;
 import live.lumia.utils.EncryptionUtils;
 import live.lumia.utils.SpringUtil;
 import lombok.SneakyThrows;
+import org.springframework.stereotype.Component;
 
 import java.text.SimpleDateFormat;
 
-public class DecryptImpl implements DefaultAesDecrypt {
+/**
+ * @author liyuwei
+ */
+@Component
+public class DefaultAesDecryptImpl implements DefaultAesDecrypt {
 
 
-    private final static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
+    private final static SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     @Override
     public String decrypt(String telnetId, String data) {
@@ -34,7 +38,7 @@ public class DecryptImpl implements DefaultAesDecrypt {
         Tenant tenant = SpringUtil.getBean(ITenantService.class).getByCode(telnetId);
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
-        mapper.setDateFormat(dateFormat);
+        mapper.setDateFormat(DATE_FORMAT);
         String string = mapper.writeValueAsString(data);
         return EncryptionUtils.aesEncrypt(string, tenant.getSerKey(), tenant.getIv());
     }
