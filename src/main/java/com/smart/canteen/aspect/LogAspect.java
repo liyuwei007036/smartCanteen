@@ -1,12 +1,12 @@
 package com.smart.canteen.aspect;
 
-import live.lumia.controller.BaseController;
-import live.lumia.utils.SpringUtil;
 import com.smart.canteen.annotations.Log;
 import com.smart.canteen.service.IOperationLogService;
-import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.annotation.Around;
+import live.lumia.controller.BaseController;
+import live.lumia.utils.SpringUtil;
+import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.core.annotation.Order;
@@ -29,11 +29,8 @@ public class LogAspect {
 
     }
 
-
-    @Order(-1)
-    @Around(value = "logCut()")
-    public Object around(ProceedingJoinPoint joinPoint) throws Throwable {
-        Object proceed = joinPoint.proceed();
+    @Before(value = "logCut()")
+    public void before(JoinPoint joinPoint) throws Throwable {
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
         Method method = signature.getMethod();
         Log log = method.getAnnotation(Log.class);
@@ -43,6 +40,5 @@ public class LogAspect {
             BaseController controller = (BaseController) o;
             SpringUtil.getBean(IOperationLogService.class).addLog(joinPoint.getArgs(), log, controller.getCurrentUser());
         }
-        return proceed;
     }
 }

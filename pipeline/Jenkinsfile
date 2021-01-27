@@ -9,7 +9,7 @@ pipeline {
                 sh 'cp target/*.jar docker/ && chmod 777 docker/update.sh'
             }
         }
-        stage('构建docker镜像') {
+        stage('重新部署服务') {
             steps {
                 sh 'docker/update.sh'
             }
