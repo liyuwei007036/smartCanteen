@@ -4,6 +4,7 @@ import live.lumia.dto.Account;
 import live.lumia.enums.BaseErrorEnums;
 import live.lumia.error.BaseException;
 import com.smart.canteen.entity.BaseEntity;
+import live.lumia.utils.ObjectUtil;
 
 import java.util.Date;
 
@@ -19,10 +20,10 @@ public class EntityLogUtil {
         }
         Date now = new Date();
         entity.setCreateTime(now);
-        entity.setCreatorId(operation.getId());
+        entity.setCreatorId(ObjectUtil.getLong(operation.getId()));
         entity.setCreatorAccount(operation.getAccount());
         entity.setCreatorName(operation.getName());
-        entity.setLastUpdateId(operation.getId());
+        entity.setLastUpdateId(ObjectUtil.getLong(operation.getId()));
         entity.setLastUpdateName(operation.getName());
         entity.setLastUpdateAccount(operation.getAccount());
         entity.setLastUpdateTime(now);
