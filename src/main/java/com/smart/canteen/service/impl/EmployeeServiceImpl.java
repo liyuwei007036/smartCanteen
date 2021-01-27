@@ -74,11 +74,12 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
             Account account = new Account();
             account.setAccount(user.getNo());
             account.setName(user.getName());
-            account.setId(user.getId());
+            account.setId(user.getId().toString());
             List<Long> empRole = iEmployeeRoleService.getEmpRole(user.getId());
             Set<String> rolePermission = iRolePermissionService.getRolePermission(empRole);
             List<String> powers = new ArrayList<>(rolePermission);
             account.setPowers(powers);
+            account.setHasAllPowers(user.getId() == 1);
             LoginUtils.doUserLogin(account, controller);
             iLoginLogService.addLog(account, RequestUtils.getIpAddress(controller.getRequest()), LoginEnum.LOGIN);
             return account;
