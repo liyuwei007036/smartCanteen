@@ -1,12 +1,7 @@
 package com.smart.canteen.controller;
 
 
-import live.lumia.annotations.Secret;
-import live.lumia.annotations.Valid;
-import live.lumia.controller.BaseController;
-import live.lumia.dto.ResponseInfo;
 import com.smart.canteen.annotations.Log;
-import com.smart.canteen.annotations.Permission;
 import com.smart.canteen.dto.CommonList;
 import com.smart.canteen.dto.machine.MachineDTO;
 import com.smart.canteen.dto.machine.MachineSearch;
@@ -15,6 +10,10 @@ import com.smart.canteen.service.IMachineService;
 import com.smart.canteen.vo.MachineVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import live.lumia.annotations.Permission;
+import live.lumia.annotations.Secret;
+import live.lumia.controller.BaseController;
+import live.lumia.dto.ResponseInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,7 +27,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @Secret
 @Api(tags = "卡机管理", description = "卡机管理")
-@Valid(needLogin = true)
+@Permission()
 @RestController
 @RequestMapping("/machine")
 public class MachineController extends BaseController {
@@ -37,7 +36,7 @@ public class MachineController extends BaseController {
     private IMachineService iMachineService;
 
     @Log(module = "卡机管理", action = "添加")
-    @Permission(code = "machine:add")
+    @Permission("machine:add")
     @ApiOperation(value = "添加卡机", notes = "添加卡机")
     @RequestMapping(value = "add", method = RequestMethod.POST)
     public ResponseInfo add(@RequestBody MachineDTO params) {

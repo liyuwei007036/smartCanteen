@@ -2,12 +2,6 @@ package com.smart.canteen.controller;
 
 
 import com.alibaba.fastjson.JSONObject;
-import live.lumia.annotations.Secret;
-import live.lumia.annotations.Valid;
-import live.lumia.controller.BaseController;
-import live.lumia.dto.ResponseInfo;
-import live.lumia.utils.ObjectUtil;
-import com.smart.canteen.annotations.Permission;
 import com.smart.canteen.dto.CommonList;
 import com.smart.canteen.dto.SummaryDTO;
 import com.smart.canteen.dto.SummarySearchDTO;
@@ -16,6 +10,11 @@ import com.smart.canteen.service.IOrderService;
 import com.smart.canteen.vo.OrderVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import live.lumia.annotations.Permission;
+import live.lumia.annotations.Secret;
+import live.lumia.controller.BaseController;
+import live.lumia.dto.ResponseInfo;
+import live.lumia.utils.ObjectUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,7 +33,7 @@ import java.util.Calendar;
  */
 @Secret
 @Api(tags = "消费管理")
-@Valid(needLogin = true)
+@Permission()
 @RestController
 @RequestMapping("/order")
 public class OrderController extends BaseController {

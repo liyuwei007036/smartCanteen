@@ -20,4 +20,9 @@ public interface ITenantService extends IService<Tenant> {
      * @return 租户信息
      */
     Tenant getByCode(String code);
+
+
+    void testTranction(String code);
+
+    void doTestTranction();
 }

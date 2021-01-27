@@ -1,12 +1,12 @@
 package com.smart.canteen.controller;
 
 
+import live.lumia.annotations.Permission;
 import live.lumia.annotations.Secret;
-import live.lumia.annotations.Valid;
+
 import live.lumia.controller.BaseController;
 import live.lumia.dto.ResponseInfo;
 import com.smart.canteen.annotations.Log;
-import com.smart.canteen.annotations.Permission;
 import com.smart.canteen.dto.CommonList;
 import com.smart.canteen.dto.card.CardSearch;
 import com.smart.canteen.dto.card.DeductionForm;
@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @Secret
 @Api(tags = "卡片管理")
-@Valid(needLogin = true)
+@Permission(needLogin = true)
 @RestController
 @RequestMapping("/icCard")
 public class IcCardController extends BaseController {

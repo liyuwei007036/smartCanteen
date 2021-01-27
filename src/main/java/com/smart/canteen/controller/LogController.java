@@ -1,21 +1,19 @@
 package com.smart.canteen.controller;
 
 
-import com.smart.canteen.vo.LoginLogVO;
-import live.lumia.annotations.Secret;
-import live.lumia.annotations.Valid;
-import live.lumia.controller.BaseController;
-import live.lumia.dto.ResponseInfo;
-import com.smart.canteen.annotations.Permission;
 import com.smart.canteen.dto.CommonList;
 import com.smart.canteen.dto.log.LoginSearch;
 import com.smart.canteen.dto.log.OperationSearch;
-import com.smart.canteen.entity.LoginLog;
 import com.smart.canteen.entity.OperationLog;
 import com.smart.canteen.service.ILoginLogService;
 import com.smart.canteen.service.IOperationLogService;
+import com.smart.canteen.vo.LoginLogVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModelProperty;
+import live.lumia.annotations.Permission;
+import live.lumia.annotations.Secret;
+import live.lumia.controller.BaseController;
+import live.lumia.dto.ResponseInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,7 +27,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @Secret
 @Api(tags = "日志管理", description = "日志管理")
-@Valid(needLogin = true)
+@Permission
 @RestController
 @RequestMapping("/log")
 public class LogController extends BaseController {

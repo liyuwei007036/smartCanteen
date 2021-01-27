@@ -16,7 +16,7 @@ server:
 
 mybatis-plus:
   configuration:
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
     map-underscore-to-camel-case: false
     defaultEnumTypeHandler: com.baomidou.mybatisplus.extension.handlers.MybatisEnumTypeHandler
   check-config-location: true
@@ -49,8 +49,6 @@ sys:
     max-size: 20
     keep-alive-seconds: 200
     thread-name-prefix: smart-canteen-async-thread-
-  sign:
-    aes-decrypt-impl: com.smart.canteen.config.DefaultAesDecryptImpl
 
 netty:
   port: 3000

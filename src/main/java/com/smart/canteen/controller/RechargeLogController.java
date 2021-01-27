@@ -1,12 +1,7 @@
 package com.smart.canteen.controller;
 
 
-import live.lumia.annotations.Secret;
-import live.lumia.annotations.Valid;
-import live.lumia.controller.BaseController;
-import live.lumia.dto.ResponseInfo;
 import com.smart.canteen.annotations.Log;
-import com.smart.canteen.annotations.Permission;
 import com.smart.canteen.dto.CommonList;
 import com.smart.canteen.dto.recharge.RechargeForm;
 import com.smart.canteen.dto.recharge.RechargeLogSearch;
@@ -15,6 +10,10 @@ import com.smart.canteen.service.impl.IcCardServiceImpl;
 import com.smart.canteen.vo.RechargeLogVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import live.lumia.annotations.Permission;
+import live.lumia.annotations.Secret;
+import live.lumia.controller.BaseController;
+import live.lumia.dto.ResponseInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,7 +30,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @Secret
 @Api(tags = "充值管理")
-@Valid(needLogin = true)
+@Permission()
 @RestController
 @RequestMapping("/recharge")
 public class RechargeLogController extends BaseController {

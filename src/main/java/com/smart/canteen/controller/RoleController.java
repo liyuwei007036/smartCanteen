@@ -1,21 +1,19 @@
 package com.smart.canteen.controller;
 
 
-import live.lumia.annotations.Secret;
-import live.lumia.annotations.Valid;
-import live.lumia.controller.BaseController;
-import live.lumia.dto.ResponseInfo;
-import live.lumia.utils.ObjectUtil;
 import com.smart.canteen.annotations.Log;
-import com.smart.canteen.annotations.Permission;
 import com.smart.canteen.dto.CommonList;
-import com.smart.canteen.dto.recharge.RechargeForm;
 import com.smart.canteen.dto.role.RoleForm;
 import com.smart.canteen.dto.role.RoleSearch;
 import com.smart.canteen.entity.Role;
 import com.smart.canteen.service.IRoleService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import live.lumia.annotations.Permission;
+import live.lumia.annotations.Secret;
+import live.lumia.controller.BaseController;
+import live.lumia.dto.ResponseInfo;
+import live.lumia.utils.ObjectUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,7 +28,7 @@ import java.io.Serializable;
  * @since 2020-03-02
  */
 @Secret
-@Valid(needLogin = true)
+@Permission()
 @Api(tags = {"角色管理"})
 @RestController
 @RequestMapping("/role")
