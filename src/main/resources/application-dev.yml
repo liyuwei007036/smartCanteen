@@ -1,4 +1,3 @@
-dep.server.address: nexus.51mypc.cn
 
 logstash:
   address: ${dep.server.address}:9600

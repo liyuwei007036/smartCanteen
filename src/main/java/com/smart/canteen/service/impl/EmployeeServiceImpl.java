@@ -32,6 +32,8 @@ import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 
 /**
@@ -74,7 +76,9 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
             account.setName(user.getName());
             account.setId(user.getId());
             List<Long> empRole = iEmployeeRoleService.getEmpRole(user.getId());
-            account.setPowers(new ArrayList<>(iRolePermissionService.getRolePermission(empRole)));
+            Set<String> rolePermission = iRolePermissionService.getRolePermission(empRole);
+            List<String> powers = new ArrayList<>(rolePermission);
+            account.setPowers(powers);
             LoginUtils.doUserLogin(account, controller);
             iLoginLogService.addLog(account, RequestUtils.getIpAddress(controller.getRequest()), LoginEnum.LOGIN);
             return account;
