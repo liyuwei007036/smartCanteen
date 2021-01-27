@@ -2,19 +2,21 @@ package com.smart.canteen.service.impl;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import live.lumia.dto.Account;
-import live.lumia.utils.ValidatorUtil;
 import com.smart.canteen.dto.role.PermissionForm;
 import com.smart.canteen.entity.RolePermission;
 import com.smart.canteen.mapper.RolePermissionMapper;
 import com.smart.canteen.service.IRolePermissionService;
 import com.smart.canteen.utils.EntityLogUtil;
+import live.lumia.dto.Account;
+import live.lumia.utils.DiffUtils;
+import live.lumia.utils.ValidatorUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -25,6 +27,7 @@ import java.util.stream.Collectors;
  * @author lc
  * @since 2020-03-11
  */
+@Slf4j
 @Transactional(rollbackFor = Exception.class)
 @Service
 public class RolePermissionServiceImpl extends ServiceImpl<RolePermissionMapper, RolePermission> implements IRolePermissionService {
@@ -55,26 +58,33 @@ public class RolePermissionServiceImpl extends ServiceImpl<RolePermissionMapper,
     public void addPermission(PermissionForm form, Account account) {
         ValidatorUtil.validator(form);
         Long roleId = form.getId();
-        Set<String> oldPermissions = getRolePermission(roleId);
-        Set<String> permissions = form.getPermissions();
-        if (oldPermissions.equals(permissions)) {
-            return;
-        }
-        if (oldPermissions.size() > 0) {
-            remove(Wrappers.<RolePermission>lambdaQuery()
-                    .eq(RolePermission::getRoleId, form.getId())
-                    .in(RolePermission::getPermissionCode, oldPermissions));
-        }
-        Set<RolePermission> collect = permissions.stream()
+        List<RolePermission> oldPermissions = list(Wrappers.<RolePermission>lambdaQuery()
+                .eq(RolePermission::getRoleId, roleId))
+                .parallelStream().collect(Collectors.toList());
+
+        List<String> newPermissionCodes = new ArrayList<>(form.getPermissions());
+
+        DiffUtils.DiffResult<RolePermission, String> result = DiffUtils.diffList(oldPermissions, newPermissionCodes, RolePermission::getPermissionCode, x -> x, (x, y) -> x.getPermissionCode().equals(y));
+
+        List<String> addedList = result.getAddedList();
+
+        List<RolePermission> deletedList = result.getDeletedList();
+
+        List<RolePermission> newPermission = addedList.stream()
                 .map(x -> {
                     RolePermission rp = new RolePermission();
                     rp.setRoleId(roleId);
                     rp.setPermissionCode(x);
                     EntityLogUtil.addNormalUser(rp, account);
                     return rp;
-                }).collect(Collectors.toSet());
-        if (collect.size() > 0) {
-            saveBatch(collect);
+                }).collect(Collectors.toList());
+
+        if (!CollectionUtils.isEmpty(deletedList)) {
+            removeByIds(deletedList.stream().map(RolePermission::getId).collect(Collectors.toList()));
         }
+        if (!CollectionUtils.isEmpty(newPermission)) {
+            saveBatch(newPermission);
+        }
+        log.info("新增 {} 条，删除 {} 条， 相同的 {} 条， 不同的 {} 条", addedList.size(), deletedList.size(), result.getSameMap().size(), result.getChangedMap().size());
     }
 }

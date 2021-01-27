@@ -56,9 +56,9 @@ public class RolePermissionController extends BaseController {
     }
 
     @Permission(code = "role:authorization")
-    @ApiOperation(value = "添加权限", notes = "添加权限")
+    @ApiOperation(value = "获取权限", notes = "获取权限")
     @RequestMapping(value = "getPermission/{role}", method = RequestMethod.GET)
-    public ResponseInfo add(@PathVariable("role") Long role) {
+    public ResponseInfo getPermission(@PathVariable("role") Long role) {
         return new ResponseInfo<>((Serializable) iRolePermissionService.getRolePermission(role));
     }
 }
