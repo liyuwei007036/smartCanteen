@@ -8,8 +8,6 @@ import com.smart.canteen.service.ITenantService;
 import live.lumia.annotations.Cache;
 import live.lumia.utils.SpringUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,8 +23,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 @Service
 public class TenantServiceImpl extends ServiceImpl<TenantMapper, Tenant> implements ITenantService {
-    @Autowired
-    private DataSourceTransactionManager transactionManager;
 
     @Cache(key = "#code", timeout = 3600 * 12, name = "TENANT")
     @Override

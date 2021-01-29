@@ -24,7 +24,7 @@ spring:
       time-between-eviction-runs-millis: 60000
       # 配置一个连接在池中最小生存时间
       min-evictable-idle-time-millis: 300000
-      validation-query: SELECT 1 FROM dual
+      validation-query: SELECT 1
       test-while-idle: true
       test-on-borrow: true
       test-on-return: true
@@ -57,6 +57,8 @@ spring:
       max-file-size: 1000MB
   mvc:
     throw-exception-if-no-handler-found: true
+  resources:
+    add-mappings: false
   redis:
     redisson:
       file: classpath:redisson.yml

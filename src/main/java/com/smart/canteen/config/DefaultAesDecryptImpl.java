@@ -5,16 +5,22 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.smart.canteen.entity.Tenant;
 import com.smart.canteen.service.ITenantService;
 import live.lumia.config.DefaultAesDecrypt;
+import live.lumia.enums.BaseErrorEnums;
+import live.lumia.error.BaseException;
 import live.lumia.utils.EncryptionUtils;
 import live.lumia.utils.SpringUtil;
 import lombok.SneakyThrows;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import java.text.SimpleDateFormat;
+import java.util.Objects;
+
 
 /**
  * @author liyuwei
  */
+@Profile({"wj"})
 @Component
 public class DefaultAesDecryptImpl implements DefaultAesDecrypt {
 
@@ -25,6 +31,9 @@ public class DefaultAesDecryptImpl implements DefaultAesDecrypt {
     public String decrypt(String telnetId, String data) {
         try {
             Tenant tenant = SpringUtil.getBean(ITenantService.class).getByCode(telnetId);
+            if (Objects.isNull(tenant)) {
+                throw new BaseException(BaseErrorEnums.NO_PERMISSION);
+            }
             return EncryptionUtils.aesDecrypt(data, tenant.getSerKey(), tenant.getIv());
         } catch (Exception e) {
             e.printStackTrace();
@@ -36,6 +45,9 @@ public class DefaultAesDecryptImpl implements DefaultAesDecrypt {
     @Override
     public String encrypt(String telnetId, Object data) {
         Tenant tenant = SpringUtil.getBean(ITenantService.class).getByCode(telnetId);
+        if (Objects.isNull(tenant)) {
+            throw new BaseException(BaseErrorEnums.NO_PERMISSION);
+        }
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
         mapper.setDateFormat(DATE_FORMAT);
