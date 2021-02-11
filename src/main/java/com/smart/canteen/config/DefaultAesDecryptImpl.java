@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.smart.canteen.entity.Tenant;
 import com.smart.canteen.service.ITenantService;
-import live.lumia.config.DefaultAesDecrypt;
+import live.lumia.config.secret.DefaultAesDecrypt;
 import live.lumia.enums.BaseErrorEnums;
 import live.lumia.error.BaseException;
 import live.lumia.utils.EncryptionUtils;
