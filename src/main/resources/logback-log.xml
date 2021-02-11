@@ -41,8 +41,8 @@
                         "thread": "%thread",
                         "logger": "%logger",
                         "class": "%message",
-                        "logger_name":"%logger_name",
-                        "stack_trace": "%exception{5}"
+                        "loggerName":"%logger_name",
+                        "stackTrace": "%exception{5}"
                         }
                     </pattern>
                 </pattern>
