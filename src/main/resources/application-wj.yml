@@ -1,7 +1,7 @@
 dep.server.address: 192.168.3.38
 
 logstash:
-  address: ${dep.server.address}:9600
+  address: 192.168.3.78:9600
 
 spring:
   profiles:
