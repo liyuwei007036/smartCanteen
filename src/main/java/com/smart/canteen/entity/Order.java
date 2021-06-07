@@ -1,7 +1,6 @@
 package com.smart.canteen.entity;
 
 import com.baomidou.mybatisplus.annotation.*;
-import com.baomidou.mybatisplus.extension.activerecord.Model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.smart.canteen.enums.OrderChannelEnum;
@@ -24,13 +23,11 @@ import java.util.Date;
  * @since 2020-03-08
  */
 @Data
-@EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
 @TableName("c_order")
 @ApiModel(value = "order", description = "订单")
-public class Order extends Model<Order> {
+public class Order implements Serializable {
 
-    private static final long serialVersionUID = 1L;
 
     @ApiModelProperty(value = "主键Id")
     @TableId(value = "id", type = IdType.AUTO)
@@ -109,12 +106,5 @@ public class Order extends Model<Order> {
     @TableField(value = "deleted", fill = FieldFill.INSERT)
     @TableLogic
     private Boolean deleted;
-
-
-    @Override
-    protected Serializable pkVal() {
-        return this.id;
-    }
-
 
 }

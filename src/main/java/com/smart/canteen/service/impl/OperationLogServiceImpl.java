@@ -57,9 +57,9 @@ public class OperationLogServiceImpl extends ServiceImpl<OperationLogMapper, Ope
     public CommonList<OperationLog> listLogs(OperationSearch search) {
         Page<OperationLog> page = new Page<>(search.getPage(), search.getSize());
         page(page, Wrappers.<OperationLog>lambdaQuery()
-                .eq(StringUtils.isNotEmpty(search.getEmpName()), OperationLog::getEmpName, search.getEmpName())
-                .eq(StringUtils.isNotEmpty(search.getModule()), OperationLog::getModule, search.getModule())
-                .eq(StringUtils.isNotEmpty(search.getAction()), OperationLog::getAction, search.getAction())
+                .eq(StringUtils.isNotBlank(search.getEmpName()), OperationLog::getEmpName, search.getEmpName())
+                .eq(StringUtils.isNotBlank(search.getModule()), OperationLog::getModule, search.getModule())
+                .eq(StringUtils.isNotBlank(search.getAction()), OperationLog::getAction, search.getAction())
                 .ge(Objects.nonNull(search.getStart()), OperationLog::getOperationTime, search.getStart())
                 .lt(Objects.nonNull(search.getEnd()), OperationLog::getOperationTime, search.getEnd()).orderByDesc(OperationLog::getOperationTime)
         );

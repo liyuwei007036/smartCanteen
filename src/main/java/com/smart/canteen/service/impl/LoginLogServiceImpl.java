@@ -49,7 +49,7 @@ public class LoginLogServiceImpl extends ServiceImpl<LoginLogMapper, LoginLog> i
     public CommonList<LoginLogVO> listLogs(LoginSearch search) {
         Page<LoginLog> page = new Page<>(search.getPage(), search.getSize());
         page(page, Wrappers.<LoginLog>lambdaQuery()
-                .eq(StringUtils.isNotEmpty(search.getEmpName()), LoginLog::getEmpName, search.getEmpName())
+                .eq(StringUtils.isNotBlank(search.getEmpName()), LoginLog::getEmpName, search.getEmpName())
                 .ge(Objects.nonNull(search.getStart()), LoginLog::getLoginTime, search.getStart())
                 .lt(Objects.nonNull(search.getEnd()), LoginLog::getLoginTime, search.getEnd()).orderByDesc(LoginLog::getLoginTime)
         );

@@ -53,7 +53,7 @@ public enum ConEventEnum {
      */
     UNDER_THE_CONSUMPTION(0x07);
 
-    private int code;
+    private final int code;
 
     public static ConEventEnum getByCode(byte code) {
         return Arrays.stream(ConEventEnum.values()).filter(x -> x.code == code).findFirst().orElse(null);

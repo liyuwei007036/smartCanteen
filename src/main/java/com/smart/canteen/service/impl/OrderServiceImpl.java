@@ -87,11 +87,11 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
     public CommonList<OrderVo> listLogs(OrderSearch search) {
         Page<Order> voPage = new Page<>(search.getPage(), search.getSize());
         page(voPage, Wrappers.<Order>lambdaQuery()
-                .eq(StringUtils.isNotEmpty(search.getCardNo()), Order::getCardNo, search.getCardNo())
-                .eq(StringUtils.isNotEmpty(search.getEmpName()), Order::getEmployeeName, search.getEmpName())
-                .eq(StringUtils.isNotEmpty(search.getEmpNo()), Order::getEmployeeNo, search.getEmpNo())
+                .eq(StringUtils.isNotBlank(search.getCardNo()), Order::getCardNo, search.getCardNo())
+                .eq(StringUtils.isNotBlank(search.getEmpName()), Order::getEmployeeName, search.getEmpName())
+                .eq(StringUtils.isNotBlank(search.getEmpNo()), Order::getEmployeeNo, search.getEmpNo())
                 .eq(search.getOrderType() != null, Order::getType, search.getOrderType())
-                .eq(StringUtils.isNotEmpty(search.getOperatorName()), Order::getCreatorName, search.getOperatorName())
+                .eq(StringUtils.isNotBlank(search.getOperatorName()), Order::getCreatorName, search.getOperatorName())
                 .ge(search.getStart() != null, Order::getCreateTime, search.getStart())
                 .lt(search.getEnd() != null, Order::getCreateTime, search.getEnd())
                 .orderByDesc(Order::getCreateTime)

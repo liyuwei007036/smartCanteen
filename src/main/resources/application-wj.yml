@@ -4,8 +4,9 @@ logstash:
   address: 192.168.3.78:9600
 
 spring:
-  profiles:
-    active: wj
+  config:
+    activate:
+      on-profile: wj
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://${dep.server.address}:6306/smartcanteen?useUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT%2B8&useSSL=false&allowMultiQueries=true&allowPublicKeyRetrieval=true

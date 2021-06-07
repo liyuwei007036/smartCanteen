@@ -1,10 +1,10 @@
-
 logstash:
   address: ${dep.server.address}:9600
 
 spring:
-  profiles:
-    active: test
+  config:
+    activate:
+      on-profile: test
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://${dep.server.address}:6306/smartcanteen?useUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT%2B8&useSSL=false&allowMultiQueries=true&allowPublicKeyRetrieval=true

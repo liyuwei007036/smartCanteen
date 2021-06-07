@@ -18,7 +18,7 @@ mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
     map-underscore-to-camel-case: false
-    defaultEnumTypeHandler: com.baomidou.mybatisplus.extension.handlers.MybatisEnumTypeHandler
+    defaultEnumTypeHandler: com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler
   check-config-location: true
   global-config:
     db-config:

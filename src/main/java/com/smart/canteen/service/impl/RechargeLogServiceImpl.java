@@ -49,11 +49,11 @@ public class RechargeLogServiceImpl extends ServiceImpl<RechargeLogMapper, Recha
     public CommonList<RechargeLogVO> listLogs(RechargeLogSearch search) {
         Page<RechargeLog> voPage = new Page<>(search.getPage(), search.getSize());
         page(voPage, Wrappers.<RechargeLog>lambdaQuery()
-                .eq(StringUtils.isNotEmpty(search.getCardNo()), RechargeLog::getCardNo, search.getCardNo())
-                .eq(StringUtils.isNotEmpty(search.getEmpName()), RechargeLog::getEmployeeName, search.getEmpName())
-                .eq(StringUtils.isNotEmpty(search.getEmpNo()), RechargeLog::getEmployeeNo, search.getEmpNo())
+                .eq(StringUtils.isNotBlank(search.getCardNo()), RechargeLog::getCardNo, search.getCardNo())
+                .eq(StringUtils.isNotBlank(search.getEmpName()), RechargeLog::getEmployeeName, search.getEmpName())
+                .eq(StringUtils.isNotBlank(search.getEmpNo()), RechargeLog::getEmployeeNo, search.getEmpNo())
                 .eq(search.getRechargeType() != null, RechargeLog::getType, search.getRechargeType())
-                .eq(StringUtils.isNotEmpty(search.getOperatorName()), RechargeLog::getCreatorName, search.getOperatorName())
+                .eq(StringUtils.isNotBlank(search.getOperatorName()), RechargeLog::getCreatorName, search.getOperatorName())
                 .ge(search.getStart() != null, RechargeLog::getCreateTime, search.getStart())
                 .lt(search.getEnd() != null, RechargeLog::getCreateTime, search.getEnd())
                 .orderByDesc(RechargeLog::getCreateTime)

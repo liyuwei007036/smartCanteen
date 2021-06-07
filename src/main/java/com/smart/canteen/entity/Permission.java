@@ -26,7 +26,7 @@ import java.io.Serializable;
 @Accessors(chain = true)
 @TableName("permission")
 @ApiModel(value = "Permission对象", description = "权限")
-public class Permission extends Model<Permission> {
+public class Permission implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -57,11 +57,5 @@ public class Permission extends Model<Permission> {
     @ApiModelProperty(value = "是否拥有子节点")
     @TableField("has_children")
     private Boolean hasChildren;
-
-
-    @Override
-    protected Serializable pkVal() {
-        return this.id;
-    }
 
 }
