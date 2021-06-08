@@ -13,10 +13,9 @@ server:
     # 是否分配的直接内存
     direct-buffers: true
 
-
 mybatis-plus:
   configuration:
-    log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
     map-underscore-to-camel-case: false
     default-enum-type-handler: com.baomidou.mybatisplus.core.handlers.MybatisEnumTypeHandler
   check-config-location: true
@@ -48,6 +47,9 @@ sys:
     max-size: 20
     keep-alive-seconds: 200
     thread-name-prefix: smart-canteen-async-thread-
+  db:
+    type: mysql
+
 
 netty:
   port: 3000
